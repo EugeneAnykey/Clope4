@@ -1,0 +1,31 @@
+﻿par1	par2	par3	par4	par5
+s	j	b	y	k
+u	t	b		
+c	t	f	y	k
+e	z	l	v	k
+u	t	f		
+u	j	b		
+s	w	b	y	p
+e	t	l	q	
+s	d	b		
+e	j	f	r	
+u	w	b	q	
+u	w	b		
+e	d	l	p	o
+u	d	f	q	i
+c	a	l	v	
+e	z	f	n	
+s	j	b	y	
+s	d	f		
+c	t	f		
+s	d	b	h	
+u	t	l	p	o
+e	z	b	n	p
+s	a	l	r	p
+e	j	l		
+e	d	f	r	
+u	w	f		
+e	w	l		
+u	d	l	v	
+s	z	b	p	i
+c	t	f		

@@ -1,0 +1,24 @@
+﻿param	lines
+1	p, e
+2	x, b, s, f, k, c
+3	s, y, f, g
+4	n, y, w, g, e, p, b, u, c, r
+5	t, f
+6	p, a, l, n, f, c, y, s, m
+7	f, a
+8	c, w
+9	n, b
+10	k, n, g, p, w, h, u, e, b, r, y, o
+11	e, t
+12	e, c, b, r, ?
+13	s, f, k, y
+14	s, f, y, k
+15	w, g, p, n, b, e, o, c, y
+16	w, p, g, b, n, e, y, o, c
+17	p
+18	w, n, o, y
+19	o, t, n
+20	p, e, l, f, n
+21	k, n, u, h, w, r, o, y, b
+22	s, n, a, v, y, c
+23	u, g, m, d, p, w, l
