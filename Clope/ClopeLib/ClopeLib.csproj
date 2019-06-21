@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectGuid>{A113137F-6CB6-44A2-9F07-E4319DA705B3}</ProjectGuid>
+    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ClopeLib</RootNamespace>
+    <AssemblyName>ClopeLib</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Algo\Clope.cs" />
+    <Compile Include="Algo\IClopeInfo.cs" />
+    <Compile Include="Algo\StepInfo.cs" />
+    <Compile Include="Algo\ClopeStepResult.cs" />
+    <Compile Include="Algo\IAlgo.cs" />
+    <Compile Include="Algo\IClustering.cs" />
+    <Compile Include="Data\Cluster.cs" />
+    <Compile Include="Data\ICluster.cs" />
+    <Compile Include="Data\ItemWithCount.cs" />
+    <Compile Include="Data\ITransaction.cs" />
+    <Compile Include="Data\Transaction.cs" />
+    <Compile Include="Helpers\ArrayHelper.cs" />
+    <Compile Include="Helpers\ConvertHelper.cs" />
+    <Compile Include="Parcers\ElementAlwaysValidRule.cs" />
+    <Compile Include="Parcers\ElementRule.cs" />
+    <Compile Include="Parcers\IElementRule.cs" />
+    <Compile Include="Parcers\IParcer.cs" />
+    <Compile Include="Parcers\Parcer.cs" />
+    <Compile Include="Parcers\SimpleParcer.cs" />
+    <Compile Include="Previews\IPreview.cs" />
+    <Compile Include="Previews\Previewer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Readers\IPortionReader.cs" />
+    <Compile Include="Readers\IReader.cs" />
+    <Compile Include="Readers\Reader.cs" />
+    <Compile Include="Readers\SimpleReader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LoggerLib\EugeneAnykey.DebugLib.Loggers.csproj">
+      <Project>{B19399D5-03C5-4D88-A2FD-FDD32F8A7FB5}</Project>
+      <Name>EugeneAnykey.DebugLib.Loggers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
