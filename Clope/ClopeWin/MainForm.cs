@@ -13,7 +13,8 @@ namespace ClopeWin
 	{
 		// field
 		ILogger logger;
-		Clope clope = new Clope();
+		Clope clope;
+		Clope4 clope4;
 
 
 
@@ -24,6 +25,9 @@ namespace ClopeWin
 
 			logger = new FormsLogger(richTextBoxLogger, new FileLogger("clope.log.txt"));
 			tabControl1.SelectedIndex = 1;
+
+			clope = new Clope();
+			clope4 = new Clope4();
 
 			// events:
 			buttonClopeRun.Click += (_, __) => RunClope();
@@ -47,6 +51,9 @@ namespace ClopeWin
 
 		void StepDone()
 		{
+			if (clope == null)
+				return;
+
 			var csr = new ClopeStepResult(
 				clope.CurrentStepName,
 				clope.CurrentOutput(),
@@ -62,13 +69,22 @@ namespace ClopeWin
 		{
 			listBoxResults.Items.Clear();
 			richTextBox1.Clear();
-			clope.Clear();
+			clope?.Clear();
+			clope4.Clear();
 
-			Tester tester = new Tester(clope, dataSetupControl1.Settings, logger);
+			if (clope != null)
+			{
+				var tester = new Tester(clope, dataSetupControl1.Settings, logger);
+				tester.Run();
+				richTextBox1.AppendText(tester.MakeResults());
+			}
 
-			tester.Run();
-
-			richTextBox1.AppendText(tester.MakeResults());
+			if (clope4 != null)
+			{
+				var tester4 = new Tester4(clope4, dataSetupControl1.Settings, logger);
+				tester4.Run();
+				richTextBox1.AppendText(tester4.MakeResults());
+			}
 
 			listBoxResults.SelectedIndex = listBoxResults.Items.Count - 1;
 			ShowInfo();

@@ -51,6 +51,7 @@
     <Reference Include="System.Data.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algo\Clope4.cs" />
     <Compile Include="Algo\Clope.cs" />
     <Compile Include="Algo\IClopeInfo.cs" />
     <Compile Include="Algo\StepInfo.cs" />

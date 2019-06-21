@@ -62,14 +62,16 @@ namespace ClopeLib.Data
 
 
 
-		#region private: RecalcCurrentCost.
+		// private: RecalcCurrentCost.
 		/// <summary>
 		/// Calculates cluster's current cost after add/remove the transaction.
 		/// </summary>
 		void RecalcCurrentCost() => currentCost = Square * TransactionsCount / Math.Pow(Width, Repulsion);
 
+
+
+		// GetSquare
 		int GetSquare() => hash.Select(e => e.Value).Sum();
-		#endregion
 
 
 

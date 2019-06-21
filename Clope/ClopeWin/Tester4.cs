@@ -10,7 +10,7 @@ using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeWin
 {
-	public class Tester
+	public class Tester4
 	{
 		// predefs
 		readonly string[] determineAsNulls = new[] { "?", string.Empty };
@@ -18,7 +18,7 @@ namespace ClopeWin
 
 
 		// field
-		Clope clope;
+		Clope4 clope;
 		DataSetupSettings settings;
 		Nullabier nullabier;
 
@@ -51,7 +51,7 @@ namespace ClopeWin
 
 
 		// init
-		public Tester(Clope clope, DataSetupSettings settings, ILogger logger)
+		public Tester4(Clope4 clope, DataSetupSettings settings, ILogger logger)
 		{
 			this.watch = new Stopwatch();
 			this.clope = clope ?? throw new ArgumentNullException();
