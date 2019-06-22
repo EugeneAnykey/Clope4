@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ClopeLib.Algo
+namespace ClopeLib
 {
 	public interface IClopeInfo
 	{

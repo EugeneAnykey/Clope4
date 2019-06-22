@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using ClopeLib.Algo;
-using ClopeLib.Data;
+using ClopeLib;
+using ClopeLib.Algo4;
+using ClopeLib.Data4;
 using ClopeLib.Parcers;
 using ClopeLib.Previews;
 using ClopeLib.Readers;
@@ -112,7 +113,7 @@ namespace ClopeWin
 					var items = parcer.Parce(possibleTransaction);
 					nullabier?.MaybePlaceNull(ref items);
 					// TODO is here! new Transaction(line) !!!
-					tempTrans.Add(new Transaction(items));
+					tempTrans.Add(new Transaction4(items));
 				}
 
 				clope.AddNewTransactions(tempTrans.ToArray());

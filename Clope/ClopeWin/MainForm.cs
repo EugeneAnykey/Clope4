@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 using ClopeLib.Algo;
-using ClopeLib.Readers;
+using ClopeLib.Algo4;
 using EugeneAnykey.DebugLib.Loggers;
-using TestingHelper;
 
 namespace ClopeWin
 {

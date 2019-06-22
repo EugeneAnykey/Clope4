@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using ClopeLib.Data;
+using ClopeLib.Data4;
 using EugeneAnykey.DebugLib.Loggers;
 
-namespace ClopeLib.Algo
+namespace ClopeLib.Algo4
 {
 	public class Clope4 : IAlgo
 	{
@@ -57,6 +58,9 @@ namespace ClopeLib.Algo
 		readonly Queue<ITransaction> newTrans;
 
 		Dictionary<ITransaction, ICluster> keys;
+		readonly bool doNotCheckForUniques;
+
+		readonly AttributeStore store = new AttributeStore();
 
 
 
@@ -68,12 +72,14 @@ namespace ClopeLib.Algo
 			Transactions = new List<ITransaction>();
 			keys = new Dictionary<ITransaction, ICluster>();
 
+			doNotCheckForUniques = true;
+
 			Clear();
 		}
 
 
 
-		#region interface: AddNewTransactions, MakeOutput, Run.
+		// IClustering: AddNewTransactions, Clear
 		public void AddNewTransactions(ITransaction[] newTransactions)
 		{
 			foreach (var t in newTransactions)
@@ -90,20 +96,14 @@ namespace ClopeLib.Algo
 			keys.Clear();
 
 			stepIndex = 0;
-			CurrentStepName = "Just initialized.";
+			//CurrentStepName = "Just initialized.";
 			needSpecify = false;
-			Cluster.ResetId();
+			Cluster4.ResetId();
 		}
 
-		public string CurrentOutput()
-		{
-			var sb = new StringBuilder();
-			foreach (var c in Clusters)
-				sb.AppendLine(c.OutputContent());
 
-			return sb.ToString();
-		}
 
+		// CurrentInfo, CurrentOutput
 		public string CurrentInfo()
 		{
 			const string transactionsInfoMask = "Transactions: {0}.\r\n";
@@ -118,16 +118,23 @@ namespace ClopeLib.Algo
 			return sb.ToString();
 		}
 
+
+
+		public string CurrentOutput() => string.Join("", Clusters.Select(c => c.OutputContent()).ToArray());
+
+
+
+		// IAlgo: Run
 		public void Run()
 		{
-			Transaction.PreciseComparing = true;
+			Transaction4.PreciseComparing = true;
 
 			while (newTrans.Count > 0)
 			{
 				Start();
 			}
 
-			Transaction.PreciseComparing = false;
+			Transaction4.PreciseComparing = false;
 
 			while (needSpecify && stepIndex < maxSteps)
 			{
@@ -136,10 +143,9 @@ namespace ClopeLib.Algo
 
 			RemoveEmptyClusters();
 
-			CurrentStepName = CurrentStepNameDone;
-			OnStepDone();
+			//CurrentStepName = CurrentStepNameDone;
+			//OnStepDone();
 		}
-		#endregion
 
 
 
@@ -156,8 +162,8 @@ namespace ClopeLib.Algo
 				}
 			}
 
-			CurrentStepName = CurrentStepNameInit;
-			OnStepDone();
+			//CurrentStepName = CurrentStepNameInit;
+			//OnStepDone();
 		}
 
 
@@ -170,8 +176,8 @@ namespace ClopeLib.Algo
 			foreach (var t in Transactions)
 				SpecifyCluster(t);
 
-			CurrentStepName = string.Format(CurrentStepNameMask, stepIndex++);
-			OnStepDone();
+			//CurrentStepName = string.Format(CurrentStepNameMask, stepIndex++);
+			//OnStepDone();
 
 			return needSpecify;
 		}
@@ -181,7 +187,7 @@ namespace ClopeLib.Algo
 		#region private: IsUnique, IntermediateOutput, PlaceTransaction, RemoveEmptyClusters, Specifying, Start.
 		bool IsUnique(ITransaction t)
 		{
-			if (test)
+			if (doNotCheckForUniques)
 				return true;
 
 			foreach (var k in keys)
@@ -209,7 +215,7 @@ namespace ClopeLib.Algo
 			}
 
 			if (bestCluster == null)
-				Clusters.Add(bestCluster = new Cluster(repulsion));
+				Clusters.Add(bestCluster = new Cluster4(repulsion));
 
 			bestCluster.Add(t);
 			Transactions.Add(t);
@@ -258,7 +264,7 @@ namespace ClopeLib.Algo
 				// if (bestCluster == null) 	<- shouldn't appear.
 
 				if (bestCluster.IsEmpty)
-					Clusters.Add(new Cluster(Repulsion));
+					Clusters.Add(new Cluster4(Repulsion));
 
 				activeCluster.Remove(t);
 				bestCluster.Add(t);

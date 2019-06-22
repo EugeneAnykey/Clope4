@@ -1,9 +1,9 @@
 ﻿using System;
 using ClopeLib.Helpers;
 
-namespace ClopeLib.Data
+namespace ClopeLib.Data4
 {
-	public class Transaction : ITransaction
+	public class Transaction4 : ITransaction
 	{
 		public static bool PreciseComparing { get; set; }
 		
@@ -17,19 +17,19 @@ namespace ClopeLib.Data
 
 
 		// init
-		static Transaction()
+		static Transaction4()
 		{
 			PreciseComparing = true;
 		}
 
-		public Transaction(string[] items)
+		public Transaction4(string[] items)
 		{
 			Items = items ?? throw new NullReferenceException();
 			Links = null;
 			hashCode = MakeHashCode();
 		}
 
-		public Transaction(int[] links)
+		public Transaction4(int[] links)
 		{
 			Items = null;
 			Links = links ?? throw new NullReferenceException();

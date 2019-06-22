@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using ClopeLib;
 using ClopeLib.Algo;
 using ClopeLib.Data;
 using ClopeLib.Parcers;

@@ -1,4 +1,4 @@
-﻿namespace ClopeLib.Algo
+﻿namespace ClopeLib
 {
 	public interface IAlgo
 	{
