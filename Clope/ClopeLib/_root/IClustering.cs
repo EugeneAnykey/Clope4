@@ -2,12 +2,12 @@
 {
 	public interface IClustering : IAlgo
 	{
-		// field
+		// property
 		float Repulsion { get; set; }
 
 
 
-		// method
+		// methods
 		void Clear();
 
 		void AddNewTransactions(ITransaction[] newTransactions);

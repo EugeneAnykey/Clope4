@@ -123,7 +123,7 @@ namespace ClopeLib.Algo4
 
 
 
-		public string CurrentOutput() => string.Join("", Clusters.Select(c => c.OutputContent()).ToArray());
+		public string CurrentOutput() => string.Join("", Clusters.Select(c => c as IPreviewable).Select(view => view.MakePreview()).ToArray());
 
 
 

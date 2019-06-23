@@ -7,7 +7,7 @@ using ClopeLib.Helpers;
 
 namespace ClopeLib.Data4
 {
-	public class Cluster4 : ICluster
+	public class Cluster4 : ICluster, IPreviewable
 	{
 		// static
 		static int lastId = 1;
@@ -23,11 +23,13 @@ namespace ClopeLib.Data4
 			get { return hash.Count; }
 		}
 
-		int square;
-		public int Square
-		{
-			get { return square; }
-		}
+		//int area;
+		//public int Area
+		//{
+		//	get { return area; }
+		//}
+
+		public int Area { get; private set; }
 
 		public int TransactionsCount
 		{   // C.N
@@ -66,12 +68,12 @@ namespace ClopeLib.Data4
 		/// <summary>
 		/// Calculates cluster's current cost after add/remove the transaction.
 		/// </summary>
-		void RecalcCurrentCost() => currentCost = Square * TransactionsCount / Math.Pow(Width, Repulsion);
+		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / Math.Pow(Width, Repulsion);
 
 
 
 		// GetSquare
-		int GetSquare() => hash.Select(e => e.Value).Sum();
+		int GetArea() => hash.Select(e => e.Value).Sum();
 
 
 
@@ -124,20 +126,20 @@ namespace ClopeLib.Data4
 
 		void AddItems(ITransaction t)
 		{
-			foreach (string s in t.Items)
-				if (s != null)
-					ChangeObjectCount(s, 1);
+			foreach (var index in t.Links)
+				//if (s != null)
+				//	ChangeObjectCount(s, 1);
 
-			square = GetSquare();
+			Area = GetArea();
 		}
 
 		void RemoveItems(ITransaction t)
 		{
-			foreach (string s in t.Items)
-				if (s != null)
-					ChangeObjectCount(s, -1);
+			foreach (var index in t.Links)
+				//if (s != null)
+				//	ChangeObjectCount(s, -1);
 
-			square = GetSquare();
+			Area = GetArea();
 		}
 		#endregion
 
@@ -163,30 +165,33 @@ namespace ClopeLib.Data4
 		{
 			// res = Snew+ * (TransCount + 1) / Power(newWidth, repulsion) - currentCost.
 			var NewWidth = Width;
-			foreach (string s in t.Items)
-				if (Occurrence(s) == 0)
-					NewWidth++;
+			foreach (var i in t.Links)
+				;
+				//if (Occurrence(s) == 0)
+				//	NewWidth++;
 
-			return (Square + t.Length) * (TransactionsCount + 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
+			return (Area + t.Length) * (TransactionsCount + 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
 		}
 
 		public double RemoveCost(ITransaction t)
 		{
 			// res = Snew- * (TransCount - 1) / Power(newWidth, repulsion) - currentCost.
 			var NewWidth = Width;
-			foreach (string s in t.Items)
-				if (Occurrence(s) == 1)
-					NewWidth--;
+			foreach (var i in t.Links)
+				;
+				//if (Occurrence(s) == 1)
+				//	NewWidth--;
 
-			return (Square - t.Length) * (TransactionsCount - 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
+			return (Area - t.Length) * (TransactionsCount - 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
 		}
 		#endregion
 
 
 
 		#region public: MakeOutput.
-		public string OutputContent()
+		public string MakePreview()
 		{
+			const string separator = ", ";
 			const string startMsg = " <* Cluster <{0}>:\r\n";
 			const string mask = "\t{0}\r\n";
 			const string endMsg = " *>\r\n";
@@ -196,8 +201,10 @@ namespace ClopeLib.Data4
 
 			ss.AppendFormat(startMsg, name);
 
-			foreach (var t in trans)
-				ss.AppendFormat(mask, ConvertHelper.ConvertToString(t.Items, ", "));
+			ss.AppendFormat(mask, string.Join(separator, trans));
+
+			//foreach (var t in trans)
+			//	ss.AppendFormat(mask, ConvertHelper.ConvertToString(t.Items, separator));
 
 			ss.AppendFormat(endMsg, name);
 

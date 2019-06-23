@@ -23,7 +23,7 @@ namespace ClopeLib
 		/// <summary>
 		/// All objects.
 		/// </summary>
-		int Square { get; }
+		int Area { get; }
 
 		/// <summary>
 		/// Unique transactions count.
@@ -67,11 +67,5 @@ namespace ClopeLib
 		/// <param name="s">input object</param>
 		/// <returns>times that object appears</returns>
 		int Occurrence(string s);
-
-		/// <summary>
-		/// Makes output
-		/// </summary>
-		/// <returns>cluster contents</returns>
-		string OutputContent();
 	}
 }
