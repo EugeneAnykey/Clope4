@@ -7,10 +7,9 @@ namespace ClopeLib.Data4
 	{
 		public static bool PreciseComparing { get; set; }
 		
-		public string[] Items { get; }
 		public int[] Links { get; }
 
-		public int Length { get { return Items.Length; } }
+		public int Length { get { return Links.Length; } }
 
 		readonly int hashCode = 0;
 
@@ -22,16 +21,8 @@ namespace ClopeLib.Data4
 			PreciseComparing = true;
 		}
 
-		public Transaction4(string[] items)
-		{
-			Items = items ?? throw new NullReferenceException();
-			Links = null;
-			hashCode = MakeHashCode();
-		}
-
 		public Transaction4(int[] links)
 		{
-			Items = null;
 			Links = links ?? throw new NullReferenceException();
 			hashCode = MakeHashCode();
 		}
@@ -51,28 +42,14 @@ namespace ClopeLib.Data4
 				t != null && hashCode == t.GetHashCode();
 		}
 
-		bool Equ(ITransaction t) => Items == null ? ArrayHelper.Equals(Links, t.Links) : ArrayHelper.Equals(Items, t.Items);
+		bool Equ(ITransaction t) => ArrayHelper.Equals(Links, t.Links);
 
 
 
 		// HashCode
 		public override int GetHashCode() => hashCode;
 
-		int MakeHashCode() => Items == null ? HashCodeForLinks() : HashCodeForItems();
-
-		int HashCodeForItems()
-		{
-			const int seed = 0xad7f;
-
-			int hash = 0;
-
-			for (int i = 0; i < Items.Length; i++)
-			{
-				unchecked { hash += seed * ((i + 1) * (Items[i] != null ? Items[i].GetHashCode() : 1)); }
-			}
-
-			return hash;
-		}
+		int MakeHashCode() => HashCodeForLinks();
 
 		int HashCodeForLinks()
 		{

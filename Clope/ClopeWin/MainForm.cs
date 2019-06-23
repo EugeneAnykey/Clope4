@@ -23,13 +23,14 @@ namespace ClopeWin
 			logger = new FormsLogger(richTextBoxLogger, new FileLogger("clope.log.txt"));
 			tabControl1.SelectedIndex = 1;
 
-			clope = new Clope();
+			//clope = new Clope();
+			clope = null;
 			clope4 = new Clope4();
 
 			// events:
 			buttonClopeRun.Click += (_, __) => RunClope();
 			listBoxResults.SelectedIndexChanged += (_, __) => ShowInfo();
-			clope.StepDone += (_, __) => StepDone();
+			//clope.StepDone += (_, __) => StepDone();
 		}
 
 

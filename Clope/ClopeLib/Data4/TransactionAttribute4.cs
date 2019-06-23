@@ -17,5 +17,7 @@
 			Index = index;
 			Name = name;
 		}
+
+		public bool Equals(IAttribute other) => Index == other.Index && Name == other.Name;
 	}
 }

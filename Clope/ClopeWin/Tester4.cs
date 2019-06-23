@@ -19,6 +19,7 @@ namespace ClopeWin
 
 
 		// field
+		IAttributeStore attributeStore = new AttributeStoreAtList();
 		Clope4 clope;
 		DataSetupSettings settings;
 		Nullabier nullabier;
@@ -113,7 +114,11 @@ namespace ClopeWin
 					var items = parcer.Parce(possibleTransaction);
 					nullabier?.MaybePlaceNull(ref items);
 					// TODO is here! new Transaction(line) !!!
-					tempTrans.Add(new Transaction4(items));
+
+					var links = attributeStore.GetIndices(items);
+
+					//tempTrans.Add(new Transaction4(items));
+					tempTrans.Add(new Transaction4(links));
 				}
 
 				clope.AddNewTransactions(tempTrans.ToArray());

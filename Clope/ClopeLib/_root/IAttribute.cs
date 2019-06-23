@@ -1,6 +1,8 @@
-﻿namespace ClopeLib
+﻿using System;
+
+namespace ClopeLib
 {
-	public interface IAttribute
+	public interface IAttribute : IEquatable<IAttribute>
 	{
 		int Id { get; }
 		int Index { get; }

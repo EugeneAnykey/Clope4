@@ -60,7 +60,7 @@ namespace ClopeLib.Algo4
 		Dictionary<ITransaction, ICluster> keys;
 		readonly bool doNotCheckForUniques;
 
-		readonly AttributeStore store = new AttributeStore();
+		readonly AttributeStoreAtList store = new AttributeStoreAtList();
 
 
 
@@ -79,7 +79,7 @@ namespace ClopeLib.Algo4
 
 
 
-		// IClustering: AddNewTransactions, Clear
+		// IClustering: AddNewTransactions
 		public void AddNewTransactions(ITransaction[] newTransactions)
 		{
 			foreach (var t in newTransactions)
@@ -88,6 +88,9 @@ namespace ClopeLib.Algo4
 			}
 		}
 
+
+
+		// IClustering: Clear
 		public void Clear()
 		{
 			Clusters.Clear();
@@ -127,6 +130,8 @@ namespace ClopeLib.Algo4
 		// IAlgo: Run
 		public void Run()
 		{
+			bool onlyStart = true;
+
 			Transaction4.PreciseComparing = true;
 
 			while (newTrans.Count > 0)
@@ -135,6 +140,9 @@ namespace ClopeLib.Algo4
 			}
 
 			Transaction4.PreciseComparing = false;
+
+			if (onlyStart)
+				return;
 
 			while (needSpecify && stepIndex < maxSteps)
 			{
