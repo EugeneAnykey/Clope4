@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ClopeLib.Data4;
+using ClopeLib.Helpers;
 using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeLib.Algo4
@@ -30,25 +31,15 @@ namespace ClopeLib.Algo4
 			get { return repulsion; }
 			set
 			{
-				const float eps = 0.000001f;
-				value = value >= 1 ? value : 1;
-				needSpecify |= Math.Abs(repulsion - value) < eps;
-				repulsion = value;
+				needSpecify |= Utils.SetValue(ref repulsion, value, 1, 5);
+				//const float eps = 0.000001f;
+				//value = value >= 1 ? value : 1;
+				//needSpecify |= Math.Abs(repulsion - value) < eps;
+				//repulsion = value;
 			}
 		}
 
-		bool SetValue(ref float where, float val, float min, float max)
-		{
-			const float eps = 0.000001f;
 
-			var res = false;
-
-			val = val < min ? min : max < val ? max : val;
-			res = Math.Abs(where - val) < eps;
-			where = val;
-			return res;
-			//repulsion = value;
-		}
 
 		bool needSpecify;
 

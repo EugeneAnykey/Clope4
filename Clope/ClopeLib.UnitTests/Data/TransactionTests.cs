@@ -1,7 +1,10 @@
-﻿using System;
+﻿#define DEL
+
+#if !DEL
+
+using System;
 using NUnit.Framework;
 
-using ClopeLib.Data;
 using System.Collections.Generic;
 
 namespace ClopeLib.UnitTests.Data
@@ -100,3 +103,4 @@ namespace ClopeLib.UnitTests.Data
 		}
 	}
 }
+#endif

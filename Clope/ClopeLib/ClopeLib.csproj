@@ -55,6 +55,7 @@
     <Compile Include="Algo4\AttributeStoreAtDic.cs" />
     <Compile Include="Data4\Cluster4.cs" />
     <Compile Include="Data4\Transaction4.cs" />
+    <Compile Include="Helpers\Utils.cs" />
     <Compile Include="_root\EmptyArrayException.cs" />
     <Compile Include="_root\IPreviewable.cs" />
     <Compile Include="_root\IAttributeStore.cs" />
