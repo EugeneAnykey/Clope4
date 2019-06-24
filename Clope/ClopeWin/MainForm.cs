@@ -33,10 +33,10 @@ namespace ClopeWin
 		{
 			listBoxResults.Items.Clear();
 			richTextBox1.Clear();
-			clope4.Clear();
 
 			if (clope4 != null)
 			{
+				clope4.Clear();
 				var tester4 = new Tester4(clope4, dataSetupControl1.Settings, logger);
 				tester4.Run();
 				richTextBox1.AppendText(tester4.MakeResults());

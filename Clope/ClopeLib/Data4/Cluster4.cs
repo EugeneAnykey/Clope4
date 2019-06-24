@@ -52,6 +52,7 @@ namespace ClopeLib.Data4
 		public List<ITransaction> Transactions { get { return trans; } }
 
 		readonly Dictionary<string, int> hash = new Dictionary<string, int>();  // unique items (currently - strings) with occurence count.
+		readonly Dictionary<int, int> linksCounts = new Dictionary<int, int>();  // unique items (currently - int links) with occurence count.
 
 
 
@@ -127,8 +128,9 @@ namespace ClopeLib.Data4
 		void AddItems(ITransaction t)
 		{
 			foreach (var index in t.Links)
-				//if (s != null)
-				//	ChangeObjectCount(s, 1);
+				ChangeObjectCount(index, 1);
+			//if (s != null)
+			//	ChangeObjectCount(s, 1);
 
 			Area = GetArea();
 		}
@@ -136,6 +138,7 @@ namespace ClopeLib.Data4
 		void RemoveItems(ITransaction t)
 		{
 			foreach (var index in t.Links)
+				ChangeObjectCount(index, -1);
 				//if (s != null)
 				//	ChangeObjectCount(s, -1);
 
@@ -155,6 +158,17 @@ namespace ClopeLib.Data4
 				hash[s] += by;
 			else
 				hash.Add(s, by);
+		}
+
+		internal void ChangeObjectCount(int index, int by)
+		{
+			if (index < 0)
+				return;
+
+			if (linksCounts.ContainsKey(index))
+				linksCounts[index] += by;
+			else
+				linksCounts.Add(index, by);
 		}
 		#endregion
 

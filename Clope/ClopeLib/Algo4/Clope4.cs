@@ -183,7 +183,12 @@ namespace ClopeLib.Algo4
 
 
 
-		#region private: IsUnique, IntermediateOutput, PlaceTransaction, RemoveEmptyClusters, Specifying, Start.
+		// private: RemoveEmptyClusters
+		void RemoveEmptyClusters() => Clusters = (from c in Clusters where !c.IsEmpty select c).ToList();
+
+
+
+		#region private: IsUnique, IntermediateOutput, PlaceTransaction, Specifying, Start.
 		bool IsUnique(ITransaction t)
 		{
 			if (doNotCheckForUniques)
@@ -196,6 +201,8 @@ namespace ClopeLib.Algo4
 			}
 			return true;
 		}
+
+
 
 		void PlaceTransactionIntoCluster(ITransaction t)
 		{
@@ -219,16 +226,6 @@ namespace ClopeLib.Algo4
 			bestCluster.Add(t);
 			Transactions.Add(t);
 			keys.Add(t, bestCluster);
-		}
-
-		void RemoveEmptyClusters()
-		{
-			int i = 0;
-			while (Clusters.Count > 0 && Clusters.Count > i)
-				if (Clusters[i].IsEmpty)
-					Clusters.RemoveAt(i);
-				else
-					i++;
 		}
 
 
