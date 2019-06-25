@@ -5,6 +5,7 @@ using ClopeLib;
 using ClopeLib.Algo4;
 using ClopeLib.Data4;
 using ClopeLib.Parcers;
+using ClopeLib.Previews;
 using ClopeLib.Readers;
 using EugeneAnykey.DebugLib.Loggers;
 
@@ -138,14 +139,13 @@ namespace ClopeWin
 		{
 			LoggerAndWatchStart("Results");
 
-			//var preview = new Previewer(clope.Transactions, clope.Clusters);
-			//preview.PrepareView(column);
+			var preview = new Previewer4(clope.Transactions, clope.Clusters, attributeStore);
+			preview.MakePreview(column);
 
 			LoggerAndWatchEnd("Results");
 			logger.WriteDated("End");
 
-			//return preview.Output();
-			return string.Empty;
+			return preview.GetOutput();
 		}
 	}
 }

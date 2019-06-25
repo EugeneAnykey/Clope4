@@ -114,7 +114,7 @@ namespace ClopeLib.Algo4
 		// IAlgo: Run
 		public void Run()
 		{
-			bool onlyStart = true;
+			bool onlyStart = false;
 
 			Transaction4.PreciseComparing = true;
 
@@ -131,6 +131,7 @@ namespace ClopeLib.Algo4
 			while (needSpecify && stepIndex < maxSteps)
 			{
 				Specify();
+				stepIndex++;
 			}
 
 			RemoveEmptyClusters();
@@ -182,7 +183,7 @@ namespace ClopeLib.Algo4
 
 
 		#region private: IsUnique, IntermediateOutput, PlaceTransaction, Specifying, Start.
-		bool IsUnique(ITransaction t) => keys.ContainsKey(t);
+		bool IsUnique(ITransaction t) => !keys.ContainsKey(t);
 
 
 

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ClopeLib.Data4;
 
 namespace ClopeLib.Algo4
 {
 	public class AttributeStoreAtList : IAttributeStore
 	{
+		static int LastId = 0;
+
 		// fields
 		readonly List<IAttribute> attributes = new List<IAttribute>();
 
@@ -22,10 +25,9 @@ namespace ClopeLib.Algo4
 		int PlaceAttributeAtList(IAttribute at)
 		{
 			if (!attributes.Contains(at))
+			{
 				attributes.Add(at);
-
-			//if (attributes.Any(a => a.Index == at.Index && a.Name == at.Name))
-			//	;
+			}
 
 			return attributes.IndexOf(at);
 		}
@@ -45,11 +47,16 @@ namespace ClopeLib.Algo4
 
 			for (int i = 0; i < items.Length; i++)
 			{
-				IAttribute at = new TransactionAttribute4(0, i, items[i]);
+				IAttribute at = new TransactionAttribute4(LastId++, i, items[i]);
 				res[i] = PlaceAttribute(at);
 			}
 
 			return res;
 		}
+
+
+
+		// GetAttributes
+		public IAttribute[] GetAttributes(int index) => (from a in attributes where a.Index == index select a).ToArray();
 	}
 }

@@ -56,6 +56,7 @@
     <Compile Include="Data4\Cluster4.cs" />
     <Compile Include="Data4\Transaction4.cs" />
     <Compile Include="Helpers\Utils.cs" />
+    <Compile Include="Previews\Previewer4.cs" />
     <Compile Include="_root\EmptyArrayException.cs" />
     <Compile Include="_root\IPreviewable.cs" />
     <Compile Include="_root\IAttributeStore.cs" />

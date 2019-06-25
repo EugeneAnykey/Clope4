@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-using ClopeLib.Helpers;
 using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeLib.Data4
@@ -24,18 +22,13 @@ namespace ClopeLib.Data4
 
 		public int Id { get; }
 
-		public int Width { get => linksCounts.Count; }
-
-		//int area;
-		//public int Area
-		//{
-		//	get { return area; }
-		//}
+		public int Width { get => linksCounts1.Count; }
 
 		public int Area { get; private set; }
 
 		public int TransactionsCount
-		{   // C.N
+		{
+			// C.N
 			get { return trans.Count; }
 		}
 
@@ -55,7 +48,7 @@ namespace ClopeLib.Data4
 		public List<ITransaction> Transactions { get { return trans; } }
 
 		//readonly Dictionary<string, int> hash = new Dictionary<string, int>();  // unique items (currently - strings) with occurence count.
-		readonly Dictionary<int, int> linksCounts = new Dictionary<int, int>();  // unique items (currently - int links) with occurence count.
+		readonly Dictionary<int, int> linksCounts1 = new Dictionary<int, int>();  // unique items (currently - int links) with occurence count.
 
 
 
@@ -78,11 +71,11 @@ namespace ClopeLib.Data4
 
 		// GetSquare
 		//int GetArea() => hash.Select(e => e.Value).Sum();
-		int GetArea() => linksCounts.Select(pair => pair.Value).Sum();
+		int GetArea() => linksCounts1.Select(pair => pair.Value).Sum();
 
 
 
-		#region interfaced
+		#region ICluster
 		public void Add(ITransaction t)
 		{
 			AddTransaction(t);
@@ -90,16 +83,16 @@ namespace ClopeLib.Data4
 			RecalcCurrentCost();
 		}
 
-		public int Occurrence(int index)
+		public int Occurrence(int id)
 		{
-			if (index < 0)
+			if (id < 0)
 				return 0;
 
 			int val = 0;
 
-			if (linksCounts.ContainsKey(index))
+			if (linksCounts1.ContainsKey(id))
 			{
-				linksCounts.TryGetValue(index, out val);
+				linksCounts1.TryGetValue(id, out val);
 			}
 
 			return val;
@@ -161,15 +154,15 @@ namespace ClopeLib.Data4
 
 
 		// private: ChangeObjectCount.
-		internal void ChangeObjectCount(int index, int by)
+		internal void ChangeObjectCount(int id, int by)
 		{
-			if (index < 0)
+			if (id < 0)
 				return;
 
-			if (linksCounts.ContainsKey(index))
-				linksCounts[index] += by;
+			if (linksCounts1.ContainsKey(id))
+				linksCounts1[id] += by;
 			else
-				linksCounts.Add(index, by);
+				linksCounts1.Add(id, by);
 		}
 
 
@@ -200,28 +193,25 @@ namespace ClopeLib.Data4
 
 
 
-		#region public: MakeOutput.
+		// IPreviewable:
 		public string MakePreview()
 		{
 			const string separator = ", ";
-			const string startMsg = " <* Cluster <{0}>:\r\n";
+			const string startMsg = " *** Cluster <{0}>:\r\n";
 			const string mask = "\t{0}\r\n";
-			const string endMsg = " *>\r\n";
 			string name = Id.ToString();
 
 			var ss = new StringBuilder();
 
 			ss.AppendFormat(startMsg, name);
-
 			ss.AppendFormat(mask, string.Join(separator, trans));
-
-			//foreach (var t in trans)
-			//	ss.AppendFormat(mask, ConvertHelper.ConvertToString(t.Items, separator));
-
-			ss.AppendFormat(endMsg, name);
+			ss.AppendLine();
 
 			return ss.ToString();
 		}
-		#endregion
+
+
+
+		public int GetCount(int id) => linksCounts1.ContainsKey(id) ? linksCounts1[id] : 0;
 	}
 }

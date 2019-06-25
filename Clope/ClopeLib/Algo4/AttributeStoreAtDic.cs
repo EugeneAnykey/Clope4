@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ClopeLib.Data4;
 
 namespace ClopeLib.Algo4
@@ -54,5 +55,10 @@ namespace ClopeLib.Algo4
 
 			return res;
 		}
+
+
+
+		// GetAttributes
+		public IAttribute[] GetAttributes(int index) => (from a in Dic where a.Key.Index == index select a.Key).ToArray();
 	}
 }

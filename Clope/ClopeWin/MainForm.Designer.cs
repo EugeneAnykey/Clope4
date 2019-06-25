@@ -17,7 +17,7 @@ namespace ClopeWin
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPage1;
 		private System.Windows.Forms.RichTextBox richTextBox1;
-		private System.Windows.Forms.TabPage tabPage2;
+		private System.Windows.Forms.TabPage tabPage2Output;
 		private System.Windows.Forms.GroupBox groupBoxResults;
 		private System.Windows.Forms.ListBox listBoxResults;
 		private System.Windows.Forms.SplitContainer splitContainer2;
@@ -56,11 +56,11 @@ namespace ClopeWin
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.tabPage2Output = new System.Windows.Forms.TabPage();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.richTextBoxOutput = new System.Windows.Forms.RichTextBox();
 			this.richTextBoxInfo = new System.Windows.Forms.RichTextBox();
-			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.tabPage3Logger = new System.Windows.Forms.TabPage();
 			this.richTextBoxLogger = new System.Windows.Forms.RichTextBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -72,12 +72,12 @@ namespace ClopeWin
 			this.groupBoxSettings.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			this.tabPage2.SuspendLayout();
+			this.tabPage2Output.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
-			this.tabPage3.SuspendLayout();
+			this.tabPage3Logger.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -178,8 +178,8 @@ namespace ClopeWin
 			// tabControl1
 			// 
 			this.tabControl1.Controls.Add(this.tabPage1);
-			this.tabControl1.Controls.Add(this.tabPage2);
-			this.tabControl1.Controls.Add(this.tabPage3);
+			this.tabControl1.Controls.Add(this.tabPage2Output);
+			this.tabControl1.Controls.Add(this.tabPage3Logger);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
@@ -207,16 +207,16 @@ namespace ClopeWin
 			this.richTextBox1.TabIndex = 1;
 			this.richTextBox1.Text = "";
 			// 
-			// tabPage2
+			// tabPage2Output
 			// 
-			this.tabPage2.Controls.Add(this.splitContainer2);
-			this.tabPage2.Location = new System.Drawing.Point(4, 22);
-			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(615, 582);
-			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "tabPage2";
-			this.tabPage2.UseVisualStyleBackColor = true;
+			this.tabPage2Output.Controls.Add(this.splitContainer2);
+			this.tabPage2Output.Location = new System.Drawing.Point(4, 22);
+			this.tabPage2Output.Name = "tabPage2Output";
+			this.tabPage2Output.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage2Output.Size = new System.Drawing.Size(615, 582);
+			this.tabPage2Output.TabIndex = 1;
+			this.tabPage2Output.Text = "Output";
+			this.tabPage2Output.UseVisualStyleBackColor = true;
 			// 
 			// splitContainer2
 			// 
@@ -253,16 +253,16 @@ namespace ClopeWin
 			this.richTextBoxInfo.TabIndex = 0;
 			this.richTextBoxInfo.Text = "";
 			// 
-			// tabPage3
+			// tabPage3Logger
 			// 
-			this.tabPage3.Controls.Add(this.richTextBoxLogger);
-			this.tabPage3.Location = new System.Drawing.Point(4, 22);
-			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage3.Size = new System.Drawing.Size(615, 582);
-			this.tabPage3.TabIndex = 2;
-			this.tabPage3.Text = "tabPage3";
-			this.tabPage3.UseVisualStyleBackColor = true;
+			this.tabPage3Logger.Controls.Add(this.richTextBoxLogger);
+			this.tabPage3Logger.Location = new System.Drawing.Point(4, 22);
+			this.tabPage3Logger.Name = "tabPage3Logger";
+			this.tabPage3Logger.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage3Logger.Size = new System.Drawing.Size(615, 582);
+			this.tabPage3Logger.TabIndex = 2;
+			this.tabPage3Logger.Text = "Logger";
+			this.tabPage3Logger.UseVisualStyleBackColor = true;
 			// 
 			// richTextBoxLogger
 			// 
@@ -294,19 +294,19 @@ namespace ClopeWin
 			this.groupBoxSettings.ResumeLayout(false);
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
-			this.tabPage2.ResumeLayout(false);
+			this.tabPage2Output.ResumeLayout(false);
 			this.splitContainer2.Panel1.ResumeLayout(false);
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
 			this.splitContainer2.ResumeLayout(false);
-			this.tabPage3.ResumeLayout(false);
+			this.tabPage3Logger.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 		private System.Windows.Forms.GroupBox groupBoxControl;
 		private System.Windows.Forms.Button buttonClopeRun;
 		private DataSetupControl dataSetupControl1;
-		private System.Windows.Forms.TabPage tabPage3;
+		private System.Windows.Forms.TabPage tabPage3Logger;
 		private System.Windows.Forms.RichTextBox richTextBoxLogger;
 	}
 }
