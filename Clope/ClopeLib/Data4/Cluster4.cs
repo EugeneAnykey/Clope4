@@ -4,11 +4,17 @@ using System.Linq;
 using System.Text;
 
 using ClopeLib.Helpers;
+using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeLib.Data4
 {
 	public class Cluster4 : ICluster, IPreviewable
 	{
+		static readonly ILogger log = new FileLogger("cluster.log.txt");
+
+		static int UnexpectedOnAdd = 0;
+		static int UnexpectedOnRemove = 0;
+
 		// static
 		static int lastId = 1;
 		public static void ResetId()
@@ -18,10 +24,7 @@ namespace ClopeLib.Data4
 
 		public int Id { get; }
 
-		public int Width
-		{
-			get { return hash.Count; }
-		}
+		public int Width { get => linksCounts.Count; }
 
 		//int area;
 		//public int Area
@@ -51,7 +54,7 @@ namespace ClopeLib.Data4
 		readonly List<ITransaction> trans = new List<ITransaction>();
 		public List<ITransaction> Transactions { get { return trans; } }
 
-		readonly Dictionary<string, int> hash = new Dictionary<string, int>();  // unique items (currently - strings) with occurence count.
+		//readonly Dictionary<string, int> hash = new Dictionary<string, int>();  // unique items (currently - strings) with occurence count.
 		readonly Dictionary<int, int> linksCounts = new Dictionary<int, int>();  // unique items (currently - int links) with occurence count.
 
 
@@ -74,7 +77,8 @@ namespace ClopeLib.Data4
 
 
 		// GetSquare
-		int GetArea() => hash.Select(e => e.Value).Sum();
+		//int GetArea() => hash.Select(e => e.Value).Sum();
+		int GetArea() => linksCounts.Select(pair => pair.Value).Sum();
 
 
 
@@ -86,16 +90,16 @@ namespace ClopeLib.Data4
 			RecalcCurrentCost();
 		}
 
-		public int Occurrence(string s)
+		public int Occurrence(int index)
 		{
-			if (s == null)
+			if (index < 0)
 				return 0;
 
 			int val = 0;
 
-			if (hash.ContainsKey(s))
+			if (linksCounts.ContainsKey(index))
 			{
-				hash.TryGetValue(s, out val);
+				linksCounts.TryGetValue(index, out val);
 			}
 
 			return val;
@@ -115,22 +119,32 @@ namespace ClopeLib.Data4
 		void AddTransaction(ITransaction t)
 		{
 			if (!trans.Contains(t))
+			{
 				trans.Add(t);
-			// else <-- this is currently not possible. Equal transactions are not allowed.
+			}
+			else
+			{
+				// else <-- this is currently not possible. Equal transactions are not allowed.
+				log.Write($"add unexpected {++UnexpectedOnAdd}");
+			}
 		}
 
 		void RemoveTransaction(ITransaction t)
 		{
 			if (trans.Contains(t))
+			{
 				trans.Remove(t);
+			}
+			else
+			{
+				log.Write($"remove unexpected {++UnexpectedOnRemove}");
+			}
 		}
 
 		void AddItems(ITransaction t)
 		{
 			foreach (var index in t.Links)
 				ChangeObjectCount(index, 1);
-			//if (s != null)
-			//	ChangeObjectCount(s, 1);
 
 			Area = GetArea();
 		}
@@ -139,8 +153,6 @@ namespace ClopeLib.Data4
 		{
 			foreach (var index in t.Links)
 				ChangeObjectCount(index, -1);
-				//if (s != null)
-				//	ChangeObjectCount(s, -1);
 
 			Area = GetArea();
 		}
@@ -148,18 +160,7 @@ namespace ClopeLib.Data4
 
 
 
-		#region private: ChangeObjectCount.
-		internal void ChangeObjectCount(string s, int by)
-		{
-			if (s == null)
-				return;
-
-			if (hash.ContainsKey(s))
-				hash[s] += by;
-			else
-				hash.Add(s, by);
-		}
-
+		// private: ChangeObjectCount.
 		internal void ChangeObjectCount(int index, int by)
 		{
 			if (index < 0)
@@ -170,7 +171,6 @@ namespace ClopeLib.Data4
 			else
 				linksCounts.Add(index, by);
 		}
-		#endregion
 
 
 
@@ -180,9 +180,8 @@ namespace ClopeLib.Data4
 			// res = Snew+ * (TransCount + 1) / Power(newWidth, repulsion) - currentCost.
 			var NewWidth = Width;
 			foreach (var i in t.Links)
-				;
-				//if (Occurrence(s) == 0)
-				//	NewWidth++;
+				if (Occurrence(i) == 0)
+					NewWidth++;
 
 			return (Area + t.Length) * (TransactionsCount + 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
 		}
@@ -192,9 +191,8 @@ namespace ClopeLib.Data4
 			// res = Snew- * (TransCount - 1) / Power(newWidth, repulsion) - currentCost.
 			var NewWidth = Width;
 			foreach (var i in t.Links)
-				;
-				//if (Occurrence(s) == 1)
-				//	NewWidth--;
+				if (Occurrence(i) == 1)
+					NewWidth--;
 
 			return (Area - t.Length) * (TransactionsCount - 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
 		}

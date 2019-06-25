@@ -10,7 +10,7 @@ namespace ClopeLib.UnitTests.Helpers
 	{
 		// Equals
 		[Test]
-		public void SetValue_DifferentValue_IsTrue()
+		public void TrySetValue_DifferentValue_IsTrue()
 		{
 			const float min = 1.0f;
 			const float max = 5.0f;
@@ -18,7 +18,7 @@ namespace ClopeLib.UnitTests.Helpers
 			var current = 3.0f;
 			var newValue = 4.0f;
 
-			var changed = Utils.SetValue(ref current, newValue, min, max);
+			var changed = Utils.TrySetValue(ref current, newValue, min, max);
 
 			Assert.AreEqual(
 				newValue,
@@ -34,18 +34,34 @@ namespace ClopeLib.UnitTests.Helpers
 		[TestCase(5.0f, 3.0f)]
 		[TestCase(1.499f, 1.501f)]
 		[TestCase(4.999f, 5.0f)]
-		public void Equals_MiscStrings_IsTrue(float current, float newValue)
+		public void TrySetValue_DifferentValues_IsTrue(float current, float newValue)
 		{
 			const float min = 1.0f;
 			const float max = 5.0f;
 
-			var changed = Utils.SetValue(ref current, newValue, min, max);
+			var changed = Utils.TrySetValue(ref current, newValue, min, max);
 
 			Assert.AreEqual(
 				newValue,
 				current
 			);
 			Assert.IsTrue(changed);
+		}
+
+
+
+		[TestCase(1.0f, 1.000000001f)]
+		[TestCase(5.0f, 4.999999999f)]
+		[TestCase(1.499f, 1.499f)]
+		[TestCase(4.999f, 4.999f)]
+		public void TrySetValue_EqualValues_IsFalse(float current, float newValue)
+		{
+			const float min = 1.0f;
+			const float max = 5.0f;
+
+			var changed = Utils.TrySetValue(ref current, newValue, min, max);
+
+			Assert.IsFalse(changed);
 		}
 	}
 }

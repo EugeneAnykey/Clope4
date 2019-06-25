@@ -95,6 +95,7 @@ namespace ClopeWin
 
 			reader.GetData(settings.SelectedDelimitedFile.FirstLinesToSkip);
 			clope.Repulsion = settings.ClopeRepulsion;
+			logger.Write("------\n");
 		}
 
 
@@ -112,12 +113,7 @@ namespace ClopeWin
 				{
 					var items = parcer.Parce(possibleTransaction);
 					nullabier?.MaybePlaceNull(ref items);
-					// TODO is here! new Transaction(line) !!!
-
-					var links = attributeStore.GetIndices(items);
-
-					//tempTrans.Add(new Transaction4(items));
-					tempTrans.Add(new Transaction4(links));
+					tempTrans.Add(new Transaction4(attributeStore.GetIndices(items)));
 				}
 
 				clope.AddNewTransactions(tempTrans.ToArray());
@@ -140,13 +136,13 @@ namespace ClopeWin
 		// reports
 		public string MakeResults(int column = 0)
 		{
-			//LoggerAndWatchStart("Results");
+			LoggerAndWatchStart("Results");
 
 			//var preview = new Previewer(clope.Transactions, clope.Clusters);
 			//preview.PrepareView(column);
 
-			//LoggerAndWatchEnd("Results");
-			//logger.WriteDated("End");
+			LoggerAndWatchEnd("Results");
+			logger.WriteDated("End");
 
 			//return preview.Output();
 			return string.Empty;

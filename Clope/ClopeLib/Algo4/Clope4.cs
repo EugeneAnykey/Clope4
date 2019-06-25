@@ -29,14 +29,7 @@ namespace ClopeLib.Algo4
 		public float Repulsion
 		{
 			get { return repulsion; }
-			set
-			{
-				needSpecify |= Utils.SetValue(ref repulsion, value, 1, 5);
-				//const float eps = 0.000001f;
-				//value = value >= 1 ? value : 1;
-				//needSpecify |= Math.Abs(repulsion - value) < eps;
-				//repulsion = value;
-			}
+			set { needSpecify |= Utils.TrySetValue(ref repulsion, value, 1, 5); }
 		}
 
 
@@ -189,18 +182,7 @@ namespace ClopeLib.Algo4
 
 
 		#region private: IsUnique, IntermediateOutput, PlaceTransaction, Specifying, Start.
-		bool IsUnique(ITransaction t)
-		{
-			if (doNotCheckForUniques)
-				return true;
-
-			foreach (var k in keys)
-			{
-				if (t.Equals(k.Key))
-					return false;
-			}
-			return true;
-		}
+		bool IsUnique(ITransaction t) => keys.ContainsKey(t);
 
 
 

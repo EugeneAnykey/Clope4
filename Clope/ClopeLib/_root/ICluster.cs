@@ -66,6 +66,6 @@ namespace ClopeLib
 		/// </summary>
 		/// <param name="s">input object</param>
 		/// <returns>times that object appears</returns>
-		int Occurrence(string s);
+		int Occurrence(int i);
 	}
 }
