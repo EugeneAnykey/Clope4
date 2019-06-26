@@ -108,7 +108,7 @@ namespace ClopeWin
 				foreach (var possibleTransaction in reader.GetData())
 				{
 					var items = parcer.Parce(possibleTransaction);
-					tempTrans.Add(new Transaction4(attributeStore.GetIndices(items)));
+					tempTrans.Add(new Transaction4(attributeStore.PlaceAndGetIndices(items)));
 				}
 
 				clope.AddNewTransactions(tempTrans.ToArray());

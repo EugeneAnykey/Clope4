@@ -34,9 +34,10 @@ namespace ClopeLib.Algo4
 
 
 
-		// GetIndices
-		public int[] GetIndices(string[] items)
+		// PlaceAndGetIndices
+		public int[] PlaceAndGetIndices(string[] items)
 		{
+			// not indicies but ids
 			if (items == null)
 				throw new ArgumentNullException();
 
@@ -45,10 +46,12 @@ namespace ClopeLib.Algo4
 
 			var res = new int[items.Length];
 
-			for (int colNum = 0; colNum < items.Length; colNum++)
+			for (int col = 0; col < items.Length; col++)
 			{
-				IAttribute at = new TransactionAttribute4(LastId++, colNum, items[colNum]);
-				res[colNum] = PlaceAttribute(at);
+				IAttribute att = new TransactionAttribute4(LastId++, col, items[col]);
+				//res[col] = PlaceAttribute(att);
+				PlaceAttribute(att);
+				res[col] = att.Id;
 			}
 
 			return res;

@@ -37,7 +37,7 @@ namespace ClopeLib.Algo4
 
 
 		// GetIndices
-		public int[] GetIndices(string[] items)
+		public int[] PlaceAndGetIndices(string[] items)
 		{
 			if (items == null)
 				throw new ArgumentNullException();

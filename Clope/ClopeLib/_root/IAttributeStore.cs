@@ -4,7 +4,7 @@
 	{
 		int PlaceAttribute(IAttribute at);
 
-		int[] GetIndices(string[] items);
+		int[] PlaceAndGetIndices(string[] items);
 
 		IAttribute[] GetAttributes(int index);
 
