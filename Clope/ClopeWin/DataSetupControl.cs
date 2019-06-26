@@ -13,6 +13,8 @@ namespace ClopeWin
 		DataSetupSettings settings;
 		public DataSetupSettings Settings { get => settings; }
 
+
+
 		#region init
 		public DataSetupControl()
 		{
@@ -22,7 +24,8 @@ namespace ClopeWin
 			Init();
 
 			listBoxFiles.Items.AddRange(FilesHelper.Files.ToArray());
-			listBoxFiles.SelectedIndex = 0;
+			//listBoxFiles.SelectedIndex = 0;
+			listBoxFiles.SelectedIndex = 1;
 		}
 
 		void InitEvent()
@@ -38,7 +41,7 @@ namespace ClopeWin
 		{
 			settings.SelectedDelimitedFile = null;
 			
-			repulsionScrollBar.SetValues(10, 25, 100);
+			repulsionScrollBar.SetValues(10, 27, 100);
 			numericNullColumn.SetValues(0, 0, 100);
 			numericNullJumps.SetValues(0, 0, 100);
 		}

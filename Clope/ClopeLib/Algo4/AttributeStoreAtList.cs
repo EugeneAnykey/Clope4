@@ -7,7 +7,7 @@ namespace ClopeLib.Algo4
 {
 	public class AttributeStoreAtList : IAttributeStore
 	{
-		static int LastId = 0;
+		int LastId = 0;
 
 		// fields
 		readonly List<IAttribute> attributes = new List<IAttribute>();
@@ -45,10 +45,10 @@ namespace ClopeLib.Algo4
 
 			var res = new int[items.Length];
 
-			for (int i = 0; i < items.Length; i++)
+			for (int colNum = 0; colNum < items.Length; colNum++)
 			{
-				IAttribute at = new TransactionAttribute4(LastId++, i, items[i]);
-				res[i] = PlaceAttribute(at);
+				IAttribute at = new TransactionAttribute4(LastId++, colNum, items[colNum]);
+				res[colNum] = PlaceAttribute(at);
 			}
 
 			return res;
@@ -57,6 +57,8 @@ namespace ClopeLib.Algo4
 
 
 		// GetAttributes
-		public IAttribute[] GetAttributes(int index) => (from a in attributes where a.Index == index select a).ToArray();
+		public IAttribute[] GetAttributes(int position) => (from a in attributes where a.Position == position select a).ToArray();
+
+		public IAttribute GetAttribute(int index) => 0 <= index && index < attributes.Count ? attributes[index] : null;
 	}
 }

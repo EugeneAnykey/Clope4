@@ -59,6 +59,6 @@ namespace ClopeLib.Algo4
 
 
 		// GetAttributes
-		public IAttribute[] GetAttributes(int index) => (from a in Dic where a.Key.Index == index select a.Key).ToArray();
+		public IAttribute[] GetAttributes(int index) => (from a in Dic where a.Key.Position == index select a.Key).ToArray();
 	}
 }

@@ -19,9 +19,7 @@ namespace ClopeWin
 			InitializeComponent();
 
 			logger = new FormsLogger(richTextBoxLogger, new FileLogger("clope.log.txt"));
-			tabControl1.SelectedIndex = 1;
-
-			clope4 = new Clope4();
+			tabControl1.SelectedIndex = 2;
 
 			// events:
 			buttonClopeRun.Click += (_, __) => RunClope();
@@ -33,6 +31,8 @@ namespace ClopeWin
 		{
 			listBoxResults.Items.Clear();
 			richTextBox1.Clear();
+
+			clope4 = new Clope4();
 
 			if (clope4 != null)
 			{

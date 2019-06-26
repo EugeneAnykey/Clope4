@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ClopeLib.Data4;
@@ -10,7 +9,7 @@ namespace ClopeLib.Algo4
 {
 	public class Clope4 : IAlgo
 	{
-		const int maxSteps = 10;
+		const int maxSteps = 3;
 
 
 
@@ -21,7 +20,9 @@ namespace ClopeLib.Algo4
 
 
 		int stepIndex;
+		public int LatestStepIndex => stepIndex;
 
+		int stepChanges = 0;
 
 
 		// field
@@ -42,9 +43,6 @@ namespace ClopeLib.Algo4
 		readonly Queue<ITransaction> newTrans;
 
 		Dictionary<ITransaction, ICluster> keys;
-		readonly bool doNotCheckForUniques;
-
-		readonly AttributeStoreAtList store = new AttributeStoreAtList();
 
 
 
@@ -55,8 +53,6 @@ namespace ClopeLib.Algo4
 			newTrans = new Queue<ITransaction>();
 			Transactions = new List<ITransaction>();
 			keys = new Dictionary<ITransaction, ICluster>();
-
-			doNotCheckForUniques = true;
 
 			Clear();
 		}
@@ -82,62 +78,28 @@ namespace ClopeLib.Algo4
 			Transactions.Clear();
 			keys.Clear();
 
-			stepIndex = 0;
-			//CurrentStepName = "Just initialized.";
 			needSpecify = false;
 			Cluster4.ResetId();
 		}
 
 
 
-		// CurrentInfo, CurrentOutput
-		public string CurrentInfo()
-		{
-			const string transactionsInfoMask = "Transactions: {0}.\r\n";
-			const string clustersInfoMask = "Clusters: {0}.\r\n";
-			const string keysInfoMask = "Keys: {0}.\r\n";
-
-			var sb = new StringBuilder();
-			sb.AppendFormat(transactionsInfoMask, Transactions.Count);
-			sb.AppendFormat(clustersInfoMask, Clusters.Count);
-			sb.AppendFormat(keysInfoMask, keys.Count);
-
-			return sb.ToString();
-		}
-
-
-
-		public string CurrentOutput() => string.Join("", Clusters.Select(c => c as IPreviewable).Select(view => view.MakePreview()).ToArray());
-
-
-
 		// IAlgo: Run
 		public void Run()
 		{
-			bool onlyStart = false;
-
-			Transaction4.PreciseComparing = true;
+			stepIndex = 0;
 
 			while (newTrans.Count > 0)
 			{
 				Start();
 			}
 
-			Transaction4.PreciseComparing = false;
-
-			if (onlyStart)
-				return;
-
-			while (needSpecify && stepIndex < maxSteps)
+			while (needSpecify && stepIndex++ < maxSteps)
 			{
 				Specify();
-				stepIndex++;
 			}
 
 			RemoveEmptyClusters();
-
-			//CurrentStepName = CurrentStepNameDone;
-			//OnStepDone();
 		}
 
 
@@ -151,12 +113,9 @@ namespace ClopeLib.Algo4
 				if (IsUnique(t))
 				{
 					needSpecify = true;
-					PlaceTransactionIntoCluster(t);
+					PlaceIntoCluster(t);
 				}
 			}
-
-			//CurrentStepName = CurrentStepNameInit;
-			//OnStepDone();
 		}
 
 
@@ -164,15 +123,15 @@ namespace ClopeLib.Algo4
 		// Specify
 		bool Specify()
 		{
+			const float threshold = 0.01f;
 			needSpecify = false;
+
+			stepChanges = 0;
 
 			foreach (var t in Transactions)
 				SpecifyCluster(t);
 
-			//CurrentStepName = string.Format(CurrentStepNameMask, stepIndex++);
-			//OnStepDone();
-
-			return needSpecify;
+			return needSpecify &= ((double)stepChanges / Transactions.Count) > threshold;
 		}
 
 
@@ -180,14 +139,12 @@ namespace ClopeLib.Algo4
 		// private: RemoveEmptyClusters
 		void RemoveEmptyClusters() => Clusters = (from c in Clusters where !c.IsEmpty select c).ToList();
 
-
-
-		#region private: IsUnique, IntermediateOutput, PlaceTransaction, Specifying, Start.
 		bool IsUnique(ITransaction t) => !keys.ContainsKey(t);
 
 
 
-		void PlaceTransactionIntoCluster(ITransaction t)
+		#region private: PlaceIntoCluster, SpecifyCluster.
+		void PlaceIntoCluster(ITransaction t)
 		{
 			ICluster bestCluster = null;
 
@@ -215,12 +172,12 @@ namespace ClopeLib.Algo4
 
 		void SpecifyCluster(ITransaction t)
 		{
-			const double minMaxCost = 0.5f;
+			const double minCostToStart = 0;// 0.5f;
+			
 			var activeCluster = keys[t];
-			//var bestCluster = activeCluster;
-			ICluster bestCluster = null;
-
-			double maxCost = minMaxCost;
+			var bestCluster = activeCluster;
+			//ICluster bestCluster = null;
+			double maxCost = minCostToStart;
 			double remCost = activeCluster.RemoveCost(t);
 
 			foreach (ICluster c in Clusters)
@@ -230,7 +187,8 @@ namespace ClopeLib.Algo4
 
 				double addCost = c.AddCost(t);
 				if (maxCost < addCost + remCost)
-				{   // [?] remCost + or - [?]
+				{
+					// [?] remCost + or - [?]
 					maxCost = addCost + remCost;
 					bestCluster = c;
 				}
@@ -250,6 +208,7 @@ namespace ClopeLib.Algo4
 
 				keys[t] = activeCluster;    // [!]
 				needSpecify = true;
+				stepChanges++;
 			}
 		}
 		#endregion

@@ -19,7 +19,7 @@ namespace ClopeWin
 
 
 		// field
-		IAttributeStore attributeStore = new AttributeStoreAtList();
+		IAttributeStore attributeStore;
 		Clope4 clope;
 		DataSetupSettings settings;
 		Nullabier nullabier;
@@ -59,6 +59,7 @@ namespace ClopeWin
 			this.clope = clope ?? throw new ArgumentNullException();
 			this.logger = logger ?? new ConsoleLogger();
 			this.settings = settings;
+			attributeStore = new AttributeStoreAtList();
 		}
 
 
@@ -143,6 +144,7 @@ namespace ClopeWin
 			preview.MakePreview(column);
 
 			LoggerAndWatchEnd("Results");
+			logger.Write($"Steps done: {clope.LatestStepIndex}.");
 			logger.WriteDated("End");
 
 			return preview.GetOutput();

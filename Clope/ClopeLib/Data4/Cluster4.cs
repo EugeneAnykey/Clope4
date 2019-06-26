@@ -14,15 +14,15 @@ namespace ClopeLib.Data4
 		static int UnexpectedOnRemove = 0;
 
 		// static
-		static int lastId = 1;
+		static int latestId = 1;
 		public static void ResetId()
 		{
-			lastId = 1;
+			latestId = 1;
 		}
 
 		public int Id { get; }
 
-		public int Width { get => linksCounts1.Count; }
+		public int Width { get => attributesCounts.Count; }
 
 		public int Area { get; private set; }
 
@@ -47,8 +47,7 @@ namespace ClopeLib.Data4
 		readonly List<ITransaction> trans = new List<ITransaction>();
 		public List<ITransaction> Transactions { get { return trans; } }
 
-		//readonly Dictionary<string, int> hash = new Dictionary<string, int>();  // unique items (currently - strings) with occurence count.
-		readonly Dictionary<int, int> linksCounts1 = new Dictionary<int, int>();  // unique items (currently - int links) with occurence count.
+		readonly Dictionary<int, int> attributesCounts = new Dictionary<int, int>();
 
 
 
@@ -56,7 +55,7 @@ namespace ClopeLib.Data4
 		public Cluster4(float repulsion)
 		{
 			Repulsion = repulsion;
-			Id = lastId++;
+			Id = latestId++;
 		}
 
 
@@ -69,13 +68,11 @@ namespace ClopeLib.Data4
 
 
 
-		// GetSquare
-		//int GetArea() => hash.Select(e => e.Value).Sum();
-		int GetArea() => linksCounts1.Select(pair => pair.Value).Sum();
+		int GetArea() => attributesCounts.Select(pair => pair.Value).Sum();
 
 
 
-		#region ICluster
+		// ICluster: Add, Occurrence, Remove
 		public void Add(ITransaction t)
 		{
 			AddTransaction(t);
@@ -90,9 +87,9 @@ namespace ClopeLib.Data4
 
 			int val = 0;
 
-			if (linksCounts1.ContainsKey(id))
+			if (attributesCounts.ContainsKey(id))
 			{
-				linksCounts1.TryGetValue(id, out val);
+				attributesCounts.TryGetValue(id, out val);
 			}
 
 			return val;
@@ -104,7 +101,6 @@ namespace ClopeLib.Data4
 			RemoveItems(t);
 			RecalcCurrentCost();
 		}
-		#endregion
 
 
 
@@ -159,10 +155,10 @@ namespace ClopeLib.Data4
 			if (id < 0)
 				return;
 
-			if (linksCounts1.ContainsKey(id))
-				linksCounts1[id] += by;
+			if (attributesCounts.ContainsKey(id))
+				attributesCounts[id] += by;
 			else
-				linksCounts1.Add(id, by);
+				attributesCounts.Add(id, by);
 		}
 
 
@@ -212,6 +208,6 @@ namespace ClopeLib.Data4
 
 
 
-		public int GetCount(int id) => linksCounts1.ContainsKey(id) ? linksCounts1[id] : 0;
+		public int GetCount(int id) => attributesCounts.ContainsKey(id) ? attributesCounts[id] : 0;
 	}
 }

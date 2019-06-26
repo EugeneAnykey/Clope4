@@ -5,22 +5,15 @@ namespace ClopeLib.Data4
 {
 	public class Transaction4 : ITransaction
 	{
-		public static bool PreciseComparing { get; set; }
-		
 		public int[] Links { get; }
 
-		public int Length { get { return Links.Length; } }
+		public int Length => Links.Length;
 
 		readonly int hashCode = 0;
 
 
 
 		// init
-		static Transaction4()
-		{
-			PreciseComparing = true;
-		}
-
 		public Transaction4(int[] links)
 		{
 			Links = links ?? throw new NullReferenceException();
@@ -30,17 +23,13 @@ namespace ClopeLib.Data4
 
 
 		// Equals
-		public override bool Equals(object obj)
-		{
-			return Equals(obj as ITransaction);
-		}
+		//public override bool Equals(object obj) => Equals(obj as ITransaction);
 
-		public bool Equals(ITransaction t)
-		{
-			return PreciseComparing ?
-				t != null && hashCode == t.GetHashCode() && Equ(t) :
-				t != null && hashCode == t.GetHashCode();
-		}
+		public override bool Equals(object obj) => EqualsPrecise(obj as ITransaction);
+
+		public bool EqualsPrecise(ITransaction t) => t != null && hashCode == t.GetHashCode() && Equ(t);
+
+		public bool Equals(ITransaction t) => t != null && hashCode == t.GetHashCode();
 
 		bool Equ(ITransaction t) => ArrayHelper.Equals(Links, t.Links);
 
