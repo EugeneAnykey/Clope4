@@ -60,5 +60,8 @@ namespace ClopeLib.Algo4
 		public IAttribute[] GetAttributes(int position) => (from a in attributes where a.Position == position select a).ToArray();
 
 		public IAttribute GetAttribute(int index) => 0 <= index && index < attributes.Count ? attributes[index] : null;
+
+		//public IAttribute GetAttributeById(int id) => (from a in attributes where a.Id == id select a).FirstOrDefault();
+		public IAttribute GetAttributeById(int id) => attributes.FirstOrDefault(a => a.Id == id);
 	}
 }

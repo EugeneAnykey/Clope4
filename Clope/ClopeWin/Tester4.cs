@@ -20,10 +20,9 @@ namespace ClopeWin
 
 		// field
 		IAttributeStore attributeStore;
+		//IClustering clope;
 		Clope4 clope;
 		DataSetupSettings settings;
-		Nullabier nullabier;
-
 		ILogger logger;
 		IPortionReader reader;
 		IParcer parcer;
@@ -55,10 +54,10 @@ namespace ClopeWin
 		// init
 		public Tester4(Clope4 clope, DataSetupSettings settings, ILogger logger)
 		{
-			this.watch = new Stopwatch();
 			this.clope = clope ?? throw new ArgumentNullException();
 			this.logger = logger ?? new ConsoleLogger();
 			this.settings = settings;
+			watch = new Stopwatch();
 			attributeStore = new AttributeStoreAtList();
 		}
 
@@ -75,7 +74,6 @@ namespace ClopeWin
 
 
 		// factory
-		Nullabier _GetNullabier() => new Nullabier(settings.NullColumn, settings.NullJumps, "?");
 		IPortionReader _GetReader() => new Reader(settings.SelectedDelimitedFile.GetPath()) { LinesToReadAtOnce = 243 };
 		IParcer _GetParcer() => new Parcer(settings.SelectedDelimitedFile.FieldSeparators, new ElementRule(determineAsNulls, null));
 
@@ -90,10 +88,6 @@ namespace ClopeWin
 
 			reader = _GetReader();
 			parcer = _GetParcer();
-			nullabier = _GetNullabier();
-			logger.Write(string.Format("> Nullabier {0} initiated.", nullabier.Initiated ? "" : "NOT"));
-			if (!nullabier.Initiated)
-				nullabier = null;
 
 			reader.GetData(settings.SelectedDelimitedFile.FirstLinesToSkip);
 			clope.Repulsion = settings.ClopeRepulsion;
@@ -114,7 +108,6 @@ namespace ClopeWin
 				foreach (var possibleTransaction in reader.GetData())
 				{
 					var items = parcer.Parce(possibleTransaction);
-					nullabier?.MaybePlaceNull(ref items);
 					tempTrans.Add(new Transaction4(attributeStore.GetIndices(items)));
 				}
 

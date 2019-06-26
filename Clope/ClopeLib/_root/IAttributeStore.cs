@@ -7,5 +7,7 @@
 		int[] GetIndices(string[] items);
 
 		IAttribute[] GetAttributes(int index);
+
+		IAttribute GetAttributeById(int id);
 	}
 }

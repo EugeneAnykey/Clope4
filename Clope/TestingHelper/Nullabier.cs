@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ClopeWin
+namespace TestingHelper
 {
 	public class Nullabier
 	{

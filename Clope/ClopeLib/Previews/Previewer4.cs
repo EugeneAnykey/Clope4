@@ -37,17 +37,17 @@ namespace ClopeLib.Previews
 			// example for column 3 with names h,g,f,d: [3h, 3g, 3f, 3d].
 
 			// clusters ids.
-			var cc = clusters.Select(c => c.Id).ToArray();
+			//var cc = clusters.Select(c => c.Id).ToArray();
 
 			// now clusters:
 			foreach (var c in clusters)
 			{
-				int[] re = new int[attributes.Length];
+				int[] counts = new int[attributes.Length];
 				for (int i = 0; i < attributes.Length; i++)
 				{
-					 re[i] = CountAttributes(c, attributes[i]);
+					 counts[i] = CountAttributes(c, attributes[i]);
 				}
-				result.Add(re);
+				result.Add(counts);
 			}
 		}
 

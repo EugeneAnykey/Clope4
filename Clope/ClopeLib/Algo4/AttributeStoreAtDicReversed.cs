@@ -5,7 +5,7 @@ using ClopeLib.Data4;
 
 namespace ClopeLib.Algo4
 {
-	// not for use
+	// currently not for use
 	public class AttributeStoreAtDicReversed : IAttributeStore
 	{
 		// fields
@@ -84,5 +84,7 @@ namespace ClopeLib.Algo4
 
 		// GetAttributes
 		public IAttribute[] GetAttributes(int index) => (from a in Dic where a.Value.Position == index select a.Value).ToArray();
+
+		public IAttribute GetAttributeById(int id) => Dic.FirstOrDefault(a => a.Value.Id == id).Value;
 	}
 }

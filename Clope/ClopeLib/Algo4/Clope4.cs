@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ClopeLib.Data4;
 using ClopeLib.Helpers;
 using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeLib.Algo4
 {
-	public class Clope4 : IAlgo
+	public class Clope4 : IClustering
 	{
 		const int maxSteps = 3;
 

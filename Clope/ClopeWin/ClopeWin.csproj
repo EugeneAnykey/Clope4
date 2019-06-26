@@ -73,7 +73,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FilesHelper.cs" />
     <Compile Include="DataSetupSettings.cs" />
-    <Compile Include="Nullabier.cs" />
     <Compile Include="_e.cs" />
   </ItemGroup>
   <ItemGroup>
