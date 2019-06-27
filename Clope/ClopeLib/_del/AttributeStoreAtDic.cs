@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ClopeLib.Data4;
 
-namespace ClopeLib.Algo4
+namespace ClopeLib.Data
 {
 	public class AttributeStoreAtDic : IAttributeStore
 	{
@@ -37,7 +36,7 @@ namespace ClopeLib.Algo4
 
 
 		// GetIndices
-		public int[] PlaceAndGetIndices(string[] items)
+		public int[] PlaceAndGetLinks(string[] items)
 		{
 			if (items == null)
 				throw new ArgumentNullException();
@@ -49,7 +48,7 @@ namespace ClopeLib.Algo4
 
 			for (int i = 0; i < items.Length; i++)
 			{
-				IAttribute at = new TransactionAttribute4(0, i, items[i]);
+				IAttribute at = new Attribute4(i, items[i]);
 				res[i] = PlaceAttribute(at);
 			}
 
@@ -61,6 +60,6 @@ namespace ClopeLib.Algo4
 		// GetAttributes
 		public IAttribute[] GetAttributes(int index) => (from a in Dic where a.Key.Position == index select a.Key).ToArray();
 
-		public IAttribute GetAttributeById(int id) => Dic.FirstOrDefault(a => a.Key.Id == id).Key;
+		public IAttribute GetAttributeByLink(int id) => Dic.FirstOrDefault(a => a.Key.Link == id).Key;
 	}
 }

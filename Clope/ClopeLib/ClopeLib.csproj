@@ -51,8 +51,9 @@
     <Reference Include="System.Data.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algo4\AttributeStoreAtDicReversed.cs" />
-    <Compile Include="Algo4\AttributeStoreAtDic.cs" />
+    <Compile Include="Helpers\CollectionsHelper.cs" />
+    <Compile Include="_del\AttributeStoreAtDicReversed.cs" />
+    <Compile Include="_del\AttributeStoreAtDic.cs" />
     <Compile Include="Data4\Cluster4.cs" />
     <Compile Include="Data4\Transaction4.cs" />
     <Compile Include="Helpers\Utils.cs" />
@@ -62,13 +63,13 @@
     <Compile Include="_root\IAttributeStore.cs" />
     <Compile Include="_root\IAttribute.cs" />
     <Compile Include="Algo4\Clope4.cs" />
-    <Compile Include="Algo4\AttributeStoreAtList.cs" />
+    <Compile Include="Data4\AttributeStoreAtList.cs" />
     <Compile Include="_root\IClopeInfo.cs" />
     <Compile Include="_root\IAlgo.cs" />
     <Compile Include="_root\IClustering.cs" />
     <Compile Include="_root\ICluster.cs" />
     <Compile Include="_root\ITransaction.cs" />
-    <Compile Include="Data4\TransactionAttribute4.cs" />
+    <Compile Include="Data4\Attribute4.cs" />
     <Compile Include="Helpers\ArrayHelper.cs" />
     <Compile Include="Helpers\ConvertHelper.cs" />
     <Compile Include="Parcers\ElementAlwaysValidRule.cs" />

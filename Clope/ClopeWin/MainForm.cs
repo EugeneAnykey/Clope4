@@ -1,6 +1,5 @@
 ﻿using System.Windows.Forms;
-
-using ClopeLib.Algo4;
+using ClopeLib.Algo;
 using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeWin
@@ -40,6 +39,8 @@ namespace ClopeWin
 				var tester4 = new Tester4(clope4, dataSetupControl1.Settings, logger);
 				tester4.Run();
 				richTextBox1.AppendText(tester4.MakeResults());
+
+				for (int i = 0; i < 3; i++) logger.Write("\r\n");
 			}
 
 			listBoxResults.SelectedIndex = listBoxResults.Items.Count - 1;

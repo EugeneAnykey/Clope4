@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using ClopeLib;
-using ClopeLib.Algo4;
-using ClopeLib.Data4;
+using ClopeLib.Algo;
+using ClopeLib.Data;
 using ClopeLib.Parcers;
 using ClopeLib.Previews;
 using ClopeLib.Readers;
@@ -29,12 +29,15 @@ namespace ClopeWin
 
 		// for logger and watch
 		Stopwatch watch;
+		Stopwatch stepWatch;
 		string ElapsedMs => $"{watch.ElapsedMilliseconds} ms";
 		string Elapsed => $"{watch.Elapsed.ToString()}";
 
 
 
-		void LoggerAndWatchStart(string name)
+		void LoggerAndWatchStart(string name) => LoggerAndWatchStart(name, watch);
+
+		void LoggerAndWatchStart(string name, Stopwatch watch)
 		{
 			logger.Write($"{name}> start...");
 			watch.Restart();
@@ -42,11 +45,12 @@ namespace ClopeWin
 
 
 
-		void LoggerAndWatchEnd(string name)
+		void LoggerAndWatchEnd(string name) => LoggerAndWatchEnd(name, watch);
+		
+		void LoggerAndWatchEnd(string name, Stopwatch watch)
 		{
 			watch.Stop();
 			logger.Write($"{name}> done. Time elapsed {Elapsed} ({ElapsedMs})\n------\n");
-			//logger?.LinkedLogger?.Write("");
 		}
 
 
@@ -58,6 +62,7 @@ namespace ClopeWin
 			this.logger = logger ?? new ConsoleLogger();
 			this.settings = settings;
 			watch = new Stopwatch();
+			stepWatch = new Stopwatch();
 			attributeStore = new AttributeStoreAtList();
 		}
 
@@ -66,9 +71,18 @@ namespace ClopeWin
 		// public
 		public void Run()
 		{
+			watch.Reset();
+			stepWatch.Reset();
+			logger.WriteDated("Tester start.");
+
 			PrepareTest();
 			ReadData();
 			RunTest();
+
+			logger.WriteDated("Tester finished.\r\n");
+
+			watch.Stop();
+			stepWatch.Stop();
 		}
 
 
@@ -82,7 +96,6 @@ namespace ClopeWin
 		// logic
 		void PrepareTest()
 		{
-			logger.WriteDated("Start.");
 			logger.Write("Prepare test> new reader, parcer, etc.");
 			logger.Write($"> file > {settings.SelectedDelimitedFile.GetPath()}");
 
@@ -91,6 +104,7 @@ namespace ClopeWin
 
 			reader.GetData(settings.SelectedDelimitedFile.FirstLinesToSkip);
 			clope.Repulsion = settings.ClopeRepulsion;
+			clope.StepDone += (step, changes) => StepInfo(step, changes);
 			logger.Write("------\n");
 		}
 
@@ -107,8 +121,8 @@ namespace ClopeWin
 				// get transactions from data portion:
 				foreach (var possibleTransaction in reader.GetData())
 				{
-					var items = parcer.Parce(possibleTransaction);
-					tempTrans.Add(new Transaction4(attributeStore.PlaceAndGetIndices(items)));
+					var attributes = parcer.Parce(possibleTransaction);
+					tempTrans.Add(new Transaction4(attributeStore.PlaceAndGetLinks(attributes)));
 				}
 
 				clope.AddNewTransactions(tempTrans.ToArray());
@@ -119,9 +133,16 @@ namespace ClopeWin
 
 
 
+		void StepInfo(int step, int changesDone)
+		{
+			LoggerAndWatchEnd($"On step {step} - {changesDone} changes were done.", stepWatch);
+			stepWatch.Restart();
+		}
+
 		void RunTest()
 		{
 			LoggerAndWatchStart("Clope");
+			stepWatch.Start();
 			clope.Run();
 			LoggerAndWatchEnd("Clope");
 		}
@@ -137,8 +158,7 @@ namespace ClopeWin
 			preview.MakePreview(column);
 
 			LoggerAndWatchEnd("Results");
-			logger.Write($"Steps done: {clope.LatestStepIndex}.");
-			logger.WriteDated("End");
+			logger.Write($"Steps done: {clope.LatestStep}.");
 
 			return preview.GetOutput();
 		}

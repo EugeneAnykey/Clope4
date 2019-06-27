@@ -75,6 +75,6 @@ namespace ClopeLib.Previews
 
 
 
-		int CountAttributes(ICluster cluster, IAttribute attribute) => (cluster as IPreviewable).GetCount(attribute.Id);
+		int CountAttributes(ICluster cluster, IAttribute attribute) => (cluster as IPreviewable).GetCount(attribute.Link);
 	}
 }

@@ -4,40 +4,34 @@ using System.Linq;
 using System.Text;
 using EugeneAnykey.DebugLib.Loggers;
 
-namespace ClopeLib.Data4
+namespace ClopeLib.Data
 {
 	public class Cluster4 : ICluster, IPreviewable
 	{
-		static readonly ILogger log = new FileLogger("cluster.log.txt");
+		// static
+		static readonly ILogger log1 = new FileLogger("cluster.log1.txt");
 
 		static int UnexpectedOnAdd = 0;
 		static int UnexpectedOnRemove = 0;
 
-		// static
 		static int latestId = 1;
-		public static void ResetId()
-		{
-			latestId = 1;
-		}
 
+		public static void ResetId() => latestId = 1;
+
+
+
+		// field
 		public int Id { get; }
 
-		public int Width { get => attributesCounts.Count; }
+		public float Repulsion { get; }
 
 		public int Area { get; private set; }
 
-		public int TransactionsCount
-		{
-			// C.N
-			get { return trans.Count; }
-		}
+		public bool IsEmpty => trans.Count == 0;
 
-		public bool IsEmpty
-		{
-			get { return trans.Count == 0; }
-		}
+		public int TransactionsCount => trans.Count;  // C.N
 
-		public float Repulsion { get; }
+		public int Width { get => attributesLinksCounts.Count; }
 
 		double currentCost;
 
@@ -47,7 +41,7 @@ namespace ClopeLib.Data4
 		readonly List<ITransaction> trans = new List<ITransaction>();
 		public List<ITransaction> Transactions { get { return trans; } }
 
-		readonly Dictionary<int, int> attributesCounts = new Dictionary<int, int>();
+		readonly Dictionary<int, int> attributesLinksCounts = new Dictionary<int, int>();
 
 
 
@@ -56,43 +50,26 @@ namespace ClopeLib.Data4
 		{
 			Repulsion = repulsion;
 			Id = latestId++;
+			Area = 0;
 		}
 
 
 
-		// private: RecalcCurrentCost.
-		/// <summary>
-		/// Calculates cluster's current cost after add/remove the transaction.
-		/// </summary>
+		// private: GetArea, RecalcCurrentCost.
+		//int GetArea() => attributesLinksCounts.Select(pair => pair.Value).Sum();
+
 		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / Math.Pow(Width, Repulsion);
 
 
 
-		int GetArea() => attributesCounts.Select(pair => pair.Value).Sum();
-
-
-
 		// ICluster: Add, Occurrence, Remove
+		public int Occurrence(int link) => attributesLinksCounts.TryGetValue(link, out int val) ? val : 0;
+
 		public void Add(ITransaction t)
 		{
 			AddTransaction(t);
 			AddItems(t);
 			RecalcCurrentCost();
-		}
-
-		public int Occurrence(int id)
-		{
-			if (id < 0)
-				return 0;
-
-			int val = 0;
-
-			if (attributesCounts.ContainsKey(id))
-			{
-				attributesCounts.TryGetValue(id, out val);
-			}
-
-			return val;
 		}
 
 		public void Remove(ITransaction t)
@@ -113,8 +90,7 @@ namespace ClopeLib.Data4
 			}
 			else
 			{
-				// else <-- this is currently not possible. Equal transactions are not allowed.
-				log.Write($"add unexpected {++UnexpectedOnAdd}");
+				log1.Write($"add unexpected {++UnexpectedOnAdd}");
 			}
 		}
 
@@ -126,39 +102,44 @@ namespace ClopeLib.Data4
 			}
 			else
 			{
-				log.Write($"remove unexpected {++UnexpectedOnRemove}");
+				log1.Write($"remove unexpected {++UnexpectedOnRemove}");
 			}
 		}
 
 		void AddItems(ITransaction t)
 		{
-			foreach (var index in t.Links)
-				ChangeObjectCount(index, 1);
+			foreach (var links in t.Links)
+			{
+				ChangeLinksCount(links, 1);
+				Area++;
+			}
 
-			Area = GetArea();
+			//Area = GetArea();
 		}
 
 		void RemoveItems(ITransaction t)
 		{
-			foreach (var index in t.Links)
-				ChangeObjectCount(index, -1);
+			foreach (var links in t.Links)
+			{
+				ChangeLinksCount(links, -1);
+				Area--;
+			}
 
-			Area = GetArea();
+			//Area = GetArea();
 		}
 		#endregion
 
 
 
-		// private: ChangeObjectCount.
-		internal void ChangeObjectCount(int id, int by)
+		internal void ChangeLinksCount(int link, int by)
 		{
-			if (id < 0)
-				return;
+			//if (link < 0)
+			//	return;
 
-			if (attributesCounts.ContainsKey(id))
-				attributesCounts[id] += by;
+			if (attributesLinksCounts.ContainsKey(link))
+				attributesLinksCounts[link] += by;
 			else
-				attributesCounts.Add(id, by);
+				attributesLinksCounts.Add(link, by);
 		}
 
 
@@ -168,19 +149,22 @@ namespace ClopeLib.Data4
 		{
 			// res = Snew+ * (TransCount + 1) / Power(newWidth, repulsion) - currentCost.
 			var NewWidth = Width;
-			foreach (var i in t.Links)
-				if (Occurrence(i) == 0)
+			foreach (var link in t.Links)
+				if (Occurrence(link) == 0)
 					NewWidth++;
 
 			return (Area + t.Length) * (TransactionsCount + 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
 		}
 
+
+
 		public double RemoveCost(ITransaction t)
 		{
 			// res = Snew- * (TransCount - 1) / Power(newWidth, repulsion) - currentCost.
 			var NewWidth = Width;
-			foreach (var i in t.Links)
-				if (Occurrence(i) == 1)
+			foreach (var link in t.Links)
+				//if (Occurrence(link) == 1)	- holy shit!
+				if (Occurrence(link) > 0)
 					NewWidth--;
 
 			return (Area - t.Length) * (TransactionsCount - 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
@@ -208,6 +192,6 @@ namespace ClopeLib.Data4
 
 
 
-		public int GetCount(int id) => attributesCounts.ContainsKey(id) ? attributesCounts[id] : 0;
+		public int GetCount(int link) => attributesLinksCounts.ContainsKey(link) ? attributesLinksCounts[link] : 0;
 	}
 }

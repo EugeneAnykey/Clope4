@@ -2,12 +2,10 @@
 {
 	public interface IAttributeStore
 	{
-		int PlaceAttribute(IAttribute at);
+		int[] PlaceAndGetLinks(params string[] items);
 
-		int[] PlaceAndGetIndices(string[] items);
+		IAttribute[] GetAttributes(int position);
 
-		IAttribute[] GetAttributes(int index);
-
-		IAttribute GetAttributeById(int id);
+		IAttribute GetAttributeByLink(int link);
 	}
 }

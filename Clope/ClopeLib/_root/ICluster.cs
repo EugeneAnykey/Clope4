@@ -2,19 +2,8 @@
 
 namespace ClopeLib
 {
-	/// <summary>
-	/// ICluster.
-	/// </summary>
 	public interface ICluster
 	{
-		#region ?
-		int Id { get; }
-
-		List<ITransaction> Transactions { get; }
-		#endregion
-
-
-
 		/// <summary>
 		/// Unique objects.
 		/// </summary>
@@ -35,6 +24,8 @@ namespace ClopeLib
 		/// </summary>
 		bool IsEmpty { get; }
 
+
+
 		/// <summary>
 		/// Calculates the cost for adding a transaction.
 		/// </summary>
@@ -48,6 +39,8 @@ namespace ClopeLib
 		/// <param name="t">transaction from current list</param>
 		/// <returns>cost</returns>
 		double RemoveCost(ITransaction t);
+
+
 
 		/// <summary>
 		/// Adding a unique transaction

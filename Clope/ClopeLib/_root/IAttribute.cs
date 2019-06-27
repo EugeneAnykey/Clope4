@@ -4,7 +4,7 @@ namespace ClopeLib
 {
 	public interface IAttribute : IEquatable<IAttribute>
 	{
-		int Id { get; }
+		int Link { get; set; }
 		int Position { get; }
 		string Name { get; }
 	}

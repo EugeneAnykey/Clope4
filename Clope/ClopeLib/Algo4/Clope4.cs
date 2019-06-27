@@ -1,15 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ClopeLib.Data4;
+using ClopeLib.Data;
 using ClopeLib.Helpers;
 using EugeneAnykey.DebugLib.Loggers;
 
-namespace ClopeLib.Algo4
+namespace ClopeLib.Algo
 {
+	public delegate void EventStepDoneHandler(int step, int changesDone);
+
 	public class Clope4 : IClustering
 	{
-		const int maxSteps = 3;
-		const float specThreshold = 0.01f;
+		public event EventStepDoneHandler StepDone;
+		void OnStepDone(int step, int changes) => StepDone?.Invoke(step, changes);
+
+
+
+		const int maxSteps =
+			3;
+			//15;
+
+		const float specThreshold = 0.001f;
 
 
 
@@ -19,10 +29,9 @@ namespace ClopeLib.Algo4
 
 
 
-		int stepIndex;
-		public int LatestStepIndex => stepIndex;
+		int stepChanges;
+		public int LatestStep { get; private set; }
 
-		int stepChanges = 0;
 
 
 		// field
@@ -30,54 +39,48 @@ namespace ClopeLib.Algo4
 		public float Repulsion
 		{
 			get { return repulsion; }
-			set { needSpecify |= Utils.TrySetValue(ref repulsion, value, 1, 5); }
+			set { Utils.TrySetValue(ref repulsion, value, 1, 5); }
 		}
 
 
 
-		bool needSpecify;
-
-		public List<ICluster> Clusters { get; private set; }
-		public List<ITransaction> Transactions { get; private set; }
-		Dictionary<ITransaction, ICluster> keys;
 		readonly Queue<ITransaction> newTrans;
+		public List<ITransaction> Transactions { get; }
+		public List<ICluster> Clusters { get; private set; }
+		Dictionary<ITransaction, ICluster> keys;
 
 
 
 		// init
 		public Clope4()
 		{
-			Clusters = new List<ICluster>();
 			newTrans = new Queue<ITransaction>();
 			Transactions = new List<ITransaction>();
+			Clusters = new List<ICluster>();
 			keys = new Dictionary<ITransaction, ICluster>();
 
-			Clear();
+			Cluster4.ResetId();
 		}
+
+
+
+		bool NeedSpec(int changesCount) => ((double)stepChanges / Transactions.Count) > specThreshold && LatestStep < maxSteps;
 
 
 
 		// IClustering: AddNewTransactions
-		public void AddNewTransactions(ITransaction[] newTransactions)
-		{
-			// check for Unique here is not right
-			foreach (var t in newTransactions)
-			{
-				newTrans.Enqueue(t);
-			}
-		}
+		public void AddNewTransactions(ITransaction[] newTransactions) => newTrans.Enqueue(newTransactions);
 
 
 
 		// IClustering: Clear
 		public void Clear()
 		{
-			Clusters.Clear();
 			newTrans.Clear();
 			Transactions.Clear();
+			Clusters.Clear();
 			keys.Clear();
 
-			needSpecify = false;
 			Cluster4.ResetId();
 		}
 
@@ -86,27 +89,16 @@ namespace ClopeLib.Algo4
 		// IAlgo: Run
 		public void Run()
 		{
-			stepIndex = 0;
-
-			while (newTrans.Count > 0)
-			{
-				Start();
-			}
-
-			while (needSpecify && stepIndex++ < maxSteps)
-			{
-				Specify();
-			}
-
+			LatestStep = 0;
+			Start();
+			Specify();
 			RemoveEmptyClusters();
 		}
 
 
 
-		// Start
 		void Start()
 		{
-			needSpecify = false;
 			stepChanges = 0;
 
 			while (newTrans.Count > 0)
@@ -119,27 +111,24 @@ namespace ClopeLib.Algo4
 				}
 			}
 
-			needSpecify = NeedSpec(stepChanges);
+			OnStepDone(LatestStep++, stepChanges);
 		}
 
 
 
-		// Specify
-		bool Specify()
+		void Specify()
 		{
-			needSpecify = false;
-			stepChanges = 0;
+			do
+			{
+				stepChanges = 0;
 
-			foreach (var t in Transactions)
-				if (SpecifyCluster(t))
-					stepChanges++;
+				foreach (var t in Transactions)
+					if (SpecifyCluster(t))
+						stepChanges++;
 
-			return needSpecify = NeedSpec(stepChanges);
+				OnStepDone(LatestStep++, stepChanges);
+			} while (NeedSpec(stepChanges));
 		}
-
-
-
-		bool NeedSpec(int changesCount) => ((double)stepChanges / Transactions.Count) > specThreshold;
 
 
 
@@ -179,12 +168,11 @@ namespace ClopeLib.Algo4
 
 		bool SpecifyCluster(ITransaction t)
 		{
-			const double minCostToStart = 0;// 0.5f;
-			
+			const double minStartCost = 0;
+
 			var currentCluster = keys[t];
 			var bestCluster = currentCluster;
-			//ICluster bestCluster = null;
-			double maxCost = minCostToStart;
+			double maxCost = minStartCost;
 			double remCost = currentCluster.RemoveCost(t);
 
 			foreach (ICluster c in Clusters)
@@ -201,7 +189,6 @@ namespace ClopeLib.Algo4
 				}
 			}
 
-			//if (maxCost > 0) {	// bestCluster != activeCluster.
 			if (bestCluster != null && bestCluster != currentCluster)
 			{
 				if (bestCluster.IsEmpty)
@@ -210,7 +197,6 @@ namespace ClopeLib.Algo4
 				currentCluster.Remove(t);
 				bestCluster.Add(t);
 
-				//keys[t] = currentCluster;    // [!]
 				keys[t] = bestCluster;
 
 				return true;

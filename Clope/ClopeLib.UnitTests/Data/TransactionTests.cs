@@ -1,11 +1,7 @@
-﻿#define DEL
-
-#if !DEL
-
-using System;
-using NUnit.Framework;
-
+﻿using System;
 using System.Collections.Generic;
+using ClopeLib.Data;
+using NUnit.Framework;
 
 namespace ClopeLib.UnitTests.Data
 {
@@ -13,58 +9,68 @@ namespace ClopeLib.UnitTests.Data
 	public class TransactionTests
 	{
 		[Test]
-		public void Init_NullItems_ThrowsNullReference()
+		public void Init_NullLinks_ThrowsArgumentNull()
 		{
-			string[] lines = null;
+			int[] links = null;
 
-			Assert.Catch<NullReferenceException>(() => new Transaction(lines));
+			Assert.Catch<ArgumentNullException>(() => new Transaction4(links));
 		}
 
+
+
 		[Test]
-		public void Equals_SingleArray_IsTrue()
+		public void Equals_SameArray_IsTrue()
 		{
-			var lines = new[] { "a", "c" };
-			var trans1 = new Transaction(lines);
-			var trans2 = new Transaction(lines);
+			var links = new[] { 1, 3, 7 };
+			var trans1 = new Transaction4(links);
+			var trans2 = new Transaction4(links);
 
 			var equals = trans1.Equals(trans2);
 
 			Assert.IsTrue(equals);
 		}
 
+
+
 		[Test]
-		public void Equals_SingleArrayChanged_IsFalse()
+		public void Equals_SameArrayChanged_IsFalse()
 		{
-			var lines = new[] { "a", "c" };
-			var trans1 = new Transaction(lines);
-			lines[0] = "b";
-			var trans2 = new Transaction(lines);
+			var links = new[] { 1, 3, 7 };
+			var trans1 = new Transaction4(links);
+			links[0] = 2;
+			var trans2 = new Transaction4(links);
 
 			var equals = trans1.Equals(trans2);
 
 			Assert.IsFalse(equals);
 		}
 
+
+
 		[Test]
-		public void Equals_DifferentArrays_IsTrue()
+		public void Equals_SimilarArrays_IsTrue()
 		{
-			var lines1 = new[] { "a", "c" };
-			var lines2 = new[] { "a", "c" };
-			var trans1 = new Transaction(lines1);
-			var trans2 = new Transaction(lines2);
+			var links1 = new[] { 1, 3, 7 };
+			var links2 = new[] { 1, 3, 7 };
+			var trans1 = new Transaction4(links1);
+			var trans2 = new Transaction4(links2);
 
 			var equals = trans1.Equals(trans2);
 
 			Assert.IsTrue(equals);
 		}
 
-		[Test]
-		public void Equals_DifferentArrays_GoodIsFalse()
+
+
+		[TestCase(0, new[] { 1, 7, 19 }, new[] { 1, 7, 23 })]  // near similar
+		[TestCase(1, new[] { 3, 7, 19 }, new[] { 1, 5, 23 })]  // different
+		[TestCase(2, new[] { 5, 1, 23 }, new[] { 1, 5, 23 })]  // different
+		public void Equals_DifferentArrays_IsFalse(int id, int[] links1, int[] links2)
 		{
-			var lines1 = new[] { "a", "c" };
-			var lines2 = new[] { "a", "d" };
-			var trans1 = new Transaction(lines1);
-			var trans2 = new Transaction(lines2);
+			var lines1 = new[] { 3, 7, 19 };
+			var lines2 = new[] { 1, 5, 23 };
+			var trans1 = new Transaction4(links1);
+			var trans2 = new Transaction4(links2);
 
 			var equals = trans1.Equals(trans2);
 
@@ -75,24 +81,17 @@ namespace ClopeLib.UnitTests.Data
 
 		List<int> hashes = new List<int>();
 
-		[TestCase(01, new string[0])]
-		[TestCase(02, new string[] { null })]
-		[TestCase(03, new string[] { null, null })]
-		[TestCase(04, new[] { "" })]
-		[TestCase(05, new[] { "a" })]
-		[TestCase(06, new[] { "a", "b" })]
-		[TestCase(07, new[] { "a", "b", "c" })]
-		[TestCase(08, new[] { null, "b", "c" })]
-		[TestCase(09, new[] { "a", null, "c" })]
-		[TestCase(10, new[] { "a", null, null })]
-		[TestCase(11, new[] { "a", "b", null })]
-		[TestCase(12, new[] { "a", "b", "c", "z", "y", "x" })]
-		[TestCase(13, new[] { "a", "b", "c", "x", "z", "y" })]
-		[TestCase(14, new[] { "a", null, "c", "z", "y", "x" })]
-		[TestCase(15, new[] { "a", "bc", "def", "ghij", "klmno", "pqrstu" })]
-		public void GetHashCode_MiscInput_IsGood1(int notExpected, string[] items)
+		[TestCase(01, new int[0])]
+		[TestCase(02, new int[] { 1 })]
+		[TestCase(03, new[] { 2 })]
+		[TestCase(04, new[] { 1, 3 })]
+		[TestCase(05, new[] { 3, 1 })]
+		[TestCase(06, new[] { 7, 5 })]
+		[TestCase(07, new[] { 2, 6, 9 })]
+		[TestCase(08, new[] { 2, 6, 9, 15, 23, 41 })]
+		public void GetHashCode_MiscInput_IsGood(int notExpected, int[] links)
 		{
-			var t = new Transaction(items);
+			var t = new Transaction4(links);
 			var result = t.GetHashCode();
 
 			Assert.IsFalse(
@@ -103,4 +102,3 @@ namespace ClopeLib.UnitTests.Data
 		}
 	}
 }
-#endif

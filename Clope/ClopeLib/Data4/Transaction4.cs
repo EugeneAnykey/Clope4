@@ -1,7 +1,7 @@
 ﻿using System;
 using ClopeLib.Helpers;
 
-namespace ClopeLib.Data4
+namespace ClopeLib.Data
 {
 	public class Transaction4 : ITransaction
 	{
@@ -16,7 +16,7 @@ namespace ClopeLib.Data4
 		// init
 		public Transaction4(int[] links)
 		{
-			Links = links ?? throw new NullReferenceException();
+			Links = links ?? throw new ArgumentNullException();
 			hashCode = MakeHashCode();
 		}
 
