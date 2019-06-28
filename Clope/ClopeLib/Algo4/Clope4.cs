@@ -15,17 +15,21 @@ namespace ClopeLib.Algo
 
 
 
-		const int maxSteps =
-			3;
-			//15;
+		const float minRepulsion = 1;
+		const float maxRepulsion = 10;
 
 		const float specThreshold = 0.001f;
+
+		const int maxSteps = 15;
 
 
 
 		// Logger
 		static ILogger logger;
 		public static ILogger Logger { get => logger; set => logger = value ?? new ConsoleLogger(); }
+
+		static int times = 0;
+		static ILogger log1 = new FileLogger("clope4.log.txt");
 
 
 
@@ -39,7 +43,7 @@ namespace ClopeLib.Algo
 		public float Repulsion
 		{
 			get { return repulsion; }
-			set { Utils.TrySetValue(ref repulsion, value, 1, 5); }
+			set { Utils.TrySetValue(ref repulsion, value, minRepulsion, maxRepulsion); }
 		}
 
 
@@ -93,6 +97,8 @@ namespace ClopeLib.Algo
 			Start();
 			Specify();
 			RemoveEmptyClusters();
+
+			//log1.Write($"times = {times}");
 		}
 
 
@@ -164,26 +170,27 @@ namespace ClopeLib.Algo
 			keys.Add(t, bestCluster);
 		}
 
-
-
 		bool SpecifyCluster(ITransaction t)
 		{
 			const double minStartCost = 0;
 
 			var currentCluster = keys[t];
-			var bestCluster = currentCluster;
+			ICluster bestCluster = currentCluster;
 			double maxCost = minStartCost;
 			double remCost = currentCluster.RemoveCost(t);
 
 			foreach (ICluster c in Clusters)
 			{
-				if (c == currentCluster) // except active (current) cluster.  
+				if (c == currentCluster)
+				{
 					continue;
+				}
+				
+				//times++;
 
 				double addCost = c.AddCost(t);
 				if (maxCost < addCost - remCost)
 				{
-					// [?] remCost + or - [?]
 					maxCost = addCost - remCost;
 					bestCluster = c;
 				}

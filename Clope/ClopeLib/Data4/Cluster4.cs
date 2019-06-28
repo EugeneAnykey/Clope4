@@ -55,13 +55,6 @@ namespace ClopeLib.Data
 
 
 
-		// private: GetArea, RecalcCurrentCost.
-		//int GetArea() => attributesLinksCounts.Select(pair => pair.Value).Sum();
-
-		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / Math.Pow(Width, Repulsion);
-
-
-
 		// ICluster: Add, Occurrence, Remove
 		public int Occurrence(int link) => attributesLinksCounts.TryGetValue(link, out int val) ? val : 0;
 
@@ -141,6 +134,9 @@ namespace ClopeLib.Data
 
 
 
+		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / Math.Pow(Width, Repulsion);
+
+
 		#region public: AddCost, RemoveCost.
 		public double AddCost(ITransaction t)
 		{
@@ -152,7 +148,6 @@ namespace ClopeLib.Data
 
 			return (Area + t.Length) * (TransactionsCount + 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
 		}
-
 
 
 		public double RemoveCost(ITransaction t)
