@@ -30,8 +30,8 @@ namespace ClopeWin
 		// for logger and watch
 		Stopwatch watch;
 		Stopwatch stepWatch;
-		string ElapsedMs => $"{watch.ElapsedMilliseconds} ms";
-		string Elapsed => $"{watch.Elapsed.ToString()}";
+		string ElapsedMs(Stopwatch w) => $"{w.ElapsedMilliseconds} ms";
+		string Elapsed(Stopwatch w) => $"{w.Elapsed.ToString()}";
 
 
 
@@ -47,10 +47,11 @@ namespace ClopeWin
 
 		void LoggerAndWatchEnd(string name) => LoggerAndWatchEnd(name, watch);
 		
-		void LoggerAndWatchEnd(string name, Stopwatch watch)
+		void LoggerAndWatchEnd(string name, Stopwatch watch, bool bonusEndLine = true)
 		{
 			watch.Stop();
-			logger.Write($"{name}> done. Time elapsed {Elapsed} ({ElapsedMs})\n------\n");
+			var el = bonusEndLine ? "------\n" : "";
+			logger.Write($"{name}> done. Time elapsed {Elapsed(watch)} ({ElapsedMs(watch)})\n{el}");
 		}
 
 
@@ -135,7 +136,7 @@ namespace ClopeWin
 
 		void StepInfo(int step, int changesDone)
 		{
-			LoggerAndWatchEnd($"On step {step} - {changesDone} changes were done.", stepWatch);
+			LoggerAndWatchEnd($"On step {step} - {changesDone} changes were done.", stepWatch, false);
 			stepWatch.Restart();
 		}
 
