@@ -7,7 +7,11 @@ namespace EugeneAnykey.DebugLib.Loggers
 		readonly protected ILogger linkedLogger;
 		public ILogger LinkedLogger => LinkedLogger;
 
-		protected string Time => DateTime.UtcNow.ToLongTimeString();
+		public bool UseLocalTime { get; set; } = true;
+
+		protected string Time => (UseLocalTime ? DateTime.Now : DateTime.UtcNow).ToLongTimeString();
+
+
 
 		public BaseLogger(ILogger linked = null)
 		{

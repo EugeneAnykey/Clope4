@@ -22,12 +22,14 @@ namespace EugeneAnykey.DebugLib.Loggers
 		public void Write(string message = "")
 		{
 			textBox.AppendText($"{message}\n");
+			textBox.ScrollToCaret();
 			linkedLogger?.Write(message);
 		}
 
 		public void WriteDated(string message)
 		{
 			textBox.AppendText($"{Time}: {message}\n");
+			textBox.ScrollToCaret();
 			linkedLogger?.WriteDated(message);
 		}
 	}

@@ -28,6 +28,8 @@ namespace ClopeWin
 
 		void RunClope()
 		{
+			const string end = "\r\n\r\n";
+
 			listBoxResults.Items.Clear();
 			richTextBox1.Clear();
 
@@ -40,7 +42,7 @@ namespace ClopeWin
 				tester4.Run();
 				richTextBox1.AppendText(tester4.MakeResults());
 
-				for (int i = 0; i < 3; i++) logger.Write("\r\n");
+				logger.Write(end);
 			}
 
 			listBoxResults.SelectedIndex = listBoxResults.Items.Count - 1;
