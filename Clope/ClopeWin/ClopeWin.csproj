@@ -61,6 +61,7 @@
     <Compile Include="DataSetupControl.Designer.cs">
       <DependentUpon>DataSetupControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="SpeedTest.cs" />
     <Compile Include="Tester4.cs" />
     <Compile Include="WinHelper.cs" />
     <Compile Include="MainForm.cs">
