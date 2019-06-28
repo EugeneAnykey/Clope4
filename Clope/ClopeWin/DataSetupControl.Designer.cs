@@ -45,6 +45,7 @@
 			this.numericNullColumn.Name = "numericNullColumn";
 			this.numericNullColumn.Size = new System.Drawing.Size(65, 20);
 			this.numericNullColumn.TabIndex = 17;
+			this.numericNullColumn.Visible = false;
 			// 
 			// numericNullJumps
 			// 
@@ -52,6 +53,7 @@
 			this.numericNullJumps.Name = "numericNullJumps";
 			this.numericNullJumps.Size = new System.Drawing.Size(65, 20);
 			this.numericNullJumps.TabIndex = 16;
+			this.numericNullJumps.Visible = false;
 			// 
 			// LabelNullJumps
 			// 
@@ -61,6 +63,7 @@
 			this.LabelNullJumps.Size = new System.Drawing.Size(61, 13);
 			this.LabelNullJumps.TabIndex = 15;
 			this.LabelNullJumps.Text = "Null Jumps:";
+			this.LabelNullJumps.Visible = false;
 			// 
 			// labelNullColumn
 			// 
@@ -70,6 +73,7 @@
 			this.labelNullColumn.Size = new System.Drawing.Size(88, 13);
 			this.labelNullColumn.TabIndex = 14;
 			this.labelNullColumn.Text = "Add Null Column:";
+			this.labelNullColumn.Visible = false;
 			// 
 			// listBoxFiles
 			// 
@@ -90,14 +94,14 @@
 			this.labelRepulsion.TabIndex = 12;
 			this.labelRepulsion.Text = "Clope repulsion: 1";
 			// 
-			// hScrollBarRepulsion
+			// repulsionScrollBar
 			// 
 			this.repulsionScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.repulsionScrollBar.Location = new System.Drawing.Point(7, 37);
 			this.repulsionScrollBar.Maximum = 109;
 			this.repulsionScrollBar.Minimum = 10;
-			this.repulsionScrollBar.Name = "hScrollBarRepulsion";
+			this.repulsionScrollBar.Name = "repulsionScrollBar";
 			this.repulsionScrollBar.Size = new System.Drawing.Size(423, 20);
 			this.repulsionScrollBar.TabIndex = 11;
 			this.repulsionScrollBar.Value = 10;

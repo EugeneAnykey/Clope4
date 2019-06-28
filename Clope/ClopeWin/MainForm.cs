@@ -18,7 +18,7 @@ namespace ClopeWin
 			InitializeComponent();
 
 			logger = new FormsLogger(richTextBoxLogger, new FileLogger("clope.log.txt"));
-			tabControl1.SelectedIndex = 2;
+			tabControl1.SelectedIndex = 1;
 
 			// events:
 			buttonClopeRun.Click += (_, __) => RunClope();

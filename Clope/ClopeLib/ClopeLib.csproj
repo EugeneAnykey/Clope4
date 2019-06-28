@@ -58,13 +58,12 @@
     <Compile Include="Data4\Transaction4.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Previews\Previewer4.cs" />
+    <Compile Include="_del\_out.cs" />
     <Compile Include="_root\EmptyArrayException.cs" />
-    <Compile Include="_root\IPreviewable.cs" />
     <Compile Include="_root\IAttributeStore.cs" />
     <Compile Include="_root\IAttribute.cs" />
     <Compile Include="Algo4\Clope4.cs" />
     <Compile Include="Data4\AttributeStoreAtList.cs" />
-    <Compile Include="_root\IClopeInfo.cs" />
     <Compile Include="_root\IAlgo.cs" />
     <Compile Include="_root\IClustering.cs" />
     <Compile Include="_root\ICluster.cs" />

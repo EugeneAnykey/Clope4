@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ClopeLib
+﻿namespace ClopeLib
 {
 	public interface ICluster
 	{
@@ -20,7 +18,7 @@ namespace ClopeLib
 		int TransactionsCount { get; }
 
 		/// <summary>
-		/// When there is no transactions (and objects).
+		/// True when there is no transactions (and objects).
 		/// </summary>
 		bool IsEmpty { get; }
 
@@ -32,13 +30,6 @@ namespace ClopeLib
 		/// <param name="t">unique transaction</param>
 		/// <returns>cost</returns>
 		double AddCost(ITransaction t);
-
-		/// <summary>
-		/// Calculates removing cost for a transaction.
-		/// </summary>
-		/// <param name="t">transaction from current list</param>
-		/// <returns>cost</returns>
-		double RemoveCost(ITransaction t);
 
 
 
@@ -60,5 +51,10 @@ namespace ClopeLib
 		/// <param name="s">input object</param>
 		/// <returns>times that object appears</returns>
 		int Occurrence(int i);
+
+
+
+		// for preview
+		int GetCount(int link);
 	}
 }

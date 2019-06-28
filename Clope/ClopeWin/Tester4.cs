@@ -99,6 +99,7 @@ namespace ClopeWin
 		{
 			logger.Write("Prepare test> new reader, parcer, etc.");
 			logger.Write($"> file > {settings.SelectedDelimitedFile.GetPath()}");
+			logger.Write($"> repulsion > {settings.ClopeRepulsion}");
 
 			reader = _GetReader();
 			parcer = _GetParcer();

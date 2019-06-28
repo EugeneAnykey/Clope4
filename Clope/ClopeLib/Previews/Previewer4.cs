@@ -12,7 +12,7 @@ namespace ClopeLib.Previews
 		readonly IEnumerable<ICluster> clusters;
 		readonly IAttributeStore store;
 
-		List<int[]> result;
+		List<int[]> resultForClusters;
 		IAttribute[] attributes;
 
 
@@ -24,7 +24,7 @@ namespace ClopeLib.Previews
 			this.clusters = clusters;
 			this.store = store;
 
-			result = new List<int[]>();
+			resultForClusters = new List<int[]>();
 		}
 
 
@@ -36,19 +36,35 @@ namespace ClopeLib.Previews
 			attributes = store.GetAttributes(attributeColumn);
 			// example for column 3 with names h,g,f,d: [3h, 3g, 3f, 3d].
 
-			// clusters ids.
-			//var cc = clusters.Select(c => c.Id).ToArray();
-
 			// now clusters:
 			foreach (var c in clusters)
 			{
-				int[] counts = new int[attributes.Length];
+				int[] counts = new int[attributes.Length + 2];
 				for (int i = 0; i < attributes.Length; i++)
 				{
 					 counts[i] = CountAttributes(c, attributes[i]);
 				}
-				result.Add(counts);
+
+				// sum and count of line:
+				var sum = counts.Sum();
+				var count = counts.Where(co => co > 0).Count();
+				counts[counts.Length - 2] = sum;
+				counts[counts.Length - 1] = count;
+
+				resultForClusters.Add(counts);
 			}
+
+			// summary line:
+			var summary = new int[attributes.Length + 2];
+			foreach (var line in resultForClusters)
+			{
+				for (int i = 0; i < line.Length; i++)
+				{
+					summary[i] += line[i];
+				}
+			}
+
+			resultForClusters.Add(summary);
 		}
 
 
@@ -60,21 +76,23 @@ namespace ClopeLib.Previews
 
 			// header
 			sb.Append("cluster\t");
-			sb.AppendLine(string.Join(tab, (from a in attributes select a.Name).ToArray()));
+			sb.Append(string.Join(tab, (from a in attributes select a.Name).ToArray()));
+			sb.AppendLine("\tsummary\ttimes");
 			sb.AppendLine("");
 
 			// items
-			for (int i = 0; i < result.Count; i++)
+			for (int i = 0; i < resultForClusters.Count; i++)
 			{
-				var line = string.Join(tab, result[i].ToStrings());
-				sb.AppendLine($"{i + 1}{tab}{line}");
+				var line = string.Join(tab, resultForClusters[i].ToStrings());
+				var lineName = i < resultForClusters.Count - 1 ? $"{i + 1}" : "summary";
+				sb.AppendLine($"{lineName}{tab}{line}");
 			}
 
 			return sb.ToString();
 		}
+		
 
 
-
-		int CountAttributes(ICluster cluster, IAttribute attribute) => (cluster as IPreviewable).GetCount(attribute.Link);
+		int CountAttributes(ICluster cluster, IAttribute attribute) => cluster.GetCount(attribute.Link);
 	}
 }

@@ -24,15 +24,6 @@ namespace ClopeLib.Algo
 
 
 
-		// Logger
-		static ILogger logger;
-		public static ILogger Logger { get => logger; set => logger = value ?? new ConsoleLogger(); }
-
-		static int times = 0;
-		static ILogger log1 = new FileLogger("clope4.log.txt");
-
-
-
 		int stepChanges;
 		public int LatestStep { get; private set; }
 
@@ -97,8 +88,6 @@ namespace ClopeLib.Algo
 			Start();
 			Specify();
 			RemoveEmptyClusters();
-
-			//log1.Write($"times = {times}");
 		}
 
 
@@ -129,7 +118,7 @@ namespace ClopeLib.Algo
 				stepChanges = 0;
 
 				foreach (var t in Transactions)
-					if (SpecifyCluster(t))
+					if (SpecifyClusterAlt(t))
 						stepChanges++;
 
 				OnStepDone(LatestStep++, stepChanges);
@@ -138,7 +127,6 @@ namespace ClopeLib.Algo
 
 
 
-		// private: RemoveEmptyClusters
 		void RemoveEmptyClusters() => Clusters = (from c in Clusters where !c.IsEmpty select c).ToList();
 
 		bool IsUnique(ITransaction t) => !keys.ContainsKey(t);
@@ -170,45 +158,42 @@ namespace ClopeLib.Algo
 			keys.Add(t, bestCluster);
 		}
 
-		bool SpecifyCluster(ITransaction t)
+
+
+		void CheckingForAtLeastOneEmptyCluster()
 		{
-			const double minStartCost = 0;
+			var exists = Clusters.Where(c => c.IsEmpty).Count() > 0;
+			if (!exists)
+				Clusters.Add(new Cluster4(Repulsion));
+		}
+
+
+
+		bool SpecifyClusterAlt(ITransaction t)
+		{
+			CheckingForAtLeastOneEmptyCluster();
 
 			var currentCluster = keys[t];
+			currentCluster.Remove(t);
+
 			ICluster bestCluster = currentCluster;
-			double maxCost = minStartCost;
-			double remCost = currentCluster.RemoveCost(t);
+
+			double maxCost = 0;
 
 			foreach (ICluster c in Clusters)
 			{
-				if (c == currentCluster)
-				{
-					continue;
-				}
-				
-				//times++;
-
 				double addCost = c.AddCost(t);
-				if (maxCost < addCost - remCost)
+				if (maxCost < addCost)
 				{
-					maxCost = addCost - remCost;
+					maxCost = addCost;
 					bestCluster = c;
 				}
 			}
 
-			if (bestCluster != null && bestCluster != currentCluster)
-			{
-				if (bestCluster.IsEmpty)
-					Clusters.Add(new Cluster4(Repulsion));
+			bestCluster.Add(t);
+			keys[t] = bestCluster;
 
-				currentCluster.Remove(t);
-				bestCluster.Add(t);
-
-				keys[t] = bestCluster;
-
-				return true;
-			}
-			return false;
+			return currentCluster != bestCluster;
 		}
 		#endregion
 	}

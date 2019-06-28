@@ -6,14 +6,9 @@ using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeLib.Data
 {
-	public class Cluster4 : ICluster, IPreviewable
+	public class Cluster4 : ICluster
 	{
 		// static
-		static readonly ILogger log1 = new FileLogger("cluster.log1.txt");
-
-		static int UnexpectedOnAdd = 0;
-		static int UnexpectedOnRemove = 0;
-
 		static int latestId = 1;
 
 		public static void ResetId() => latestId = 1;
@@ -27,9 +22,9 @@ namespace ClopeLib.Data
 
 		public int Area { get; private set; }
 
-		public bool IsEmpty => trans.Count == 0;
+		public bool IsEmpty => Transactions.Count == 0;
 
-		public int TransactionsCount => trans.Count;  // C.N
+		public int TransactionsCount => Transactions.Count;
 
 		public int Width { get => attributesLinksCounts.Count; }
 
@@ -38,8 +33,8 @@ namespace ClopeLib.Data
 
 
 		// field 2
-		readonly List<ITransaction> trans = new List<ITransaction>();
-		public List<ITransaction> Transactions { get { return trans; } }
+		//readonly List<ITransaction> trans = new List<ITransaction>();
+		public List<ITransaction> Transactions { get; } = new List<ITransaction>();
 
 		readonly Dictionary<int, int> attributesLinksCounts = new Dictionary<int, int>();
 
@@ -55,68 +50,42 @@ namespace ClopeLib.Data
 
 
 
-		// ICluster: Add, Occurrence, Remove
+		// for preview
+		public int GetCount(int link) => attributesLinksCounts.ContainsKey(link) ? attributesLinksCounts[link] : 0;
+
+
+
+		// ICluster: RecalcCurrentCost, Occurrence, Add, Remove
+		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / Math.Pow(Width, Repulsion);
+
 		public int Occurrence(int link) => attributesLinksCounts.TryGetValue(link, out int val) ? val : 0;
 
 		public void Add(ITransaction t)
 		{
-			AddTransaction(t);
-			AddItems(t);
+			if (!Transactions.Contains(t))
+				Transactions.Add(t);
+			AlterItems(t, 1);
 			RecalcCurrentCost();
 		}
 
 		public void Remove(ITransaction t)
 		{
-			RemoveTransaction(t);
-			RemoveItems(t);
+			Transactions.Remove(t);
+			AlterItems(t, -1);
 			RecalcCurrentCost();
 		}
 
 
 
-		#region private: (Add/Remove) (Transaction/Items).
-		void AddTransaction(ITransaction t)
-		{
-			if (!trans.Contains(t))
-			{
-				trans.Add(t);
-			}
-			else
-			{
-				log1.Write($"add unexpected {++UnexpectedOnAdd}");
-			}
-		}
-
-		void RemoveTransaction(ITransaction t)
-		{
-			if (trans.Contains(t))
-			{
-				trans.Remove(t);
-			}
-			else
-			{
-				log1.Write($"remove unexpected {++UnexpectedOnRemove}");
-			}
-		}
-
-		void AddItems(ITransaction t)
+		// private: AlterItems
+		void AlterItems(ITransaction t, int value)
 		{
 			foreach (var links in t.Links)
 			{
-				ChangeLinksCount(links, 1);
-				Area++;
+				ChangeLinksCount(links, value);
+				Area += value;
 			}
 		}
-
-		void RemoveItems(ITransaction t)
-		{
-			foreach (var links in t.Links)
-			{
-				ChangeLinksCount(links, -1);
-				Area--;
-			}
-		}
-		#endregion
 
 
 
@@ -134,10 +103,7 @@ namespace ClopeLib.Data
 
 
 
-		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / Math.Pow(Width, Repulsion);
-
-
-		#region public: AddCost, RemoveCost.
+		// public: AddCost
 		public double AddCost(ITransaction t)
 		{
 			// res = Snew+ * (TransCount + 1) / Power(newWidth, repulsion) - currentCost.
@@ -148,41 +114,5 @@ namespace ClopeLib.Data
 
 			return (Area + t.Length) * (TransactionsCount + 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
 		}
-
-
-		public double RemoveCost(ITransaction t)
-		{
-			// res = Snew- * (TransCount - 1) / Power(newWidth, repulsion) - currentCost.
-			var NewWidth = Width;
-			foreach (var link in t.Links)
-				if (Occurrence(link) > 0)
-					NewWidth--;
-
-			return (Area - t.Length) * (TransactionsCount - 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
-		}
-		#endregion
-
-
-
-		// IPreviewable:
-		public string MakePreview()
-		{
-			const string separator = ", ";
-			const string startMsg = " *** Cluster <{0}>:\r\n";
-			const string mask = "\t{0}\r\n";
-			string name = Id.ToString();
-
-			var ss = new StringBuilder();
-
-			ss.AppendFormat(startMsg, name);
-			ss.AppendFormat(mask, string.Join(separator, trans));
-			ss.AppendLine();
-
-			return ss.ToString();
-		}
-
-
-
-		public int GetCount(int link) => attributesLinksCounts.ContainsKey(link) ? attributesLinksCounts[link] : 0;
 	}
 }

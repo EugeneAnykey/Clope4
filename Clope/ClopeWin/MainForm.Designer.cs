@@ -15,14 +15,10 @@ namespace ClopeWin
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.GroupBox groupBoxSettings;
 		private System.Windows.Forms.TabControl tabControl1;
-		private System.Windows.Forms.TabPage tabPage1;
+		private System.Windows.Forms.TabPage tabPage1Result;
 		private System.Windows.Forms.RichTextBox richTextBox1;
-		private System.Windows.Forms.TabPage tabPage2Output;
 		private System.Windows.Forms.GroupBox groupBoxResults;
 		private System.Windows.Forms.ListBox listBoxResults;
-		private System.Windows.Forms.SplitContainer splitContainer2;
-		private System.Windows.Forms.RichTextBox richTextBoxOutput;
-		private System.Windows.Forms.RichTextBox richTextBoxInfo;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -54,12 +50,8 @@ namespace ClopeWin
 			this.groupBoxSettings = new System.Windows.Forms.GroupBox();
 			this.dataSetupControl1 = new ClopeWin.DataSetupControl();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
-			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.tabPage1Result = new System.Windows.Forms.TabPage();
 			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-			this.tabPage2Output = new System.Windows.Forms.TabPage();
-			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-			this.richTextBoxOutput = new System.Windows.Forms.RichTextBox();
-			this.richTextBoxInfo = new System.Windows.Forms.RichTextBox();
 			this.tabPage3Logger = new System.Windows.Forms.TabPage();
 			this.richTextBoxLogger = new System.Windows.Forms.RichTextBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -71,12 +63,7 @@ namespace ClopeWin
 			this.groupBoxControl.SuspendLayout();
 			this.groupBoxSettings.SuspendLayout();
 			this.tabControl1.SuspendLayout();
-			this.tabPage1.SuspendLayout();
-			this.tabPage2Output.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-			this.splitContainer2.Panel1.SuspendLayout();
-			this.splitContainer2.Panel2.SuspendLayout();
-			this.splitContainer2.SuspendLayout();
+			this.tabPage1Result.SuspendLayout();
 			this.tabPage3Logger.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -177,8 +164,7 @@ namespace ClopeWin
 			// 
 			// tabControl1
 			// 
-			this.tabControl1.Controls.Add(this.tabPage1);
-			this.tabControl1.Controls.Add(this.tabPage2Output);
+			this.tabControl1.Controls.Add(this.tabPage1Result);
 			this.tabControl1.Controls.Add(this.tabPage3Logger);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -187,16 +173,16 @@ namespace ClopeWin
 			this.tabControl1.Size = new System.Drawing.Size(623, 608);
 			this.tabControl1.TabIndex = 2;
 			// 
-			// tabPage1
+			// tabPage1Result
 			// 
-			this.tabPage1.Controls.Add(this.richTextBox1);
-			this.tabPage1.Location = new System.Drawing.Point(4, 22);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(615, 582);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "tabPage1";
-			this.tabPage1.UseVisualStyleBackColor = true;
+			this.tabPage1Result.Controls.Add(this.richTextBox1);
+			this.tabPage1Result.Location = new System.Drawing.Point(4, 22);
+			this.tabPage1Result.Name = "tabPage1Result";
+			this.tabPage1Result.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage1Result.Size = new System.Drawing.Size(615, 582);
+			this.tabPage1Result.TabIndex = 0;
+			this.tabPage1Result.Text = "Result";
+			this.tabPage1Result.UseVisualStyleBackColor = true;
 			// 
 			// richTextBox1
 			// 
@@ -206,52 +192,6 @@ namespace ClopeWin
 			this.richTextBox1.Size = new System.Drawing.Size(609, 576);
 			this.richTextBox1.TabIndex = 1;
 			this.richTextBox1.Text = "";
-			// 
-			// tabPage2Output
-			// 
-			this.tabPage2Output.Controls.Add(this.splitContainer2);
-			this.tabPage2Output.Location = new System.Drawing.Point(4, 22);
-			this.tabPage2Output.Name = "tabPage2Output";
-			this.tabPage2Output.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2Output.Size = new System.Drawing.Size(615, 582);
-			this.tabPage2Output.TabIndex = 1;
-			this.tabPage2Output.Text = "Output";
-			this.tabPage2Output.UseVisualStyleBackColor = true;
-			// 
-			// splitContainer2
-			// 
-			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer2.Location = new System.Drawing.Point(3, 3);
-			this.splitContainer2.Name = "splitContainer2";
-			// 
-			// splitContainer2.Panel1
-			// 
-			this.splitContainer2.Panel1.Controls.Add(this.richTextBoxOutput);
-			// 
-			// splitContainer2.Panel2
-			// 
-			this.splitContainer2.Panel2.Controls.Add(this.richTextBoxInfo);
-			this.splitContainer2.Size = new System.Drawing.Size(609, 576);
-			this.splitContainer2.SplitterDistance = 372;
-			this.splitContainer2.TabIndex = 0;
-			// 
-			// richTextBoxOutput
-			// 
-			this.richTextBoxOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.richTextBoxOutput.Location = new System.Drawing.Point(0, 0);
-			this.richTextBoxOutput.Name = "richTextBoxOutput";
-			this.richTextBoxOutput.Size = new System.Drawing.Size(372, 576);
-			this.richTextBoxOutput.TabIndex = 0;
-			this.richTextBoxOutput.Text = "";
-			// 
-			// richTextBoxInfo
-			// 
-			this.richTextBoxInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.richTextBoxInfo.Location = new System.Drawing.Point(0, 0);
-			this.richTextBoxInfo.Name = "richTextBoxInfo";
-			this.richTextBoxInfo.Size = new System.Drawing.Size(233, 576);
-			this.richTextBoxInfo.TabIndex = 0;
-			this.richTextBoxInfo.Text = "";
 			// 
 			// tabPage3Logger
 			// 
@@ -293,12 +233,7 @@ namespace ClopeWin
 			this.groupBoxControl.ResumeLayout(false);
 			this.groupBoxSettings.ResumeLayout(false);
 			this.tabControl1.ResumeLayout(false);
-			this.tabPage1.ResumeLayout(false);
-			this.tabPage2Output.ResumeLayout(false);
-			this.splitContainer2.Panel1.ResumeLayout(false);
-			this.splitContainer2.Panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-			this.splitContainer2.ResumeLayout(false);
+			this.tabPage1Result.ResumeLayout(false);
 			this.tabPage3Logger.ResumeLayout(false);
 			this.ResumeLayout(false);
 
