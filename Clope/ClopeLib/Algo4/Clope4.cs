@@ -181,10 +181,10 @@ namespace ClopeLib.Algo
 					continue;
 
 				double addCost = c.AddCost(t);
-				if (maxCost < addCost + remCost)
+				if (maxCost < addCost - remCost)
 				{
 					// [?] remCost + or - [?]
-					maxCost = addCost + remCost;
+					maxCost = addCost - remCost;
 					bestCluster = c;
 				}
 			}
