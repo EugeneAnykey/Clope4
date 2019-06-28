@@ -113,8 +113,6 @@ namespace ClopeLib.Data
 				ChangeLinksCount(links, 1);
 				Area++;
 			}
-
-			//Area = GetArea();
 		}
 
 		void RemoveItems(ITransaction t)
@@ -124,8 +122,6 @@ namespace ClopeLib.Data
 				ChangeLinksCount(links, -1);
 				Area--;
 			}
-
-			//Area = GetArea();
 		}
 		#endregion
 
@@ -133,11 +129,12 @@ namespace ClopeLib.Data
 
 		internal void ChangeLinksCount(int link, int by)
 		{
-			//if (link < 0)
-			//	return;
-
 			if (attributesLinksCounts.ContainsKey(link))
+			{
 				attributesLinksCounts[link] += by;
+				if (attributesLinksCounts[link] == 0)
+					attributesLinksCounts.Remove(link);
+			}
 			else
 				attributesLinksCounts.Add(link, by);
 		}
@@ -163,7 +160,6 @@ namespace ClopeLib.Data
 			// res = Snew- * (TransCount - 1) / Power(newWidth, repulsion) - currentCost.
 			var NewWidth = Width;
 			foreach (var link in t.Links)
-				//if (Occurrence(link) == 1)	- holy shit!
 				if (Occurrence(link) > 0)
 					NewWidth--;
 
