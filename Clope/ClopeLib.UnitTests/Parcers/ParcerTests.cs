@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using ClopeLib.Parcers;
+using ClopeLib.Parsers;
 
 namespace ClopeLib.UnitTests.Parcers
 {
@@ -11,8 +11,8 @@ namespace ClopeLib.UnitTests.Parcers
 		public void Parce_NullInput_ThrowsNullReference()
 		{
 			const string input = null;
-			var parcer = new Parcer();
-			Assert.Catch<NullReferenceException> (() => parcer.Parce(input));
+			var parcer = new Parser();
+			Assert.Catch<NullReferenceException> (() => parcer.Parse(input));
 		}
 		
 
@@ -26,10 +26,10 @@ namespace ClopeLib.UnitTests.Parcers
 		[TestCase("a, b, g, t, , h", new [] {"a", "b", "g", "t", "h"})]
 		public void Parce_NormalInputsWithCommaSpace_ReturnsGood(string input, string[] expected)
 		{
-			var parcer = new Parcer();
-			parcer.Splitter = Parcer.CommaSpaceSplitter;
+			var parcer = new Parser();
+			parcer.Splitter = Parser.CommaSpaceSplitter;
 			
-			var result = parcer.Parce(input);
+			var result = parcer.Parse(input);
 			
 			Assert.AreEqual(
 				expected,
@@ -44,12 +44,12 @@ namespace ClopeLib.UnitTests.Parcers
 		[TestCase("b,,?*?", new [] {"b", "?*?"})]
 		public void Parce_RuledInputsWithCommaSpace_ReturnsGood(string input, string[] expected)
 		{
-			var parcer = new Parcer(
-				Parcer.CommaSpaceSplitter,
+			var parcer = new Parser(
+				Parser.CommaSpaceSplitter,
 				new ElementRule(new[] { "?" }, null)
 			);
 			
-			var result = parcer.Parce(input);
+			var result = parcer.Parse(input);
 			
 			Assert.AreEqual(
 				expected,

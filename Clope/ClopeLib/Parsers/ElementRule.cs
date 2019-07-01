@@ -1,4 +1,4 @@
-﻿namespace ClopeLib.Parcers
+﻿namespace ClopeLib.Parsers
 {
 	public class ElementRule : IElementRule
 	{

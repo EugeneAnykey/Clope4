@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ClopeLib.Parcers
+namespace ClopeLib.Parsers
 {
-	public class Parcer : IParcer
+	public class Parser : IParser
 	{
 		// const
 		public static readonly char[] CommaSplitter = { ',' };
@@ -27,18 +27,18 @@ namespace ClopeLib.Parcers
 
 
 		// init
-		public Parcer(char[] splitter, IElementRule rule)
+		public Parser(char[] splitter, IElementRule rule)
 		{
 			Splitter = splitter;
 			Rule = rule ?? new ElementAlwaysValidRule();
 		}
 
-		public Parcer() : this(CommaSplitter, null) { }
+		public Parser() : this(CommaSplitter, null) { }
 
 
 
 		// public
-		public string[] Parce(string line)
+		public string[] Parse(string line)
 		{
 			var result = line.Split(Splitter, splitOption);
 

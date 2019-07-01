@@ -4,7 +4,7 @@ using System.Diagnostics;
 using ClopeLib;
 using ClopeLib.Algo;
 using ClopeLib.Data;
-using ClopeLib.Parcers;
+using ClopeLib.Parsers;
 using ClopeLib.Previews;
 using ClopeLib.Readers;
 using EugeneAnykey.DebugLib.Loggers;
@@ -25,7 +25,7 @@ namespace ClopeWin
 		DataSetupSettings settings;
 		ILogger logger;
 		IPortionReader reader;
-		IParcer parcer;
+		IParser parcer;
 
 		// for logger and watch
 		Stopwatch watch;
@@ -103,7 +103,7 @@ namespace ClopeWin
 
 		// factory
 		IPortionReader _GetReader() => new Reader(settings.SelectedDelimitedFile.GetPath()) { LinesToReadAtOnce = 243 };
-		IParcer _GetParcer() => new Parcer(settings.SelectedDelimitedFile.FieldSeparators, new ElementRule(determineAsNulls, null));
+		IParser _GetParcer() => new Parser(settings.SelectedDelimitedFile.FieldSeparators, new ElementRule(determineAsNulls, null));
 
 
 
@@ -136,7 +136,7 @@ namespace ClopeWin
 				// get transactions from data portion:
 				foreach (var possibleTransaction in reader.GetData())
 				{
-					var attributes = parcer.Parce(possibleTransaction);
+					var attributes = parcer.Parse(possibleTransaction);
 					tempTrans.Add(new Transaction4(attributeStore.PlaceAndGetLinks(attributes)));
 				}
 
