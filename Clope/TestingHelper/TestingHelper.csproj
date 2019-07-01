@@ -59,6 +59,7 @@
     <Compile Include="FileBroker.cs" />
     <Compile Include="Hasher.cs" />
     <Compile Include="Nullabier.cs" />
+    <Compile Include="SpeedTest.cs" />
     <Compile Include="UnitTests\HasherTests\HasherCounter.cs" />
     <Compile Include="UnitTests\HasherTests\Outputer.cs" />
     <Compile Include="UnitTests\HasherTests\IOutputer.cs" />
@@ -71,6 +72,11 @@
     <Compile Include="UnitTests\DelimitedFileTests.cs" />
     <Compile Include="UnitTests\FileBrokerTests.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\LoggerLib\EugeneAnykey.DebugLib.Loggers.csproj">
+      <Project>{b19399d5-03c5-4d88-a2fd-fdd32f8a7fb5}</Project>
+      <Name>EugeneAnykey.DebugLib.Loggers</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

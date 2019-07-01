@@ -2,13 +2,12 @@
 using System.Linq;
 using ClopeLib.Data;
 using ClopeLib.Helpers;
-using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeLib.Algo
 {
 	public delegate void EventStepDoneHandler(int step, int changesDone);
 
-	public class Clope4 : IClustering
+	public class Clope4
 	{
 		public event EventStepDoneHandler StepDone;
 		void OnStepDone(int step, int changes) => StepDone?.Invoke(step, changes);
@@ -63,12 +62,12 @@ namespace ClopeLib.Algo
 
 
 
-		// IClustering: AddNewTransactions
+		// AddNewTransactions
 		public void AddNewTransactions(ITransaction[] newTransactions) => newTrans.Enqueue(newTransactions);
 
 
 
-		// IClustering: Clear
+		// Clear
 		public void Clear()
 		{
 			newTrans.Clear();
@@ -81,7 +80,7 @@ namespace ClopeLib.Algo
 
 
 
-		// IAlgo: Run
+		// Run
 		public void Run()
 		{
 			LatestStep = 0;
@@ -118,7 +117,7 @@ namespace ClopeLib.Algo
 				stepChanges = 0;
 
 				foreach (var t in Transactions)
-					if (SpecifyClusterAlt(t))
+					if (SpecifyCluster(t))
 						stepChanges++;
 
 				OnStepDone(LatestStep++, stepChanges);
@@ -133,7 +132,7 @@ namespace ClopeLib.Algo
 
 
 
-		#region private: PlaceIntoCluster, SpecifyCluster.
+		#region private: PlaceIntoCluster, SpecifyCluster, CheckingForAtLeastOneEmptyCluster.
 		void PlaceIntoCluster(ITransaction t)
 		{
 			ICluster bestCluster = null;
@@ -142,7 +141,7 @@ namespace ClopeLib.Algo
 
 			foreach (ICluster c in Clusters)
 			{
-				double addCost = c.AddCost(t);
+				double addCost = c.GetAddCost(t);
 				if (maxCost < addCost)
 				{
 					maxCost = addCost;
@@ -169,7 +168,7 @@ namespace ClopeLib.Algo
 
 
 
-		bool SpecifyClusterAlt(ITransaction t)
+		bool SpecifyCluster(ITransaction t)
 		{
 			CheckingForAtLeastOneEmptyCluster();
 
@@ -182,7 +181,7 @@ namespace ClopeLib.Algo
 
 			foreach (ICluster c in Clusters)
 			{
-				double addCost = c.AddCost(t);
+				double addCost = c.GetAddCost(t);
 				if (maxCost < addCost)
 				{
 					maxCost = addCost;

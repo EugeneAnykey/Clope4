@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace ClopeWin
+namespace TestingHelper
 {
 	public class SpeedTest
 	{

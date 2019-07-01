@@ -24,14 +24,13 @@ namespace ClopeLib.Data
 
 		// Equals
 		//public override bool Equals(object obj) => Equals(obj as ITransaction);
-
 		public override bool Equals(object obj) => EqualsPrecise(obj as ITransaction);
 
-		public bool EqualsPrecise(ITransaction t) => t != null && hashCode == t.GetHashCode() && Equ(t);
+		public bool EqualsPrecise(ITransaction t) => t != null && hashCode == t.GetHashCode() && EqualsArrays(t);
 
 		public bool Equals(ITransaction t) => t != null && hashCode == t.GetHashCode();
 
-		bool Equ(ITransaction t) => ArrayHelper.Equals(Links, t.Links);
+		bool EqualsArrays(ITransaction t) => ArrayHelper.Equals(Links, t.Links);
 
 
 

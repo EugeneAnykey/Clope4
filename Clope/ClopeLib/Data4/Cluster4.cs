@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeLib.Data
 {
@@ -32,8 +29,7 @@ namespace ClopeLib.Data
 
 
 
-		// field 2
-		//readonly List<ITransaction> trans = new List<ITransaction>();
+		// field
 		public List<ITransaction> Transactions { get; } = new List<ITransaction>();
 
 		readonly Dictionary<int, int> attributesLinksCounts = new Dictionary<int, int>();
@@ -55,7 +51,7 @@ namespace ClopeLib.Data
 
 
 
-		// ICluster: RecalcCurrentCost, Occurrence, Add, Remove
+		// RecalcCurrentCost, Occurrence, Add, Remove
 		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / Math.Pow(Width, Repulsion);
 
 		public int Occurrence(int link) => attributesLinksCounts.TryGetValue(link, out int val) ? val : 0;
@@ -89,7 +85,7 @@ namespace ClopeLib.Data
 
 
 
-		internal void ChangeLinksCount(int link, int by)
+		void ChangeLinksCount(int link, int by)
 		{
 			if (attributesLinksCounts.ContainsKey(link))
 			{
@@ -103,8 +99,8 @@ namespace ClopeLib.Data
 
 
 
-		// public: AddCost
-		public double AddCost(ITransaction t)
+		// public: GetAddCost
+		public double GetAddCost(ITransaction t)
 		{
 			// res = Snew+ * (TransCount + 1) / Power(newWidth, repulsion) - currentCost.
 			var NewWidth = Width;

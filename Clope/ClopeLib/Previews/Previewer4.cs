@@ -5,7 +5,7 @@ using ClopeLib.Helpers;
 
 namespace ClopeLib.Previews
 {
-	public class Previewer4 : IPreview
+	public class Previewer4
 	{
 		// field
 		readonly IEnumerable<ITransaction> transactions;
@@ -29,14 +29,13 @@ namespace ClopeLib.Previews
 
 
 
-		// public
+		// public: MakePreview
 		public void MakePreview(int attributeColumn)
 		{
-			// Attributes:
+			// getting attributes names at specified position:
 			attributes = store.GetAttributes(attributeColumn);
-			// example for column 3 with names h,g,f,d: [3h, 3g, 3f, 3d].
 
-			// now clusters:
+			// now checking clusters:
 			foreach (var c in clusters)
 			{
 				int[] counts = new int[attributes.Length + 2];
@@ -45,15 +44,26 @@ namespace ClopeLib.Previews
 					 counts[i] = CountAttributes(c, attributes[i]);
 				}
 
-				// sum and count of line:
-				var sum = counts.Sum();
-				var count = counts.Where(co => co > 0).Count();
-				counts[counts.Length - 2] = sum;
-				counts[counts.Length - 1] = count;
+				UpdateLineSummary(ref counts);
 
 				resultForClusters.Add(counts);
 			}
 
+			resultForClusters.Add(GetTotalSummary());
+		}
+
+		void UpdateLineSummary(ref int[] counts)
+		{
+			var sum = counts.Sum();
+			var count = counts.Where(co => co > 0).Count();
+			counts[counts.Length - 2] = sum;
+			counts[counts.Length - 1] = count;
+		}
+
+
+
+		int[] GetTotalSummary()
+		{
 			// summary line:
 			var summary = new int[attributes.Length + 2];
 			foreach (var line in resultForClusters)
@@ -63,12 +73,12 @@ namespace ClopeLib.Previews
 					summary[i] += line[i];
 				}
 			}
-
-			resultForClusters.Add(summary);
+			return summary;
 		}
 
 
 
+		// public: GetOutput.
 		public string GetOutput()
 		{
 			const string tab = "\t";

@@ -28,7 +28,6 @@
 		public bool ElementIsValid(string line)
 		{
 			foreach (var invalid in Invalids)
-				//if (line.Contains(invalid))
 				if (line.Equals(invalid))
 					return false;
 			return true;

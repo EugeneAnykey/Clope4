@@ -30,8 +30,6 @@ namespace ClopeWin
 		// for logger and watch
 		Stopwatch watch;
 		Stopwatch stepWatch;
-		string ElapsedMs(Stopwatch w) => $"{w.ElapsedMilliseconds} ms";
-		string Elapsed(Stopwatch w) => $"{w.Elapsed.ToString()}";
 
 
 
@@ -69,7 +67,7 @@ namespace ClopeWin
 
 
 
-		// public
+		// public Run, MakeResults.
 		public void Run()
 		{
 			watch.Reset();
@@ -84,6 +82,21 @@ namespace ClopeWin
 
 			watch.Stop();
 			stepWatch.Stop();
+		}
+
+
+
+		public string MakeResults(int column = 0)
+		{
+			LoggerAndWatchStart("Results");
+
+			var preview = new Previewer4(clope.Transactions, clope.Clusters, attributeStore);
+			preview.MakePreview(column);
+
+			LoggerAndWatchEnd("Results");
+			logger.Write($"Steps done: {clope.LatestStep}.");
+
+			return preview.GetOutput();
 		}
 
 
@@ -135,12 +148,6 @@ namespace ClopeWin
 
 
 
-		void StepInfo(int step, int changesDone)
-		{
-			LoggerAndWatchEnd($"On step {step} - {changesDone} changes were done.", stepWatch, false);
-			stepWatch.Restart();
-		}
-
 		void RunTest()
 		{
 			LoggerAndWatchStart("Clope");
@@ -151,18 +158,14 @@ namespace ClopeWin
 
 
 
-		// reports
-		public string MakeResults(int column = 0)
+		// private: for outputs
+		string ElapsedMs(Stopwatch w) => $"{w.ElapsedMilliseconds} ms";
+		string Elapsed(Stopwatch w) => $"{w.Elapsed.ToString()}";
+
+		void StepInfo(int step, int changesDone)
 		{
-			LoggerAndWatchStart("Results");
-
-			var preview = new Previewer4(clope.Transactions, clope.Clusters, attributeStore);
-			preview.MakePreview(column);
-
-			LoggerAndWatchEnd("Results");
-			logger.Write($"Steps done: {clope.LatestStep}.");
-
-			return preview.GetOutput();
+			LoggerAndWatchEnd($"On step {step} - {changesDone} changes were done.", stepWatch, false);
+			stepWatch.Restart();
 		}
 	}
 }

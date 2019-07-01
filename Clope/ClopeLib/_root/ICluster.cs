@@ -29,7 +29,7 @@
 		/// </summary>
 		/// <param name="t">unique transaction</param>
 		/// <returns>cost</returns>
-		double AddCost(ITransaction t);
+		double GetAddCost(ITransaction t);
 
 
 
