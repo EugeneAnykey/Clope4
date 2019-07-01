@@ -39,6 +39,7 @@ namespace ClopeWin
 			);
 
 			FileBroker = new FileBroker(@"..\..\..\..\data\");
+			//FileBroker = new FileBroker(@".\data\");
 
 			foreach (var file in Files)
 			{
