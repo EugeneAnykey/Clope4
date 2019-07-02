@@ -19,38 +19,20 @@ namespace ClopeWin
 
 
 		// field
+		List<string> input;
+		List<ITransaction> transactions;
 		IAttributeStore attributeStore;
-		//IClustering clope;
+
 		Clope4 clope;
+
 		DataSetupSettings settings;
 		ILogger logger;
 		IPortionReader reader;
-		IParser parcer;
+		IParser parser;
 
 		// for logger and watch
 		Stopwatch watch;
 		Stopwatch stepWatch;
-
-
-
-		void LoggerAndWatchStart(string name) => LoggerAndWatchStart(name, watch);
-
-		void LoggerAndWatchStart(string name, Stopwatch watch)
-		{
-			logger.Write($"{name}> start...");
-			watch.Restart();
-		}
-
-
-
-		void LoggerAndWatchEnd(string name) => LoggerAndWatchEnd(name, watch);
-		
-		void LoggerAndWatchEnd(string name, Stopwatch watch, bool bonusEndLine = true)
-		{
-			watch.Stop();
-			var el = bonusEndLine ? "------\n" : "";
-			logger.Write($"{name}> done. Time elapsed {Elapsed(watch)} ({ElapsedMs(watch)})\n{el}");
-		}
 
 
 
@@ -63,11 +45,13 @@ namespace ClopeWin
 			watch = new Stopwatch();
 			stepWatch = new Stopwatch();
 			attributeStore = new AttributeStoreAtList();
+			transactions = new List<ITransaction>();
+			input = new List<string>();
 		}
 
 
 
-		// public Run, MakeResults.
+		// public Run.
 		public void Run()
 		{
 			watch.Reset();
@@ -76,7 +60,7 @@ namespace ClopeWin
 
 			PrepareTest();
 			ReadData();
-			RunTest();
+			RunClope();
 
 			logger.WriteDated("Tester finished.\r\n");
 
@@ -86,38 +70,23 @@ namespace ClopeWin
 
 
 
-		public string MakeResults(int column = 0)
-		{
-			LoggerAndWatchStart("Results");
-
-			var preview = new Previewer4(clope.Transactions, clope.Clusters, attributeStore);
-			preview.MakePreview(column);
-
-			LoggerAndWatchEnd("Results");
-			logger.Write($"Steps done: {clope.LatestStep}.");
-
-			return preview.GetOutput();
-		}
-
-
-
 		// factory
-		IPortionReader _GetReader() => new Reader(settings.SelectedDelimitedFile.GetPath()) { LinesToReadAtOnce = 243 };
-		IParser _GetParcer() => new Parser(settings.SelectedDelimitedFile.FieldSeparators, new ElementRule(determineAsNulls, null));
+		const int LinesToReadAtOnceForExample = 423;
+		IPortionReader _GetReader() => new Reader(settings.SelectedDelimitedFile.GetPath()) { LinesToReadAtOnce = LinesToReadAtOnceForExample };
+		IParser _GetParser() => new Parser(settings.SelectedDelimitedFile.FieldSeparators, new ElementRule(determineAsNulls, null));
 
 
 
 		// logic
 		void PrepareTest()
 		{
-			logger.Write("Prepare test> new reader, parcer, etc.");
+			logger.Write("Prepare test> new reader, parser, etc.");
 			logger.Write($"> file > {settings.SelectedDelimitedFile.GetPath()}");
 			logger.Write($"> repulsion > {settings.ClopeRepulsion}");
 
 			reader = _GetReader();
-			parcer = _GetParcer();
+			parser = _GetParser();
 
-			reader.GetData(settings.SelectedDelimitedFile.FirstLinesToSkip);
 			clope.Repulsion = settings.ClopeRepulsion;
 			clope.StepDone += (step, changes) => StepInfo(step, changes);
 			logger.Write("------\n");
@@ -127,7 +96,9 @@ namespace ClopeWin
 
 		void ReadData()
 		{
-			LoggerAndWatchStart("Read");
+			LoggingStart("Read");
+
+			reader.SkipLines(settings.SelectedDelimitedFile.FirstLinesToSkip);
 
 			while (!reader.ReachedEndOfFile)
 			{
@@ -136,36 +107,75 @@ namespace ClopeWin
 				// get transactions from data portion:
 				foreach (var possibleTransaction in reader.GetData())
 				{
-					var attributes = parcer.Parse(possibleTransaction);
-					tempTrans.Add(new Transaction4(attributeStore.PlaceAndGetLinks(attributes)));
+					input.Add(possibleTransaction);
+					var attributes = parser.Parse(possibleTransaction);
+					var t = new Transaction4(attributeStore.PlaceAndGetLinks(attributes));
+					tempTrans.Add(t);
+					//transactions.Add(t);
 				}
+
+				transactions.AddRange(tempTrans);
 
 				clope.AddNewTransactions(tempTrans.ToArray());
 			}
 
-			LoggerAndWatchEnd("Read");
+			//clope.AddNewTransactions(transactions.ToArray());
+
+			LoggingEnd("Read");
 		}
 
 
 
-		void RunTest()
+		void RunClope()
 		{
-			LoggerAndWatchStart("Clope");
+			LoggingStart("Clope");
 			stepWatch.Start();
 			clope.Run();
-			LoggerAndWatchEnd("Clope");
+			LoggingEnd("Clope");
 		}
 
 
 
-		// private: for outputs
+		public string MakeResults(int column = 0)
+		{
+			LoggingStart("Results");
+
+			var preview = new Previewer4(clope.GetTransactions_Axe(), clope.Clusters, attributeStore);
+			preview.MakePreview(column);
+
+			LoggingEnd("Results");
+			logger.Write($"Steps done: {clope.LatestStep}.");
+
+			return preview.GetOutput();
+		}
+
+
+
+		// for outputs:
 		string ElapsedMs(Stopwatch w) => $"{w.ElapsedMilliseconds} ms";
 		string Elapsed(Stopwatch w) => $"{w.Elapsed.ToString()}";
 
 		void StepInfo(int step, int changesDone)
 		{
-			LoggerAndWatchEnd($"On step {step} - {changesDone} changes were done.", stepWatch, false);
+			LoggingEnd($"On step {step} - {changesDone} changes were done.", stepWatch, false);
 			stepWatch.Restart();
+		}
+
+		void LoggingStart(string name) => LoggingStart(name, watch);
+
+		void LoggingStart(string name, Stopwatch watch)
+		{
+			logger.Write($"{name}> start...");
+			watch.Restart();
+		}
+
+		void LoggingEnd(string name) => LoggingEnd(name, watch);
+
+		void LoggingEnd(string name, Stopwatch watch, bool bonusEndLine = true)
+		{
+			watch.Stop();
+			var el = bonusEndLine ? "------\n" : "";
+			logger.Write($"{name}> done. Time elapsed {Elapsed(watch)} ({ElapsedMs(watch)})\n{el}");
 		}
 	}
 }
