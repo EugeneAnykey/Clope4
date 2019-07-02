@@ -58,12 +58,12 @@ namespace ClopeLib.Algo
 
 
 
-		bool NeedSpec(int changesCount) => ((double)stepChanges / Transactions.Count) > specThreshold && LatestStep < maxSteps;
+		bool NeedSpec(int changesCount) => ((double)stepChanges / keys.Count) > specThreshold && LatestStep < maxSteps;
 
 
 
 		// AddNewTransactions
-		public void AddNewTransactions(ITransaction[] newTransactions) => newTrans.Enqueue(newTransactions);
+		public void AddNewTransactions(IEnumerable<ITransaction> newTransactions) => newTrans.Enqueue(newTransactions);
 
 
 
@@ -195,5 +195,9 @@ namespace ClopeLib.Algo
 			return currentCluster != bestCluster;
 		}
 		#endregion
+
+
+
+		public IEnumerable<ITransaction> GetTransactions_Axe() => keys.Select(t => t.Key).ToArray();
 	}
 }
