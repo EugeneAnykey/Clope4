@@ -62,5 +62,15 @@ namespace ClopeLib.Readers
 
 			return result;
 		}
+
+		public void SkipLines(int linesToSkip)
+		{
+			int i = linesToSkip;
+
+			while (!reader.EndOfStream && i-- > 0)
+			{
+				reader.ReadLine();
+			}
+		}
 	}
 }

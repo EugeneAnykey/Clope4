@@ -7,5 +7,7 @@ namespace ClopeLib.Readers
 		int LinesToReadAtOnce { get; set; }
 
 		List<string> GetData(int linesToRead);
+
+		void SkipLines(int linesToSkip);
 	}
 }
