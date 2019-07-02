@@ -19,9 +19,9 @@ namespace ClopeLib.Data
 
 		public int Area { get; private set; }
 
-		public bool IsEmpty => Transactions.Count == 0;
+		public bool IsEmpty => TransactionsCount == 0;
 
-		public int TransactionsCount => Transactions.Count;
+		public int TransactionsCount { get; private set; }
 
 		public int Width { get => attributesLinksCounts.Count; }
 
@@ -30,8 +30,6 @@ namespace ClopeLib.Data
 
 
 		// field
-		public List<ITransaction> Transactions { get; } = new List<ITransaction>();
-
 		readonly Dictionary<int, int> attributesLinksCounts = new Dictionary<int, int>();
 
 
@@ -58,15 +56,14 @@ namespace ClopeLib.Data
 
 		public void Add(ITransaction t)
 		{
-			if (!Transactions.Contains(t))
-				Transactions.Add(t);
+			TransactionsCount++;
 			AlterItems(t, 1);
 			RecalcCurrentCost();
 		}
 
 		public void Remove(ITransaction t)
 		{
-			Transactions.Remove(t);
+			TransactionsCount--;
 			AlterItems(t, -1);
 			RecalcCurrentCost();
 		}
