@@ -61,11 +61,10 @@
     <Compile Include="Helpers\UtilsTests.cs" />
     <Compile Include="Helpers\ArrayHelperTests.cs" />
     <Compile Include="Helpers\ConvertHelperTests.cs" />
-    <Compile Include="Parcers\ParcerTests.cs" />
+    <Compile Include="Parsers\ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FileDeployer.cs" />
     <Compile Include="Readers\ReaderTests.cs" />
-    <Compile Include="Readers\SimpleReaderTests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

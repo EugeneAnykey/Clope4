@@ -9,9 +9,8 @@ namespace ClopeLib.UnitTests.Readers
 	[TestFixture]
 	public class ReaderTests
 	{
-		#region factory
+		// factory
 		Reader _GetReader(string filename) => new Reader(filename);
-		#endregion
 
 
 

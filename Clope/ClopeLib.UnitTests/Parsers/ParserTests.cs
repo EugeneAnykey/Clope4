@@ -2,10 +2,10 @@
 using NUnit.Framework;
 using ClopeLib.Parsers;
 
-namespace ClopeLib.UnitTests.Parcers
+namespace ClopeLib.UnitTests.Parsers
 {
 	[TestFixture]
-	public class ParcerTests
+	public class ParserTests
 	{
 		[Test]
 		public void Parce_NullInput_ThrowsNullReference()
