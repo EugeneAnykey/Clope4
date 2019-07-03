@@ -11,13 +11,13 @@ namespace EugeneAnykey.DebugLib.Loggers
 		// ILogger
 		public void Write(string message)
 		{
-			Console.WriteLine($"{message}\n");
+			Console.WriteLine($"{message}");
 			linkedLogger?.Write(message);
 		}
 
 		public void WriteDated(string message)
 		{
-			Console.WriteLine($"{Time}: {message}\n");
+			Console.WriteLine($"{Time}: {message}");
 			linkedLogger?.WriteDated(message);
 		}
 	}
