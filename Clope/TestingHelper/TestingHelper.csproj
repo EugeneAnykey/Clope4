@@ -59,7 +59,6 @@
     <Compile Include="FileBroker.cs" />
     <Compile Include="Hasher.cs" />
     <Compile Include="Nullabier.cs" />
-    <Compile Include="SpeedTest.cs" />
     <Compile Include="UnitTests\HasherTests\HasherCounter.cs" />
     <Compile Include="UnitTests\HasherTests\Outputer.cs" />
     <Compile Include="UnitTests\HasherTests\IOutputer.cs" />
