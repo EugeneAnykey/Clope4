@@ -14,6 +14,7 @@ namespace ClopeLib.Previews
 
 		List<int[]> resultForClusters;
 		IAttribute[] attributes;
+		int[] links;
 
 
 
@@ -25,23 +26,26 @@ namespace ClopeLib.Previews
 			this.store = store;
 
 			resultForClusters = new List<int[]>();
+
+			attributes = new IAttribute[0];
+			links = new int[0];
 		}
 
 
 
-		// public: MakePreview
+		// public
 		public void MakePreview(int attributeColumn)
 		{
-			// getting attributes names at specified position:
 			attributes = store.GetAttributes(attributeColumn);
+			links = store.GetAttributesLinks(attributeColumn);
 
 			// now checking clusters:
 			foreach (var c in clusters)
 			{
-				int[] counts = new int[attributes.Length + 2];
-				for (int i = 0; i < attributes.Length; i++)
+				int[] counts = new int[links.Length + 2];
+				for (int i = 0; i < links.Length; i++)
 				{
-					 counts[i] = CountAttributes(c, attributes[i]);
+					counts[i] = CountAttributes(c, links[i]);
 				}
 
 				UpdateLineSummary(ref counts);
@@ -52,33 +56,8 @@ namespace ClopeLib.Previews
 			resultForClusters.Add(GetTotalSummary());
 		}
 
-		void UpdateLineSummary(ref int[] counts)
-		{
-			var sum = counts.Sum();
-			var count = counts.Where(co => co > 0).Count();
-			counts[counts.Length - 2] = sum;
-			counts[counts.Length - 1] = count;
-		}
 
 
-
-		int[] GetTotalSummary()
-		{
-			// summary line:
-			var summary = new int[attributes.Length + 2];
-			foreach (var line in resultForClusters)
-			{
-				for (int i = 0; i < line.Length; i++)
-				{
-					summary[i] += line[i];
-				}
-			}
-			return summary;
-		}
-
-
-
-		// public: GetOutput.
 		public string GetOutput()
 		{
 			const string tab = "\t";
@@ -100,9 +79,31 @@ namespace ClopeLib.Previews
 
 			return sb.ToString();
 		}
-		
 
 
-		int CountAttributes(ICluster cluster, IAttribute attribute) => cluster.GetCount(attribute.Link);
+
+		// private
+		void UpdateLineSummary(ref int[] counts)
+		{
+			var sum = counts.Sum();
+			var count = counts.Where(co => co > 0).Count();
+			counts[counts.Length - 2] = sum;
+			counts[counts.Length - 1] = count;
+		}
+
+		int[] GetTotalSummary()
+		{
+			var summary = new int[links.Length + 2];
+			foreach (var line in resultForClusters)
+			{
+				for (int i = 0; i < line.Length; i++)
+				{
+					summary[i] += line[i];
+				}
+			}
+			return summary;
+		}
+
+		int CountAttributes(ICluster cluster, int attributeLink) => cluster.GetCount(attributeLink);
 	}
 }
