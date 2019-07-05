@@ -21,7 +21,6 @@ namespace ClopeWin
 		// field
 		List<string> input;
 		List<ITransaction> transactions;
-		IAttributeStore attributeStore;
 
 		Clope4 clope;
 
@@ -29,6 +28,7 @@ namespace ClopeWin
 		ILogger logger;
 		IPortionReader reader;
 		IParser parser;
+		IAttributeStore attributeStore;
 
 		// for logger and watch
 		Stopwatch watch;
@@ -44,7 +44,6 @@ namespace ClopeWin
 			this.settings = settings;
 			watch = new Stopwatch();
 			stepWatch = new Stopwatch();
-			attributeStore = new AttributeStoreAtList();
 			transactions = new List<ITransaction>();
 			input = new List<string>();
 		}
@@ -73,19 +72,30 @@ namespace ClopeWin
 		// factory
 		const int LinesToReadAtOnceForExample = 423;
 		IPortionReader _GetReader() => new Reader(settings.SelectedDelimitedFile.GetPath()) { LinesToReadAtOnce = LinesToReadAtOnceForExample };
+
 		IParser _GetParser() => new Parser(settings.SelectedDelimitedFile.FieldSeparators, new ElementRule(determineAsNulls, null));
+
+		IAttributeStore _GetAttributeStore() => new AttributeStoreAtDic();
 
 
 
 		// logic
 		void PrepareTest()
 		{
-			logger.Write("Prepare test> new reader, parser, etc.");
-			logger.Write($"> file > {settings.SelectedDelimitedFile.GetPath()}");
-			logger.Write($"> repulsion > {settings.ClopeRepulsion}");
-
 			reader = _GetReader();
 			parser = _GetParser();
+			attributeStore = _GetAttributeStore();
+
+			var initiatedObjects = string.Join<Type>(", ", new[] {
+				reader.GetType(),
+				parser.GetType(),
+				attributeStore.GetType(),
+			});
+
+			logger.Write($"Prepare test>");
+			logger.Write($"> initiated > {initiatedObjects}");
+			logger.Write($"> file      > {settings.SelectedDelimitedFile.GetPath()}");
+			logger.Write($"> repulsion > {settings.ClopeRepulsion}");
 
 			clope.Repulsion = settings.ClopeRepulsion;
 			clope.StepDone += (step, changes) => StepInfo(step, changes);
@@ -111,15 +121,12 @@ namespace ClopeWin
 					var attributes = parser.Parse(possibleTransaction);
 					var t = new Transaction4(attributeStore.PlaceAndGetLinks(attributes));
 					tempTrans.Add(t);
-					//transactions.Add(t);
 				}
 
 				transactions.AddRange(tempTrans);
 
 				clope.AddNewTransactions(tempTrans.ToArray());
 			}
-
-			//clope.AddNewTransactions(transactions.ToArray());
 
 			LoggingEnd("Read");
 		}
