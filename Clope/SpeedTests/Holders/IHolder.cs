@@ -6,6 +6,8 @@
 
 		IItem[] Retrieve(int id);
 
+		int[] RetrieveIndicies(int id);
+
 		IItem RetrieveByIndex(int index);
 	}
 }

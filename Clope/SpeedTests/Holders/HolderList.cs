@@ -1,4 +1,4 @@
-﻿#define struct1
+﻿#define struct
 
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,6 @@ namespace SpeedTests.Holders
 		new StructItem(index, name);
 #else
 		new ClassItem(index, name);
-			
 #endif
 
 
@@ -30,7 +29,7 @@ namespace SpeedTests.Holders
 
 		int PlaceItem(IItem at)
 		{
-			var index = 0;
+			int index;
 			if (!items.Contains(at))
 			{
 				index = items.Count;
@@ -45,6 +44,19 @@ namespace SpeedTests.Holders
 
 
 		public IItem[] Retrieve(int id) => items.Where(a => a.Id == id).ToArray();
+
+		public int[] RetrieveIndicies(int id)
+		{
+			List<int> res = new List<int>();
+
+			for (int i = 0; i < items.Count; i++)
+			{
+				if (items[i].Id == id)
+					res.Add(i);
+			}
+
+			return res.ToArray();
+		}
 
 		public IItem RetrieveByIndex(int index) => 0 <= index && index < items.Count ? items[index] : null;
 

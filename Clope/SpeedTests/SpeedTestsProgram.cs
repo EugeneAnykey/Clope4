@@ -1,6 +1,4 @@
 ﻿using EugeneAnykey.DebugLib.Loggers;
-using System;
-using System.Linq;
 
 namespace SpeedTests
 {
@@ -8,17 +6,29 @@ namespace SpeedTests
 	{
 		static void Main(string[] args)
 		{
-			RunPowerCachingTest();
+			//RunPowerCachingSpeedTest();
+
+			RunHoldersSpeedTest();
 		}
 
 
 
-		static void RunPowerCachingTest()
+		static void RunPowerCachingSpeedTest()
 		{
 			const string logFilename = "speed-power_caching.txt";
 			ILogger logger = new FileLogger(logFilename, new ConsoleLogger());
 
 			new PowerCachingTest(logger).Run();
+		}
+
+
+
+		static void RunHoldersSpeedTest()
+		{
+			const string logFilename = "speed-holders.txt";
+			ILogger logger = new FileLogger(logFilename, new ConsoleLogger());
+
+			new HoldersSpeedTest(logger).Run();
 		}
 	}
 }
