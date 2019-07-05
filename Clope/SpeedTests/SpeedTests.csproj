@@ -38,9 +38,13 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HoldingObjects\HolderList.cs" />
+    <Compile Include="HoldingObjects\IHolder.cs" />
+    <Compile Include="HoldingObjects\IItem.cs" />
     <Compile Include="SpeedTestsProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PowerCachingTest.cs" />
+    <Compile Include="_e.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LoggerLib\EugeneAnykey.DebugLib.Loggers.csproj">
