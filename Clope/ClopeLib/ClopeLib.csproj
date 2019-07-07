@@ -51,6 +51,8 @@
     <Reference Include="System.Data.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data4\IndexCounterAtArray.cs" />
+    <Compile Include="Data4\IndexCounterAtDic.cs" />
     <Compile Include="Data4\AttributeStoreAtDic.cs" />
     <Compile Include="Helpers\CollectionsHelper.cs" />
     <Compile Include="Data4\Cluster4.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Previews\Previewer4.cs" />
     <Compile Include="_root\EmptyArrayException.cs" />
+    <Compile Include="_root\IIndexCounter.cs" />
     <Compile Include="_root\IAttributeStore.cs" />
     <Compile Include="_root\IAttribute.cs" />
     <Compile Include="Algo4\Clope4.cs" />
