@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define cou
+
+using System;
 using System.Collections.Generic;
 
 namespace ClopeLib.Data
@@ -23,14 +25,24 @@ namespace ClopeLib.Data
 
 		public int TransactionsCount { get; private set; }
 
-		public int Width { get => attributesLinksCounts.Count; }
-
 		double currentCost;
 
+#if cou
+		public int Width { get => counter.Positives; }
 
+		//readonly IIndexCounter counter = new IndexCounterAtDic();
+		readonly IIndexCounter counter = new IndexCounterAtArray();
 
-		// field
+		public int Occurrence(int link) => counter[link];
+
+#else
+		
+		public int Width { get => attributesLinksCounts.Count; }
+		
 		readonly Dictionary<int, int> attributesLinksCounts = new Dictionary<int, int>();
+		
+		public int Occurrence(int link) => attributesLinksCounts.TryGetValue(link, out int val) ? val : 0;
+#endif
 
 
 
@@ -44,33 +56,41 @@ namespace ClopeLib.Data
 
 
 
-		// for preview
-		public int GetCount(int link) => attributesLinksCounts.ContainsKey(link) ? attributesLinksCounts[link] : 0;
-
-
-
-		// RecalcCurrentCost, Occurrence, Add, Remove
 		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / Math.Pow(Width, Repulsion);
 
-		public int Occurrence(int link) => attributesLinksCounts.TryGetValue(link, out int val) ? val : 0;
+
 
 		public void Add(ITransaction t)
 		{
 			TransactionsCount++;
+
+#if cou
+			Area += t.Links.Length;
+			counter.Inc(t.Links);
+#else
 			AlterItems(t, 1);
+#endif
+
 			RecalcCurrentCost();
 		}
 
 		public void Remove(ITransaction t)
 		{
 			TransactionsCount--;
+
+#if cou
+			Area -= t.Links.Length;
+			counter.Dec(t.Links);
+#else
 			AlterItems(t, -1);
+#endif
+
 			RecalcCurrentCost();
 		}
 
 
 
-		// private: AlterItems
+#if !cou
 		void AlterItems(ITransaction t, int value)
 		{
 			foreach (var links in t.Links)
@@ -93,16 +113,20 @@ namespace ClopeLib.Data
 			else
 				attributesLinksCounts.Add(link, by);
 		}
+#endif
 
 
 
-		// public: GetAddCost
 		public double GetAddCost(ITransaction t)
 		{
 			// res = Snew+ * (TransCount + 1) / Power(newWidth, repulsion) - currentCost.
 			var NewWidth = Width;
 			foreach (var link in t.Links)
+#if cou
+				if (counter[link] == 0)
+#else
 				if (Occurrence(link) == 0)
+#endif
 					NewWidth++;
 
 			return (Area + t.Length) * (TransactionsCount + 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
