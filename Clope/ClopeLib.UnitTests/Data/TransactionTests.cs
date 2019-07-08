@@ -19,15 +19,13 @@ namespace ClopeLib.UnitTests.Data
 
 
 		[Test]
-		public void Equals_SameArray_IsTrue()
+		public void Equals_OneArray_IsFalse()
 		{
 			var links = new[] { 1, 3, 7 };
 			var trans1 = new Transaction4(links);
 			var trans2 = new Transaction4(links);
 
-			var equals = trans1.Equals(trans2);
-
-			Assert.IsTrue(equals);
+			Assert.IsFalse(trans1.Equals(trans2));
 		}
 
 
@@ -48,16 +46,14 @@ namespace ClopeLib.UnitTests.Data
 
 
 		[Test]
-		public void Equals_SimilarArrays_IsTrue()
+		public void Equals_SimilarArrays_IsFalse()
 		{
 			var links1 = new[] { 1, 3, 7 };
 			var links2 = new[] { 1, 3, 7 };
 			var trans1 = new Transaction4(links1);
 			var trans2 = new Transaction4(links2);
 
-			var equals = trans1.Equals(trans2);
-
-			Assert.IsTrue(equals);
+			Assert.IsFalse(trans1.Equals(trans2));
 		}
 
 
