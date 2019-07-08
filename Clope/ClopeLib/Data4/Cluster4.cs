@@ -33,7 +33,7 @@ namespace ClopeLib.Data
 
 
 
-		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / mathPower[Width];
+		void RecalcCurrentCost() => currentCost = Area / mathPower[Width] * TransactionsCount;
 
 
 
@@ -69,7 +69,7 @@ namespace ClopeLib.Data
 
 			return NewWidth == 0 ?
 				0 :
-				(Area + t.Length) * (TransactionsCount + 1) / mathPower[NewWidth] - currentCost;
+				(Area + t.Length) / mathPower[NewWidth] * (TransactionsCount + 1)  - currentCost;
 		}
 
 		public double GetRemCost(ITransaction t)
@@ -82,7 +82,7 @@ namespace ClopeLib.Data
 
 			return NewWidth == 0 ?
 				0 :
-				currentCost - (Area - t.Length) * (TransactionsCount - 1) / mathPower[NewWidth];
+				currentCost - (Area - t.Length) / mathPower[NewWidth] * (TransactionsCount - 1);
 		}
 	}
 }
