@@ -86,14 +86,7 @@ namespace ClopeWin
 			parser = _GetParser();
 			attributeStore = _GetAttributeStore();
 
-			var initiatedObjects = string.Join<Type>(", ", new[] {
-				reader.GetType(),
-				parser.GetType(),
-				attributeStore.GetType(),
-			});
-
 			logger.Write($"Prepare test>");
-			logger.Write($"> initiated > {initiatedObjects}");
 			logger.Write($"> file      > {settings.SelectedDelimitedFile.GetPath()}");
 			logger.Write($"> repulsion > {settings.ClopeRepulsion}");
 
@@ -107,7 +100,6 @@ namespace ClopeWin
 		void ReadData()
 		{
 			LoggingStart("Read");
-
 			reader.SkipLines(settings.SelectedDelimitedFile.FirstLinesToSkip);
 
 			while (!reader.ReachedEndOfFile)
@@ -146,7 +138,6 @@ namespace ClopeWin
 		public string MakeResults(int column = 0)
 		{
 			LoggingStart("Results");
-
 			var preview = new Previewer4(clope.GetTransactions_Axe(), clope.Clusters, attributeStore);
 			preview.MakePreview(column);
 
@@ -172,7 +163,7 @@ namespace ClopeWin
 
 		void LoggingStart(string name, Stopwatch watch)
 		{
-			logger.Write($"{name}> start...");
+			//logger.Write($"{name}> start...");
 			watch.Restart();
 		}
 
@@ -181,8 +172,10 @@ namespace ClopeWin
 		void LoggingEnd(string name, Stopwatch watch, bool bonusEndLine = true)
 		{
 			watch.Stop();
-			var el = bonusEndLine ? "------\n" : "";
-			logger.Write($"{name}> done. Time elapsed {Elapsed(watch)} ({ElapsedMs(watch)})\n{el}");
+			//var el = bonusEndLine ? "\n------" : "";
+			logger.Write($"{name}> done. Time elapsed {Elapsed(watch)} ({ElapsedMs(watch)})");
+			if (bonusEndLine)
+				logger.Write("------\n");
 		}
 	}
 }

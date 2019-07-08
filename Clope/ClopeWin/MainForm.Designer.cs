@@ -14,8 +14,6 @@ namespace ClopeWin
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.GroupBox groupBoxSettings;
-		private System.Windows.Forms.GroupBox groupBoxResults;
-		private System.Windows.Forms.ListBox listBoxResults;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -40,9 +38,8 @@ namespace ClopeWin
 		{
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.groupBoxResults = new System.Windows.Forms.GroupBox();
-			this.listBoxResults = new System.Windows.Forms.ListBox();
 			this.groupBoxControl = new System.Windows.Forms.GroupBox();
+			this.buttonScreenShot = new System.Windows.Forms.Button();
 			this.buttonClopeRun = new System.Windows.Forms.Button();
 			this.groupBoxSettings = new System.Windows.Forms.GroupBox();
 			this.dataSetupControl1 = new ClopeWin.DataSetupControl();
@@ -54,7 +51,6 @@ namespace ClopeWin
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.panel1.SuspendLayout();
-			this.groupBoxResults.SuspendLayout();
 			this.groupBoxControl.SuspendLayout();
 			this.groupBoxSettings.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -79,60 +75,49 @@ namespace ClopeWin
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
 			this.splitContainer1.Panel2MinSize = 100;
-			this.splitContainer1.Size = new System.Drawing.Size(996, 608);
-			this.splitContainer1.SplitterDistance = 281;
+			this.splitContainer1.Size = new System.Drawing.Size(1184, 812);
+			this.splitContainer1.SplitterDistance = 334;
 			this.splitContainer1.TabIndex = 0;
 			// 
 			// panel1
 			// 
-			this.panel1.Controls.Add(this.groupBoxResults);
 			this.panel1.Controls.Add(this.groupBoxControl);
 			this.panel1.Controls.Add(this.groupBoxSettings);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(0, 0);
 			this.panel1.Name = "panel1";
 			this.panel1.Padding = new System.Windows.Forms.Padding(5);
-			this.panel1.Size = new System.Drawing.Size(281, 608);
+			this.panel1.Size = new System.Drawing.Size(334, 812);
 			this.panel1.TabIndex = 1;
-			// 
-			// groupBoxResults
-			// 
-			this.groupBoxResults.Controls.Add(this.listBoxResults);
-			this.groupBoxResults.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBoxResults.Location = new System.Drawing.Point(5, 270);
-			this.groupBoxResults.Name = "groupBoxResults";
-			this.groupBoxResults.Padding = new System.Windows.Forms.Padding(10);
-			this.groupBoxResults.Size = new System.Drawing.Size(271, 333);
-			this.groupBoxResults.TabIndex = 4;
-			this.groupBoxResults.TabStop = false;
-			this.groupBoxResults.Text = "groupBox1";
-			// 
-			// listBoxResults
-			// 
-			this.listBoxResults.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listBoxResults.FormattingEnabled = true;
-			this.listBoxResults.Location = new System.Drawing.Point(10, 23);
-			this.listBoxResults.Name = "listBoxResults";
-			this.listBoxResults.Size = new System.Drawing.Size(251, 300);
-			this.listBoxResults.TabIndex = 4;
 			// 
 			// groupBoxControl
 			// 
+			this.groupBoxControl.Controls.Add(this.buttonScreenShot);
 			this.groupBoxControl.Controls.Add(this.buttonClopeRun);
 			this.groupBoxControl.Dock = System.Windows.Forms.DockStyle.Top;
 			this.groupBoxControl.Location = new System.Drawing.Point(5, 215);
 			this.groupBoxControl.Name = "groupBoxControl";
-			this.groupBoxControl.Size = new System.Drawing.Size(271, 55);
+			this.groupBoxControl.Size = new System.Drawing.Size(324, 74);
 			this.groupBoxControl.TabIndex = 5;
 			this.groupBoxControl.TabStop = false;
 			this.groupBoxControl.Text = "Control";
 			// 
+			// buttonScreenShot
+			// 
+			this.buttonScreenShot.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.buttonScreenShot.Location = new System.Drawing.Point(3, 48);
+			this.buttonScreenShot.Name = "buttonScreenShot";
+			this.buttonScreenShot.Size = new System.Drawing.Size(318, 23);
+			this.buttonScreenShot.TabIndex = 6;
+			this.buttonScreenShot.Text = "Make Screenshot";
+			this.buttonScreenShot.UseVisualStyleBackColor = true;
+			// 
 			// buttonClopeRun
 			// 
-			this.buttonClopeRun.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.buttonClopeRun.Location = new System.Drawing.Point(3, 29);
+			this.buttonClopeRun.Dock = System.Windows.Forms.DockStyle.Top;
+			this.buttonClopeRun.Location = new System.Drawing.Point(3, 16);
 			this.buttonClopeRun.Name = "buttonClopeRun";
-			this.buttonClopeRun.Size = new System.Drawing.Size(265, 23);
+			this.buttonClopeRun.Size = new System.Drawing.Size(318, 23);
 			this.buttonClopeRun.TabIndex = 5;
 			this.buttonClopeRun.Text = "Run";
 			this.buttonClopeRun.UseVisualStyleBackColor = true;
@@ -144,7 +129,7 @@ namespace ClopeWin
 			this.groupBoxSettings.Location = new System.Drawing.Point(5, 5);
 			this.groupBoxSettings.Name = "groupBoxSettings";
 			this.groupBoxSettings.Padding = new System.Windows.Forms.Padding(10);
-			this.groupBoxSettings.Size = new System.Drawing.Size(271, 210);
+			this.groupBoxSettings.Size = new System.Drawing.Size(324, 210);
 			this.groupBoxSettings.TabIndex = 2;
 			this.groupBoxSettings.TabStop = false;
 			this.groupBoxSettings.Text = "Settings";
@@ -155,7 +140,7 @@ namespace ClopeWin
 			this.dataSetupControl1.Location = new System.Drawing.Point(10, 23);
 			this.dataSetupControl1.Name = "dataSetupControl1";
 			this.dataSetupControl1.Padding = new System.Windows.Forms.Padding(5);
-			this.dataSetupControl1.Size = new System.Drawing.Size(251, 177);
+			this.dataSetupControl1.Size = new System.Drawing.Size(304, 177);
 			this.dataSetupControl1.TabIndex = 0;
 			// 
 			// splitContainer2
@@ -171,8 +156,8 @@ namespace ClopeWin
 			// splitContainer2.Panel2
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.richTextBoxLogger);
-			this.splitContainer2.Size = new System.Drawing.Size(711, 608);
-			this.splitContainer2.SplitterDistance = 288;
+			this.splitContainer2.Size = new System.Drawing.Size(846, 812);
+			this.splitContainer2.SplitterDistance = 291;
 			this.splitContainer2.TabIndex = 3;
 			// 
 			// richTextBox1
@@ -180,7 +165,7 @@ namespace ClopeWin
 			this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.richTextBox1.Location = new System.Drawing.Point(0, 0);
 			this.richTextBox1.Name = "richTextBox1";
-			this.richTextBox1.Size = new System.Drawing.Size(288, 608);
+			this.richTextBox1.Size = new System.Drawing.Size(291, 812);
 			this.richTextBox1.TabIndex = 2;
 			this.richTextBox1.Text = "";
 			// 
@@ -189,7 +174,7 @@ namespace ClopeWin
 			this.richTextBoxLogger.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.richTextBoxLogger.Location = new System.Drawing.Point(0, 0);
 			this.richTextBoxLogger.Name = "richTextBoxLogger";
-			this.richTextBoxLogger.Size = new System.Drawing.Size(419, 608);
+			this.richTextBoxLogger.Size = new System.Drawing.Size(551, 812);
 			this.richTextBoxLogger.TabIndex = 1;
 			this.richTextBoxLogger.Text = "";
 			// 
@@ -197,18 +182,18 @@ namespace ClopeWin
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(996, 608);
+			this.ClientSize = new System.Drawing.Size(1184, 812);
 			this.Controls.Add(this.splitContainer1);
 			this.KeyPreview = true;
 			this.MinimumSize = new System.Drawing.Size(640, 480);
 			this.Name = "MainForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "ClopeWin";
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
-			this.groupBoxResults.ResumeLayout(false);
 			this.groupBoxControl.ResumeLayout(false);
 			this.groupBoxSettings.ResumeLayout(false);
 			this.splitContainer2.Panel1.ResumeLayout(false);
@@ -224,5 +209,6 @@ namespace ClopeWin
 		private System.Windows.Forms.SplitContainer splitContainer2;
 		private System.Windows.Forms.RichTextBox richTextBox1;
 		private System.Windows.Forms.RichTextBox richTextBoxLogger;
+		private System.Windows.Forms.Button buttonScreenShot;
 	}
 }

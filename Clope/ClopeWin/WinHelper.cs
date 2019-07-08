@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace ClopeWin
 {
@@ -30,6 +32,27 @@ namespace ClopeWin
 				MessageBoxButtons.OK,
 				MessageBoxIcon.Information
 			);
+		}
+
+		public static void TakeComponentScreenShot(Control control, string filename)
+		{
+			// find absolute position of the control in the screen.
+			Control ctrl = control;
+			Rectangle rect = new Rectangle(Point.Empty, ctrl.Size);
+			do
+			{
+				rect.Offset(ctrl.Location);
+				ctrl = ctrl.Parent;
+			} while (ctrl != null);
+
+			using (Bitmap bitmap = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb))
+			{
+				using (Graphics g = Graphics.FromImage(bitmap))
+				{
+					g.CopyFromScreen(rect.Left, rect.Top, 0, 0, bitmap.Size, CopyPixelOperation.SourceCopy);
+				}
+				bitmap.Save(filename, ImageFormat.Png);
+			}
 		}
 	}
 }
