@@ -2,7 +2,7 @@
 {
 	public interface ITransaction
 	{
-		int Id { get; }
+		uint Id { get; }
 
 		int Length { get; }
 		

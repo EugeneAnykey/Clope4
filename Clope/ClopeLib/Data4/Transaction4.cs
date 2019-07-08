@@ -5,9 +5,9 @@ namespace ClopeLib.Data
 {
 	public class Transaction4 : ITransaction
 	{
-		static int uniqueId = 0;
+		static uint uniqueId = 0;
 
-		public int Id { get; } = uniqueId++;
+		public uint Id { get; } = uniqueId++;
 
 		public int[] Links { get; }
 
@@ -49,7 +49,7 @@ namespace ClopeLib.Data
 
 			int hash = 0;
 			
-			unchecked { hash = seed * Id; }
+			unchecked { hash = seed * (int)Id; }
 
 			for (int i = 0; i < Links.Length; i++)
 			{
