@@ -6,8 +6,6 @@ namespace ClopeLib.Data
 	public class Cluster4 : ICluster
 	{
 		// field
-		//public float Repulsion { get; }
-
 		public int Area { get; private set; }
 
 		public bool IsEmpty => TransactionsCount == 0;
@@ -27,10 +25,9 @@ namespace ClopeLib.Data
 
 
 		// init
-		public Cluster4(ref MathPower mathPower/*, float repulsion*/)
+		public Cluster4(ref MathPower mathPower)
 		{
 			this.mathPower = mathPower ?? throw new ArgumentNullException();
-			//Repulsion = repulsion;
 			Area = 0;
 		}
 
@@ -83,7 +80,7 @@ namespace ClopeLib.Data
 				if (counter[link] == 1)
 					NewWidth--;
 
-			return 	NewWidth == 0 ?
+			return NewWidth == 0 ?
 				0 :
 				currentCost - (Area - t.Length) * (TransactionsCount - 1) / mathPower[NewWidth];
 		}
