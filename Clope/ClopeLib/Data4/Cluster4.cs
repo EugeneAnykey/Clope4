@@ -70,7 +70,9 @@ namespace ClopeLib.Data
 				if (counter[link] == 0)
 					NewWidth++;
 
-			return (Area + t.Length) * (TransactionsCount + 1) / mathPower[NewWidth] - currentCost;
+			return NewWidth == 0 ?
+				0 :
+				(Area + t.Length) * (TransactionsCount + 1) / mathPower[NewWidth] - currentCost;
 		}
 
 		public double GetRemCost(ITransaction t)
@@ -81,7 +83,9 @@ namespace ClopeLib.Data
 				if (counter[link] == 1)
 					NewWidth--;
 
-			return currentCost - (Area - t.Length) * (TransactionsCount - 1) / mathPower[NewWidth];
+			return 	NewWidth == 0 ?
+				0 :
+				currentCost - (Area - t.Length) * (TransactionsCount - 1) / mathPower[NewWidth];
 		}
 	}
 }
