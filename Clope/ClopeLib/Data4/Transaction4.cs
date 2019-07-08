@@ -5,6 +5,10 @@ namespace ClopeLib.Data
 {
 	public class Transaction4 : ITransaction
 	{
+		static uint uniqueId = 0;
+
+		public uint Id { get; } = uniqueId++;
+
 		public int[] Links { get; }
 
 		public int Length => Links.Length;
@@ -23,12 +27,7 @@ namespace ClopeLib.Data
 
 
 		// Equals
-		//public override bool Equals(object obj) => Equals(obj as ITransaction);
-		public override bool Equals(object obj) => EqualsPrecise(obj as ITransaction);
-
-		public bool EqualsPrecise(ITransaction t) => t != null && hashCode == t.GetHashCode() && EqualsArrays(t);
-
-		public bool Equals(ITransaction t) => t != null && hashCode == t.GetHashCode();
+		public bool Equals(ITransaction t) => t != null && Id == t.Id && hashCode == t.GetHashCode() && EqualsArrays(t);
 
 		bool EqualsArrays(ITransaction t) => ArrayHelper.Equals(Links, t.Links);
 
@@ -37,17 +36,17 @@ namespace ClopeLib.Data
 		// HashCode
 		public override int GetHashCode() => hashCode;
 
-		int MakeHashCode() => HashCodeForLinks();
-
-		int HashCodeForLinks()
+		int MakeHashCode()
 		{
 			const int seed = 0xad7f;
 
 			int hash = 0;
 
+			unchecked { hash = seed * ((int)Id); }
+
 			for (int i = 0; i < Links.Length; i++)
 			{
-				unchecked { hash += seed * (i + 1) * Links[i].GetHashCode(); }
+				unchecked { hash += seed * ((i + 1 + (int)Id) * Links[i].GetHashCode()); }
 			}
 
 			return hash;

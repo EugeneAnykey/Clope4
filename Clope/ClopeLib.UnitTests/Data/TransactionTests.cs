@@ -19,15 +19,13 @@ namespace ClopeLib.UnitTests.Data
 
 
 		[Test]
-		public void Equals_SameArray_IsTrue()
+		public void Equals_OneArray_IsFalse()
 		{
 			var links = new[] { 1, 3, 7 };
 			var trans1 = new Transaction4(links);
 			var trans2 = new Transaction4(links);
 
-			var equals = trans1.Equals(trans2);
-
-			Assert.IsTrue(equals);
+			Assert.IsFalse(trans1.Equals(trans2));
 		}
 
 
@@ -48,16 +46,14 @@ namespace ClopeLib.UnitTests.Data
 
 
 		[Test]
-		public void Equals_SimilarArrays_IsTrue()
+		public void Equals_SimilarArrays_IsFalse()
 		{
 			var links1 = new[] { 1, 3, 7 };
 			var links2 = new[] { 1, 3, 7 };
 			var trans1 = new Transaction4(links1);
 			var trans2 = new Transaction4(links2);
 
-			var equals = trans1.Equals(trans2);
-
-			Assert.IsTrue(equals);
+			Assert.IsFalse(trans1.Equals(trans2));
 		}
 
 
@@ -81,15 +77,17 @@ namespace ClopeLib.UnitTests.Data
 
 		List<int> hashes = new List<int>();
 
-		[TestCase(01, new int[0])]
-		[TestCase(02, new int[] { 1 })]
-		[TestCase(03, new[] { 2 })]
-		[TestCase(04, new[] { 1, 3 })]
-		[TestCase(05, new[] { 3, 1 })]
-		[TestCase(06, new[] { 7, 5 })]
-		[TestCase(07, new[] { 2, 6, 9 })]
-		[TestCase(08, new[] { 2, 6, 9, 15, 23, 41 })]
-		public void GetHashCode_MiscInput_IsGood(int notExpected, int[] links)
+		[TestCase('a', new int[0])]
+		[TestCase('b', new int[0])]
+		[TestCase('c', new[] { 1 })]
+		[TestCase('d', new[] { 2 })]
+		[TestCase('e', 1, 3)]
+		[TestCase('f', 1, 3)]
+		[TestCase('g', 3, 1)]
+		[TestCase('h', 7, 5)]
+		[TestCase('i', 2, 6, 9)]
+		[TestCase('j', 2, 6, 9, 15, 23, 41)]
+		public void GetHashCode_MiscInput_IsGood(char dummy, params int[] links)
 		{
 			var t = new Transaction4(links);
 			var result = t.GetHashCode();
