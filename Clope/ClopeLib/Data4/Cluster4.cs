@@ -72,6 +72,5 @@ namespace ClopeLib.Data
 
 			return (Area + t.Length) * (TransactionsCount + 1) / mathPower[NewWidth] - currentCost;
 		}
-		}
 	}
 }
