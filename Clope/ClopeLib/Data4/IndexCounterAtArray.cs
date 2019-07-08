@@ -1,30 +1,22 @@
-﻿#define fix
-
-namespace ClopeLib.Data
+﻿namespace ClopeLib.Data
 {
 	public class IndexCounterAtArray : IIndexCounter
 	{
 		int[] counter = new int[0];
-		public int Positives { get; private set; } = 0;
 
 
 
 		// interface
+		public int Positives { get; private set; } = 0;
+
 		public void Inc(int[] indicies)
 		{
-#if fix
 			var max = Max(indicies);
 			if (max >= counter.Length)
 				Expand(max);
-#endif
 
 			foreach (var index in indicies)
 			{
-#if !fix
-				if (index >= counter.Length)
-					Expand(index);
-#endif
-
 				var temp = counter[index];
 				counter[index]++;
 
@@ -35,19 +27,12 @@ namespace ClopeLib.Data
 
 		public void Dec(int[] indicies)
 		{
-#if fix
 			var max = Max(indicies);
 			if (max >= counter.Length)
 				Expand(max);
-#endif
 
 			foreach (var index in indicies)
 			{
-#if !fix
-				if (index >= counter.Length)
-					Expand(index);
-#endif
-
 				var temp = counter[index];
 				counter[index]--;
 
@@ -56,11 +41,11 @@ namespace ClopeLib.Data
 			}
 		}
 
-
-
 		public int this[int index] => 0 <= index && index < counter.Length ? counter[index] : 0;
 
-		#if fix
+
+
+		// private
 		int Max(int[] values)
 		{
 			var max = values[0];
@@ -71,7 +56,6 @@ namespace ClopeLib.Data
 			}
 			return max;
 		}
-		#endif
 
 		void Expand(int index)
 		{
