@@ -25,6 +25,9 @@ namespace SpeedTests
 
 		static void RunHoldersSpeedTest()
 		{
+			// iitem	dic	list
+			// class	x	v
+			// struct	v	v
 			const string logFilename = "speed-holders.txt";
 			ILogger logger = new FileLogger(logFilename, new ConsoleLogger());
 
