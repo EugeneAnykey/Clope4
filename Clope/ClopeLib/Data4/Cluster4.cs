@@ -1,11 +1,12 @@
 ﻿using System;
+using ClopeLib.Helpers;
 
 namespace ClopeLib.Data
 {
 	public class Cluster4 : ICluster
 	{
 		// field
-		public float Repulsion { get; }
+		//public float Repulsion { get; }
 
 		public int Area { get; private set; }
 
@@ -18,21 +19,24 @@ namespace ClopeLib.Data
 		public int Width { get => counter.Positives; }
 
 		readonly IIndexCounter counter = new IndexCounterAtArray();
+		
+		readonly MathPower mathPower;
 
 		public int Occurrence(int link) => counter[link];
 
 
 
 		// init
-		public Cluster4(float repulsion)
+		public Cluster4(ref MathPower mathPower/*, float repulsion*/)
 		{
-			Repulsion = repulsion;
+			this.mathPower = mathPower ?? throw new ArgumentNullException();
+			//Repulsion = repulsion;
 			Area = 0;
 		}
 
 
 
-		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / Math.Pow(Width, Repulsion);
+		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / mathPower[Width];
 
 
 
@@ -66,7 +70,8 @@ namespace ClopeLib.Data
 				if (counter[link] == 0)
 					NewWidth++;
 
-			return (Area + t.Length) * (TransactionsCount + 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
+			return (Area + t.Length) * (TransactionsCount + 1) / mathPower[NewWidth] - currentCost;
+		}
 		}
 	}
 }
