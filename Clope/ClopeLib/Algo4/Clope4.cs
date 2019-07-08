@@ -111,8 +111,6 @@ namespace ClopeLib.Algo
 
 
 
-		int TimesSpecClusterRan = 0;		// for test stats.
-
 		void Specify()
 		{
 			do
@@ -135,7 +133,6 @@ namespace ClopeLib.Algo
 
 
 
-		#region private: PlaceIntoCluster, SpecifyCluster, CheckingForAtLeastOneEmptyCluster.
 		void PlaceIntoCluster(ITransaction t)
 		{
 			ICluster bestCluster = null;
@@ -186,8 +183,6 @@ namespace ClopeLib.Algo
 
 				double addCost = c.GetAddCost(t);
 
-				TimesSpecClusterRan++;
-
 				if (maxCost < addCost)
 				{
 					maxCost = addCost;
@@ -205,10 +200,9 @@ namespace ClopeLib.Algo
 
 			return false;
 		}
-		#endregion
 
 
 
-		public IEnumerable<ITransaction> GetTransactions_Axe() => keys.Select(t => t.Key).ToArray();
+		//public IEnumerable<ITransaction> GetTransactions_Axe() => keys.Select(t => t.Key).ToArray();
 	}
 }

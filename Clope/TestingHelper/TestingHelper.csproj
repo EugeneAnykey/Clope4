@@ -58,14 +58,11 @@
     <Compile Include="IFileBroker.cs" />
     <Compile Include="FileBroker.cs" />
     <Compile Include="Hasher.cs" />
-    <Compile Include="Nullabier.cs" />
-    <Compile Include="SpeedTest.cs" />
     <Compile Include="UnitTests\HasherTests\HasherCounter.cs" />
     <Compile Include="UnitTests\HasherTests\Outputer.cs" />
     <Compile Include="UnitTests\HasherTests\IOutputer.cs" />
     <Compile Include="UnitTests\HasherTests\HasherDataPreparer.cs" />
     <Compile Include="UnitTests\HasherTests.cs" />
-    <Compile Include="PrimeNumber.cs" />
     <Compile Include="UnitTests\HasherTests\HasherTestItem.cs" />
     <Compile Include="_e.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
