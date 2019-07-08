@@ -44,7 +44,7 @@ namespace ClopeWin
 			this.groupBoxSettings = new System.Windows.Forms.GroupBox();
 			this.dataSetupControl1 = new ClopeWin.DataSetupControl();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+			this.richTextBoxClusters = new System.Windows.Forms.RichTextBox();
 			this.richTextBoxLogger = new System.Windows.Forms.RichTextBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -151,7 +151,7 @@ namespace ClopeWin
 			// 
 			// splitContainer2.Panel1
 			// 
-			this.splitContainer2.Panel1.Controls.Add(this.richTextBox1);
+			this.splitContainer2.Panel1.Controls.Add(this.richTextBoxClusters);
 			// 
 			// splitContainer2.Panel2
 			// 
@@ -162,12 +162,12 @@ namespace ClopeWin
 			// 
 			// richTextBox1
 			// 
-			this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.richTextBox1.Location = new System.Drawing.Point(0, 0);
-			this.richTextBox1.Name = "richTextBox1";
-			this.richTextBox1.Size = new System.Drawing.Size(291, 812);
-			this.richTextBox1.TabIndex = 2;
-			this.richTextBox1.Text = "";
+			this.richTextBoxClusters.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.richTextBoxClusters.Location = new System.Drawing.Point(0, 0);
+			this.richTextBoxClusters.Name = "richTextBox1";
+			this.richTextBoxClusters.Size = new System.Drawing.Size(291, 812);
+			this.richTextBoxClusters.TabIndex = 2;
+			this.richTextBoxClusters.Text = "";
 			// 
 			// richTextBoxLogger
 			// 
@@ -207,7 +207,7 @@ namespace ClopeWin
 		private System.Windows.Forms.Button buttonClopeRun;
 		private DataSetupControl dataSetupControl1;
 		private System.Windows.Forms.SplitContainer splitContainer2;
-		private System.Windows.Forms.RichTextBox richTextBox1;
+		private System.Windows.Forms.RichTextBox richTextBoxClusters;
 		private System.Windows.Forms.RichTextBox richTextBoxLogger;
 		private System.Windows.Forms.Button buttonScreenShot;
 	}

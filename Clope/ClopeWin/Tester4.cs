@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define mult1
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using ClopeLib;
@@ -26,8 +28,6 @@ namespace ClopeWin
 
 		DataSetupSettings settings;
 		ILogger logger;
-		IPortionReader reader;
-		IParser parser;
 		IAttributeStore attributeStore;
 
 		// for logger and watch
@@ -58,7 +58,16 @@ namespace ClopeWin
 			logger.WriteDated("Tester start.");
 
 			PrepareTest();
+#if mult
+			var multipleTimesRead = 7;// 170;
+			while (multipleTimesRead-- > 0)
+			{
+				logger.Write($"times left: {multipleTimesRead}");
+				ReadData();
+			}
+#else
 			ReadData();
+#endif
 			RunClope();
 
 			logger.WriteDated("Tester finished.\r\n");
@@ -72,9 +81,7 @@ namespace ClopeWin
 		// factory
 		const int LinesToReadAtOnceForExample = 423;
 		IPortionReader _GetReader() => new Reader(settings.SelectedDelimitedFile.GetPath()) { LinesToReadAtOnce = LinesToReadAtOnceForExample };
-
 		IParser _GetParser() => new Parser(settings.SelectedDelimitedFile.FieldSeparators, new ElementRule(determineAsNulls, null));
-
 		IAttributeStore _GetAttributeStore() => new AttributeStoreAtDic();
 
 
@@ -82,8 +89,6 @@ namespace ClopeWin
 		// logic
 		void PrepareTest()
 		{
-			reader = _GetReader();
-			parser = _GetParser();
 			attributeStore = _GetAttributeStore();
 
 			logger.Write($"Prepare test>");
@@ -100,6 +105,9 @@ namespace ClopeWin
 		void ReadData()
 		{
 			LoggingStart("Read");
+			IPortionReader reader = _GetReader();
+			IParser parser = _GetParser();
+
 			reader.SkipLines(settings.SelectedDelimitedFile.FirstLinesToSkip);
 
 			while (!reader.ReachedEndOfFile)
@@ -172,10 +180,9 @@ namespace ClopeWin
 		void LoggingEnd(string name, Stopwatch watch, bool bonusEndLine = true)
 		{
 			watch.Stop();
-			//var el = bonusEndLine ? "\n------" : "";
 			logger.Write($"{name}> done. Time elapsed {Elapsed(watch)} ({ElapsedMs(watch)})");
 			if (bonusEndLine)
-				logger.Write("------\n");
+				logger.Write("------");
 		}
 	}
 }

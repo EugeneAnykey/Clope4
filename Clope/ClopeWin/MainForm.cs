@@ -46,6 +46,7 @@ namespace ClopeWin
 				"occurence (at array, counter class)",
 				"math power (at array, class)",
 				"remove cost (function)",
+				"duplicates allowed",
 				""
 			};
 
@@ -59,13 +60,12 @@ namespace ClopeWin
 		{
 			const string end = "\r\n\r\n";
 
-			richTextBox1.Clear();
-
 			clope4 = new Clope4();
 
+			richTextBoxClusters.Clear();
 			var tester4 = new Tester4(clope4, dataSetupControl1.Settings, logger);
 			tester4.Run();
-			richTextBox1.AppendText(tester4.MakeResults());
+			richTextBoxClusters.Text = tester4.MakeResults();
 
 			logger.Write(end);
 		}
