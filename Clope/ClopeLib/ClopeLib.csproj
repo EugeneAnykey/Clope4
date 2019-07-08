@@ -58,6 +58,7 @@
     <Compile Include="Helpers\CollectionsHelper.cs" />
     <Compile Include="Data4\Cluster4.cs" />
     <Compile Include="Data4\Transaction4.cs" />
+    <Compile Include="Helpers\MathPower.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Previews\Previewer4.cs" />
     <Compile Include="_root\EmptyArrayException.cs" />

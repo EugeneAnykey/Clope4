@@ -13,7 +13,6 @@ namespace ClopeLib.Algo
 		void OnStepDone(int step, int changes) => StepDone?.Invoke(step, changes);
 
 
-
 		const float minRepulsion = 1;
 		const float maxRepulsion = 10;
 
@@ -22,6 +21,8 @@ namespace ClopeLib.Algo
 		const int maxSteps = 15;
 
 
+
+		MathPower MathPower;
 
 		int stepChanges;
 		public int LatestStep { get; private set; }
@@ -33,7 +34,10 @@ namespace ClopeLib.Algo
 		public float Repulsion
 		{
 			get { return repulsion; }
-			set { Utils.TrySetValue(ref repulsion, value, minRepulsion, maxRepulsion); }
+			set {
+				Utils.TrySetValue(ref repulsion, value, minRepulsion, maxRepulsion);
+				MathPower = new MathPower(repulsion);
+			}
 		}
 
 
@@ -146,7 +150,7 @@ namespace ClopeLib.Algo
 			}
 
 			if (bestCluster == null)
-				Clusters.Add(bestCluster = new Cluster4(repulsion));
+				Clusters.Add(bestCluster = new Cluster4(ref MathPower));
 
 			bestCluster.Add(t);
 			Transactions.Add(t);
@@ -159,7 +163,7 @@ namespace ClopeLib.Algo
 		{
 			var exists = Clusters.Where(c => c.IsEmpty).Count() > 0;
 			if (!exists)
-				Clusters.Add(new Cluster4(Repulsion));
+				Clusters.Add(new Cluster4(ref MathPower));
 		}
 
 
