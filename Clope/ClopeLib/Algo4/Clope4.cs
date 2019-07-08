@@ -65,7 +65,6 @@ namespace ClopeLib.Algo
 
 
 
-		// AddNewTransactions
 		public void AddNewTransactions(IEnumerable<ITransaction> newTransactions) => newTrans.Enqueue(newTransactions);
 
 
@@ -99,11 +98,8 @@ namespace ClopeLib.Algo
 			while (newTrans.Count > 0)
 			{
 				var t = newTrans.Dequeue();
-				if (IsUnique(t))
-				{
-					PlaceIntoCluster(t);
-					stepChanges++;
-				}
+				PlaceIntoCluster(t);
+				stepChanges++;
 			}
 
 			OnStepDone(LatestStep++, stepChanges);
@@ -128,8 +124,6 @@ namespace ClopeLib.Algo
 
 
 		void RemoveEmptyClusters() => Clusters = (from c in Clusters where !c.IsEmpty select c).ToList();
-
-		bool IsUnique(ITransaction t) => !keys.ContainsKey(t);
 
 
 

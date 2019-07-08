@@ -5,6 +5,10 @@ namespace ClopeLib.Data
 {
 	public class Transaction4 : ITransaction
 	{
+		static int uniqueId = 0;
+
+		public int Id { get; } = uniqueId++;
+
 		public int[] Links { get; }
 
 		public int Length => Links.Length;
@@ -26,7 +30,7 @@ namespace ClopeLib.Data
 		//public override bool Equals(object obj) => Equals(obj as ITransaction);
 		public override bool Equals(object obj) => EqualsPrecise(obj as ITransaction);
 
-		public bool EqualsPrecise(ITransaction t) => t != null && hashCode == t.GetHashCode() && EqualsArrays(t);
+		public bool EqualsPrecise(ITransaction t) => t != null && hashCode == t.GetHashCode() && EqualsArrays(t) && Id == t.Id;
 
 		public bool Equals(ITransaction t) => t != null && hashCode == t.GetHashCode();
 
@@ -43,7 +47,8 @@ namespace ClopeLib.Data
 		{
 			const int seed = 0xad7f;
 
-			int hash = 0;
+			//int hash = 0;
+			int hash = seed * Id;
 
 			for (int i = 0; i < Links.Length; i++)
 			{
