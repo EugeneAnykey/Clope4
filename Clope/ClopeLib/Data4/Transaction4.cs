@@ -47,8 +47,9 @@ namespace ClopeLib.Data
 		{
 			const int seed = 0xad7f;
 
-			//int hash = 0;
-			int hash = seed * Id;
+			int hash = 0;
+			
+			unchecked { hash = seed * Id; }
 
 			for (int i = 0; i < Links.Length; i++)
 			{
