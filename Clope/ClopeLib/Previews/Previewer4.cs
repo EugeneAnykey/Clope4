@@ -33,7 +33,10 @@ namespace ClopeLib.Previews
 
 
 
-		// public
+		/// <summary>
+		/// Calculates information of attributes counts in specific column
+		/// </summary>
+		/// <param name="attributeColumn">specific column for calculations</param>
 		public void MakePreview(int attributeColumn)
 		{
 			attributes = store.GetAttributes(attributeColumn);
@@ -42,6 +45,7 @@ namespace ClopeLib.Previews
 			// now checking clusters:
 			foreach (var c in clusters)
 			{
+				// +2 for two additional summary columns.
 				int[] counts = new int[links.Length + 2];
 				for (int i = 0; i < links.Length; i++)
 				{
