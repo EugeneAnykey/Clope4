@@ -1,4 +1,5 @@
 ﻿#define cou
+#define alter1
 
 using System;
 using System.Collections.Generic;
@@ -68,7 +69,15 @@ namespace ClopeLib.Data
 			Area += t.Links.Length;
 			counter.Inc(t.Links);
 #else
+			#if alter
 			AlterItems(t, 1);
+			#else
+			foreach (var links in t.Links)
+			{
+				ChangeLinksCount(links, 1);
+			}
+			Area += t.Links.Length;
+			#endif
 #endif
 
 			RecalcCurrentCost();
@@ -82,7 +91,15 @@ namespace ClopeLib.Data
 			Area -= t.Links.Length;
 			counter.Dec(t.Links);
 #else
+#if alter
 			AlterItems(t, -1);
+			#else
+			foreach (var links in t.Links)
+			{
+				ChangeLinksCount(links, -1);
+			}
+			Area -= t.Links.Length;
+			#endif
 #endif
 
 			RecalcCurrentCost();
@@ -91,14 +108,16 @@ namespace ClopeLib.Data
 
 
 #if !cou
+		#if alter
 		void AlterItems(ITransaction t, int value)
 		{
 			foreach (var links in t.Links)
 			{
 				ChangeLinksCount(links, value);
-				Area += value;
 			}
+			Area += value * t.Links.Length;
 		}
+		#endif
 
 
 
