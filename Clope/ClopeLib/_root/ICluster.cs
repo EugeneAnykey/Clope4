@@ -3,7 +3,7 @@
 	public interface ICluster
 	{
 		/// <summary>
-		/// Unique objects.
+		/// Unique attributes.
 		/// </summary>
 		int Width { get; }
 
@@ -13,7 +13,7 @@
 		int Area { get; }
 
 		/// <summary>
-		/// Unique transactions count.
+		/// Added transactions count.
 		/// </summary>
 		int TransactionsCount { get; }
 
@@ -27,17 +27,23 @@
 		/// <summary>
 		/// Calculates the cost for adding a transaction.
 		/// </summary>
-		/// <param name="t">unique transaction</param>
-		/// <returns>cost</returns>
+		/// <param name="t">transaction</param>
+		/// <returns>the cost with transaction</returns>
 		double GetAddCost(ITransaction t);
 
+		/// <summary>
+		/// Calculates the cluster's cost in case of transaction been removed.
+		/// </summary>
+		/// <param name="t">transaction</param>
+		/// <returns>the cost without transaction</returns>
 		double GetRemCost(ITransaction t);
+
 
 
 		/// <summary>
 		/// Adding a unique transaction
 		/// </summary>
-		/// <param name="t">a unique transaction</param>
+		/// <param name="t">a transaction</param>
 		void Add(ITransaction t);
 
 		/// <summary>
