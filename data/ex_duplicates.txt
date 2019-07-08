@@ -1,0 +1,9 @@
+﻿p1	p2	p3	p4	p5
+t	u	v	w	x
+a	b	c	d	e
+c	t	f	y	k
+e	z	l	v	k
+u	t	f	f	d
+t	u	v	w	x
+a	b	c	d	e
+a	b	c	d	e
