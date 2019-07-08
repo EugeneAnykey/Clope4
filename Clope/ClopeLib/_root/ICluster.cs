@@ -8,7 +8,7 @@
 		int Width { get; }
 
 		/// <summary>
-		/// All objects.
+		/// All attributes count.
 		/// </summary>
 		int Area { get; }
 
@@ -18,7 +18,7 @@
 		int TransactionsCount { get; }
 
 		/// <summary>
-		/// True when there is no transactions (and objects).
+		/// True when there is no transactions (and attributes).
 		/// </summary>
 		bool IsEmpty { get; }
 
@@ -46,15 +46,10 @@
 		void Remove(ITransaction t);
 
 		/// <summary>
-		/// Shows how many times an object appears
+		/// Shows how many times an attribute appears
 		/// </summary>
-		/// <param name="s">input object</param>
-		/// <returns>times that object appears</returns>
-		int Occurrence(int i);
-
-
-
-		// for preview
-		int GetCount(int link);
+		/// <param name="index">input attribute index</param>
+		/// <returns>times that attribute appears</returns>
+		int Occurrence(int index);
 	}
 }

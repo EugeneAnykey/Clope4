@@ -104,6 +104,6 @@ namespace ClopeLib.Previews
 			return summary;
 		}
 
-		int CountAttributes(ICluster cluster, int attributeLink) => cluster.GetCount(attributeLink);
+		int CountAttributes(ICluster cluster, int attributeLink) => cluster.Occurrence(attributeLink);
 	}
 }

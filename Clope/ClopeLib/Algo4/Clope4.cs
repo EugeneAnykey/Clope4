@@ -52,8 +52,6 @@ namespace ClopeLib.Algo
 			Transactions = new List<ITransaction>();
 			Clusters = new List<ICluster>();
 			keys = new Dictionary<ITransaction, ICluster>();
-
-			Cluster4.ResetId();
 		}
 
 
@@ -74,8 +72,6 @@ namespace ClopeLib.Algo
 			Transactions.Clear();
 			Clusters.Clear();
 			keys.Clear();
-
-			Cluster4.ResetId();
 		}
 
 

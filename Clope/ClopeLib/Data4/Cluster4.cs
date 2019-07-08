@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ClopeLib.Data
 {
 	public class Cluster4 : ICluster
 	{
-		// static
-		static int latestId = 1;
-
-		public static void ResetId() => latestId = 1;
-
-
-
 		// field
-		public int Id { get; }
-
 		public float Repulsion { get; }
 
 		public int Area { get; private set; }
@@ -23,14 +13,13 @@ namespace ClopeLib.Data
 
 		public int TransactionsCount { get; private set; }
 
-		public int Width { get => attributesLinksCounts.Count; }
-
 		double currentCost;
 
+		public int Width { get => counter.Positives; }
 
+		readonly IIndexCounter counter = new IndexCounterAtArray();
 
-		// field
-		readonly Dictionary<int, int> attributesLinksCounts = new Dictionary<int, int>();
+		public int Occurrence(int link) => counter[link];
 
 
 
@@ -38,71 +27,43 @@ namespace ClopeLib.Data
 		public Cluster4(float repulsion)
 		{
 			Repulsion = repulsion;
-			Id = latestId++;
 			Area = 0;
 		}
 
 
 
-		// for preview
-		public int GetCount(int link) => attributesLinksCounts.ContainsKey(link) ? attributesLinksCounts[link] : 0;
-
-
-
-		// RecalcCurrentCost, Occurrence, Add, Remove
 		void RecalcCurrentCost() => currentCost = Area * TransactionsCount / Math.Pow(Width, Repulsion);
 
-		public int Occurrence(int link) => attributesLinksCounts.TryGetValue(link, out int val) ? val : 0;
+
 
 		public void Add(ITransaction t)
 		{
 			TransactionsCount++;
-			AlterItems(t, 1);
+
+			Area += t.Links.Length;
+			counter.Inc(t.Links);
+
 			RecalcCurrentCost();
 		}
 
 		public void Remove(ITransaction t)
 		{
 			TransactionsCount--;
-			AlterItems(t, -1);
+
+			Area -= t.Links.Length;
+			counter.Dec(t.Links);
+
 			RecalcCurrentCost();
 		}
 
 
 
-		// private: AlterItems
-		void AlterItems(ITransaction t, int value)
-		{
-			foreach (var links in t.Links)
-			{
-				ChangeLinksCount(links, value);
-				Area += value;
-			}
-		}
-
-
-
-		void ChangeLinksCount(int link, int by)
-		{
-			if (attributesLinksCounts.ContainsKey(link))
-			{
-				attributesLinksCounts[link] += by;
-				if (attributesLinksCounts[link] == 0)
-					attributesLinksCounts.Remove(link);
-			}
-			else
-				attributesLinksCounts.Add(link, by);
-		}
-
-
-
-		// public: GetAddCost
 		public double GetAddCost(ITransaction t)
 		{
 			// res = Snew+ * (TransCount + 1) / Power(newWidth, repulsion) - currentCost.
 			var NewWidth = Width;
 			foreach (var link in t.Links)
-				if (Occurrence(link) == 0)
+				if (counter[link] == 0)
 					NewWidth++;
 
 			return (Area + t.Length) * (TransactionsCount + 1) / Math.Pow(NewWidth, Repulsion) - currentCost;
