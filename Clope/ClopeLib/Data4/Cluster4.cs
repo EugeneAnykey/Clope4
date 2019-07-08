@@ -19,7 +19,7 @@ namespace ClopeLib.Data
 		public int Width { get => counter.Positives; }
 
 		readonly IIndexCounter counter = new IndexCounterAtArray();
-		
+
 		readonly MathPower mathPower;
 
 		public int Occurrence(int link) => counter[link];
@@ -72,6 +72,16 @@ namespace ClopeLib.Data
 
 			return (Area + t.Length) * (TransactionsCount + 1) / mathPower[NewWidth] - currentCost;
 		}
+
+		public double GetRemCost(ITransaction t)
+		{
+			// res = -1 * (Snew- * (TransCount - 1) / Power(newWidth, repulsion) - currentCost).
+			var NewWidth = Width;
+			foreach (var link in t.Links)
+				if (counter[link] == 1)
+					NewWidth--;
+
+			return currentCost - (Area - t.Length) * (TransactionsCount - 1) / mathPower[NewWidth];
 		}
 	}
 }

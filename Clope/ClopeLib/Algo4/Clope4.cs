@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ClopeLib.Data;
 using ClopeLib.Helpers;
@@ -110,6 +111,8 @@ namespace ClopeLib.Algo
 
 
 
+		int TimesSpecClusterRan = 0;		// for test stats.
+
 		void Specify()
 		{
 			do
@@ -173,15 +176,18 @@ namespace ClopeLib.Algo
 			CheckingForAtLeastOneEmptyCluster();
 
 			var currentCluster = keys[t];
-			currentCluster.Remove(t);
-
 			ICluster bestCluster = currentCluster;
-
-			double maxCost = 0;
+			double maxCost = currentCluster.GetRemCost(t);
 
 			foreach (ICluster c in Clusters)
 			{
+				if (c == currentCluster)
+					continue;
+
 				double addCost = c.GetAddCost(t);
+
+				TimesSpecClusterRan++;
+
 				if (maxCost < addCost)
 				{
 					maxCost = addCost;
@@ -189,10 +195,15 @@ namespace ClopeLib.Algo
 				}
 			}
 
-			bestCluster.Add(t);
-			keys[t] = bestCluster;
+			if (bestCluster != currentCluster)
+			{
+				currentCluster.Remove(t);
+				bestCluster.Add(t);
+				keys[t] = bestCluster;
+				return true;
+			}
 
-			return currentCluster != bestCluster;
+			return false;
 		}
 		#endregion
 

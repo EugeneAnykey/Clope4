@@ -31,6 +31,7 @@
 		/// <returns>cost</returns>
 		double GetAddCost(ITransaction t);
 
+		double GetRemCost(ITransaction t);
 
 
 		/// <summary>
