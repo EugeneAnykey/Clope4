@@ -203,6 +203,6 @@ namespace ClopeLib.Algo
 
 
 
-		//public IEnumerable<ITransaction> GetTransactions_Axe() => keys.Select(t => t.Key).ToArray();
+		public IEnumerable<ITransaction> GetTransactions_Axe() => keys.Select(t => t.Key).ToArray();
 	}
 }
