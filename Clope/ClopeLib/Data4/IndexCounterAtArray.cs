@@ -6,7 +6,6 @@
 
 
 
-		// interface
 		public int Positives { get; private set; } = 0;
 
 		public void Inc(int[] indicies)
