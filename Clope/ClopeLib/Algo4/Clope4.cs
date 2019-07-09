@@ -1,4 +1,4 @@
-﻿#define simul
+﻿#define simul1
 
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +33,8 @@ namespace ClopeLib.Algo
 		public float Repulsion
 		{
 			get { return repulsion; }
-			set {
+			set
+			{
 				Utils.TrySetValue(ref repulsion, value, minRepulsion, maxRepulsion);
 				MathPower = new MathPower(repulsion);
 			}
@@ -42,7 +43,9 @@ namespace ClopeLib.Algo
 
 
 		MathPower MathPower;
+#if !simul
 		readonly Queue<ITransaction> newTrans;
+#endif
 		public List<ITransaction> Transactions { get; }
 		public List<ICluster> Clusters { get; private set; }
 		Dictionary<ITransaction, ICluster> keys;
@@ -52,13 +55,14 @@ namespace ClopeLib.Algo
 		// init
 		public Clope4()
 		{
-			newTrans = new Queue<ITransaction>();
 			Transactions = new List<ITransaction>();
 			Clusters = new List<ICluster>();
 			keys = new Dictionary<ITransaction, ICluster>();
 			Repulsion = 2;
 #if simul
 			stepChanges = 0;
+#else
+			newTrans = new Queue<ITransaction>();
 #endif
 		}
 
@@ -98,7 +102,9 @@ namespace ClopeLib.Algo
 		// Clear
 		public void Clear()
 		{
+#if !simul
 			newTrans.Clear();
+#endif
 			Transactions.Clear();
 			Clusters.Clear();
 			keys.Clear();

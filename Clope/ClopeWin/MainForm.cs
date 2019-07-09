@@ -47,7 +47,7 @@ namespace ClopeWin
 				"math power (at array, class)",
 				"remove cost (function)",
 				"duplicates allowed",
-				"simultaneous load (0 step in load)",
+				//"simultaneous load (0 step in load)",
 				""
 			};
 
