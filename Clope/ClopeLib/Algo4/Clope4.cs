@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#define simul
+
+using System.Collections.Generic;
 using System.Linq;
 using ClopeLib.Data;
 using ClopeLib.Helpers;
@@ -17,12 +19,9 @@ namespace ClopeLib.Algo
 		const float maxRepulsion = 10;
 
 		const float specThreshold = 0.001f;
-
 		const int maxSteps = 15;
 
 
-
-		MathPower MathPower;
 
 		int stepChanges;
 		public int LatestStep { get; private set; }
@@ -42,6 +41,7 @@ namespace ClopeLib.Algo
 
 
 
+		MathPower MathPower;
 		readonly Queue<ITransaction> newTrans;
 		public List<ITransaction> Transactions { get; }
 		public List<ICluster> Clusters { get; private set; }
@@ -56,6 +56,10 @@ namespace ClopeLib.Algo
 			Transactions = new List<ITransaction>();
 			Clusters = new List<ICluster>();
 			keys = new Dictionary<ITransaction, ICluster>();
+			Repulsion = 2;
+#if simul
+			stepChanges = 0;
+#endif
 		}
 
 
@@ -64,7 +68,30 @@ namespace ClopeLib.Algo
 
 
 
+#if simul
+		public void AddNewTransactions(IEnumerable<ITransaction> newTransactions)
+		{
+			foreach (var item in newTransactions)
+			{
+				PlaceIntoCluster(item);
+				stepChanges++;
+			}
+		}
+#else
 		public void AddNewTransactions(IEnumerable<ITransaction> newTransactions) => newTrans.Enqueue(newTransactions);
+
+		void Start()
+		{
+			while (newTrans.Count > 0)
+			{
+				var t = newTrans.Dequeue();
+				PlaceIntoCluster(t);
+				stepChanges++;
+			}
+
+			OnStepDone(LatestStep++, stepChanges);
+		}
+#endif
 
 
 
@@ -83,25 +110,13 @@ namespace ClopeLib.Algo
 		public void Run()
 		{
 			LatestStep = 0;
+#if simul
+			OnStepDone(LatestStep++, stepChanges);
+#else
 			Start();
+#endif
 			Specify();
 			RemoveEmptyClusters();
-		}
-
-
-
-		void Start()
-		{
-			stepChanges = 0;
-
-			while (newTrans.Count > 0)
-			{
-				var t = newTrans.Dequeue();
-				PlaceIntoCluster(t);
-				stepChanges++;
-			}
-
-			OnStepDone(LatestStep++, stepChanges);
 		}
 
 
