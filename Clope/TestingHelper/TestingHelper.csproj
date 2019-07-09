@@ -64,7 +64,6 @@
     <Compile Include="UnitTests\HasherTests\HasherDataPreparer.cs" />
     <Compile Include="UnitTests\HasherTests.cs" />
     <Compile Include="UnitTests\HasherTests\HasherTestItem.cs" />
-    <Compile Include="_e.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\DelimitedFileTests.cs" />
     <Compile Include="UnitTests\FileBrokerTests.cs" />
