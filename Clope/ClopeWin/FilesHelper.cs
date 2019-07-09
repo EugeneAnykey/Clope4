@@ -11,6 +11,10 @@ namespace ClopeWin
 
 
 
+		public static DelimitedFile File(int index) => (0 <= index && index < Files.Count) ? Files[index] : Files[0];
+
+
+
 		// init
 		static FilesHelper()
 		{
