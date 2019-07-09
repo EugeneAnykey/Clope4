@@ -21,6 +21,8 @@ namespace ClopeWin
 
 			logger = new FormsLogger(richTextBoxLogger, new FileLogger("clope.log.txt"));
 
+			ShowOptimizations();
+
 			// events:
 			buttonClopeRun.Click += (_, __) => RunClope();
 			buttonScreenShot.Click += (_, __) => MakeScreenshot(richTextBoxLogger);
@@ -33,6 +35,28 @@ namespace ClopeWin
 			var name = string.Concat(DateTime.Now.ToShortDateString(), " - ", DateTime.Now.ToLongTimeString()).Replace(".", "-").Replace("/", "-").Replace(@"\", "-").Replace(":", "-") + ".png";
 
 			WinHelper.TakeComponentScreenShot(control, name);
+		}
+
+
+
+		void ShowOptimizations()
+		{
+			const string sep = "\r\n";
+			// optimizations:
+			var optimizations = new[] {
+				"attribute store (at dictionary, class)",
+				"occurence (at array, counter class)",
+				"math power (at array, class)",
+				"remove cost (function)",
+				"duplicates allowed",
+				//"simultaneous load (0 step in load)",
+				""
+			};
+
+			var list = optimizations.Select(s => "\t" + s);
+
+			logger.Write("Optimizations done:");
+			logger.Write(string.Join(sep, list));
 		}
 
 

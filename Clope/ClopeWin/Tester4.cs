@@ -54,8 +54,6 @@ namespace ClopeWin
 		// public Run.
 		public void Run()
 		{
-			ShowOptimizations();
-
 			watch.Reset();
 			stepWatch.Reset();
 			logger.WriteDated("Tester start.");
@@ -77,29 +75,6 @@ namespace ClopeWin
 
 			watch.Stop();
 			stepWatch.Stop();
-		}
-
-
-
-		// info
-		void ShowOptimizations()
-		{
-			const string sep = "\r\n";
-			// optimizations:
-			var optimizations = new[] {
-				"attribute store (at dictionary, class)",
-				"occurence (at array, counter class)",
-				"math power (at array, class)",
-				"remove cost (function)",
-				"duplicates allowed",
-				//"simultaneous load (0 step in load)",
-				""
-			};
-
-			var list = optimizations.Select(s => "\t" + s);
-
-			logger.Write("Optimizations done:");
-			logger.Write(string.Join(sep, list));
 		}
 
 
