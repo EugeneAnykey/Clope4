@@ -1,7 +1,8 @@
-﻿#define simul1	// сделал для тестов
-				// simul(taneous load) - порция данных передается на обработку сразу, по мере поступления
-				// в противном случае, сначала сохраняем все данные,
-				//  а после получения обрабатываем (для теста скорости обработки).
+﻿#define simultaneous1
+/* simultaneous (load) - (сделал для тестов) порция данных передается на обработку сразу, по мере поступления
+ * в противном случае, сначала сохраняем все данные,
+ *  а после получения обрабатываем (для теста скорости обработки).
+ */
 
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace ClopeLib.Algo
 
 
 		MathPower MathPower;
-#if !simul
+#if !simultaneous
 		readonly Queue<ITransaction> newTrans;
 #endif
 		public List<ITransaction> Transactions { get; }
@@ -62,7 +63,7 @@ namespace ClopeLib.Algo
 			Clusters = new List<ICluster>();
 			keys = new Dictionary<ITransaction, ICluster>();
 			Repulsion = 2;
-#if simul
+#if simultaneous
 			stepChanges = 0;
 #else
 			newTrans = new Queue<ITransaction>();
@@ -75,7 +76,7 @@ namespace ClopeLib.Algo
 
 
 
-#if simul
+#if simultaneous
 		public void AddNewTransactions(IEnumerable<ITransaction> newTransactions)
 		{
 			foreach (var item in newTransactions)
@@ -105,7 +106,7 @@ namespace ClopeLib.Algo
 		// Clear
 		public void Clear()
 		{
-#if !simul
+#if !simultaneous
 			newTrans.Clear();
 #endif
 			Transactions.Clear();
@@ -119,7 +120,7 @@ namespace ClopeLib.Algo
 		public void Run()
 		{
 			LatestStep = 0;
-#if simul
+#if simultaneous
 			OnStepDone(LatestStep++, stepChanges);
 #else
 			Start();
