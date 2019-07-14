@@ -72,31 +72,5 @@ namespace ClopeLib.UnitTests.Data
 
 			Assert.IsFalse(equals);
 		}
-
-
-
-		List<int> hashes = new List<int>();
-
-		[TestCase('a', new int[0])]
-		[TestCase('b', new int[0])]
-		[TestCase('c', new[] { 1 })]
-		[TestCase('d', new[] { 2 })]
-		[TestCase('e', 1, 3)]
-		[TestCase('f', 1, 3)]
-		[TestCase('g', 3, 1)]
-		[TestCase('h', 7, 5)]
-		[TestCase('i', 2, 6, 9)]
-		[TestCase('j', 2, 6, 9, 15, 23, 41)]
-		public void GetHashCode_MiscInput_IsGood(char dummy, params int[] links)
-		{
-			var t = new Transaction(links);
-			var result = t.GetHashCode();
-
-			Assert.IsFalse(
-				hashes.Contains(result)
-			);
-
-			hashes.Add(result);
-		}
 	}
 }
