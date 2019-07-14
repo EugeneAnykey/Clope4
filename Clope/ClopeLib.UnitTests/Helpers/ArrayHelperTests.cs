@@ -1,14 +1,12 @@
 ﻿using NUnit.Framework;
-
 using ClopeLib.Helpers;
-using System;
 
 namespace ClopeLib.UnitTests.Helpers
 {
 	[TestFixture]
 	public class ArrayHelperTests
 	{
-		// Equals
+		#region Equals
 		[Test]
 		public void Equals_Simple_IsTrue()
 		{
@@ -71,78 +69,6 @@ namespace ClopeLib.UnitTests.Helpers
 
 			Assert.IsFalse(res);
 		}
-
-
-
-		// Contains - In Array - Returns True
-		[TestCase(13, new[] { 13 })]
-		[TestCase(5, new[] { 1, 17, 5 })]
-		[TestCase(17, new[] { 17, 13, 5 })]
-		[TestCase(1.3, new[] { 3.9, 1.3, 1.0 })]
-		[TestCase("b", new[] { "r", "b", "e" })]
-		public void Contains_InArray_ReturnsTrue<T>(T item, T[] inArray) where T : IEquatable<T>
-		{
-			var res = inArray.Contains(item);
-			Assert.IsTrue(res);
-		}
-
-
-
-		// Contains - Not In Array - Returns False
-		[TestCase(4, new int[0])]
-		[TestCase(7, new[] { 1, 3, 5 })]
-		[TestCase(1.2, new[] { 3.9, 1.3, 1.0 })]
-		[TestCase("v", new[] { "r", "b", "e" })]
-		public void Contains_NotInArray_ReturnsFalse<T>(T item, T[] inArray) where T : IEquatable<T>
-		{
-			var res = inArray.Contains(item);
-			Assert.IsFalse(res);
-		}
-
-
-
-		// Contains - Nulls - Throw ArgumentNull (! some values couldn't be null, i.e. int.)
-		[TestCase(null, new[] { "a", "b" })]
-		[TestCase("a", null)]
-		public void Contains_Nulls_ThrowArgumentNull(string item, string[] inArray)
-		{
-			Assert.Catch<ArgumentNullException>(() => ArrayHelper.Contains(inArray, item));
-		}
-
-
-
-
-		// Position - In Array - item Exists
-		[TestCase(3, 0, new[] { 3 })]
-		[TestCase(1, 0, new[] { 1, 3 })]
-		[TestCase(5, 2, new[] { 1, 3, 5 })]
-		[TestCase(1.3, 1, new[] { 3.9, 1.3, 1.0 })]
-		[TestCase("b", 1, new[] { "r", "b", "e" })]
-		public void Position_InArray_Exists<T>(T item, int index, T[] inArray) where T : IEquatable<T>
-		{
-			var res = inArray.Position(item);
-			Assert.AreEqual(
-				index,
-				res
-			);
-		}
-
-
-
-		// Position - Not In Array - item Not Exists
-		[TestCase(4, new int[0])]
-		[TestCase(7, new[] { 1, 3, 5 })]
-		[TestCase(1.2, new[] { 3.9, 1.3, 1.0 })]
-		[TestCase("v", new[] { "r", "b", "e" })]
-		public void Position_NotInArray_NotExists<T>(T item, T[] inArray) where T : IEquatable<T>
-		{
-			const int index = -1;
-
-			var res = inArray.Position(item);
-			Assert.AreEqual(
-				index,
-				res
-			);
-		}
+		#endregion
 	}
 }
