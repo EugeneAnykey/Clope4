@@ -1,4 +1,6 @@
 ﻿#define mult1
+#define smallMult
+#define moreAttributes1
 
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,7 @@ namespace ClopeWin
 
 		// field
 		Clope clope;
-		
+
 		List<ITransaction> transactions;
 		IAttributeStore attributeStore;
 
@@ -56,7 +58,12 @@ namespace ClopeWin
 
 			PrepareTest();
 #if mult
-			var multipleTimesRead = 7;// 170;
+			var multipleTimesRead =
+#if smallMult
+			10;
+#else
+			100;
+#endif
 			while (multipleTimesRead-- > 0)
 			{
 				logger.Write($"times left: {multipleTimesRead}");
@@ -78,7 +85,11 @@ namespace ClopeWin
 		// factory
 		const int LinesToReadAtOnceForExample = 423;
 		IPortionReader _GetReader() => new Reader(settings.SelectedDelimitedFile.GetPath()) { LinesToReadAtOnce = LinesToReadAtOnceForExample };
+#if moreAttributes
+		IParser _GetParser() => new TestSimpleParser(settings.SelectedDelimitedFile.FieldSeparators, 10);
+#else
 		IParser _GetParser() => new Parser(settings.SelectedDelimitedFile.FieldSeparators, new ElementRule(determineAsNulls, null));
+#endif
 		IAttributeStore _GetAttributeStore() => new AttributeStoreAtDic();
 
 
@@ -142,7 +153,7 @@ namespace ClopeWin
 		public string MakeResults(int column = 0)
 		{
 			LoggingStart(mainWatch);
-			var preview = new Previewer(clope.GetTransactions_Axe(), clope.Clusters, attributeStore);
+			var preview = new Previewer(transactions, clope.Clusters, attributeStore);
 			preview.MakePreview(column);
 
 			LoggingEnd("Results", mainWatch);
