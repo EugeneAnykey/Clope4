@@ -21,17 +21,15 @@ namespace ClopeWin
 
 
 		// field
-		List<string> input;
-		List<ITransaction> transactions;
-
 		Clope clope;
+		
+		List<ITransaction> transactions;
+		IAttributeStore attributeStore;
 
 		DataSetupSettings settings;
 		ILogger logger;
-		IAttributeStore attributeStore;
 
-		// for logger and watch
-		Stopwatch watch;
+		Stopwatch mainWatch;
 		Stopwatch stepWatch;
 
 
@@ -42,10 +40,9 @@ namespace ClopeWin
 			this.clope = clope ?? throw new ArgumentNullException();
 			this.logger = logger ?? new ConsoleLogger();
 			this.settings = settings;
-			watch = new Stopwatch();
+			mainWatch = new Stopwatch();
 			stepWatch = new Stopwatch();
 			transactions = new List<ITransaction>();
-			input = new List<string>();
 		}
 
 
@@ -53,7 +50,7 @@ namespace ClopeWin
 		// public Run.
 		public void Run()
 		{
-			watch.Reset();
+			mainWatch.Reset();
 			stepWatch.Reset();
 			logger.WriteDated("Tester start.");
 
@@ -72,7 +69,7 @@ namespace ClopeWin
 
 			logger.WriteDated("Tester finished.\r\n");
 
-			watch.Stop();
+			mainWatch.Stop();
 			stepWatch.Stop();
 		}
 
@@ -104,7 +101,7 @@ namespace ClopeWin
 
 		void ReadData()
 		{
-			LoggingStart("Read");
+			LoggingStart(mainWatch);
 			IPortionReader reader = _GetReader();
 			IParser parser = _GetParser();
 
@@ -117,7 +114,6 @@ namespace ClopeWin
 				// get transactions from data portion:
 				foreach (var possibleTransaction in reader.GetData())
 				{
-					input.Add(possibleTransaction);
 					var attributes = parser.Parse(possibleTransaction);
 					var t = new Transaction(attributeStore.PlaceAndGetLinks(attributes));
 					tempTrans.Add(t);
@@ -128,28 +124,28 @@ namespace ClopeWin
 				clope.AddNewTransactions(tempTrans.ToArray());
 			}
 
-			LoggingEnd("Read");
+			LoggingEnd("Read", mainWatch);
 		}
 
 
 
 		void RunClope()
 		{
-			LoggingStart("Clope");
+			LoggingStart(mainWatch);
 			stepWatch.Start();
 			clope.Run();
-			LoggingEnd("Clope");
+			LoggingEnd("Clope", mainWatch);
 		}
 
 
 
 		public string MakeResults(int column = 0)
 		{
-			LoggingStart("Results");
+			LoggingStart(mainWatch);
 			var preview = new Previewer(clope.GetTransactions_Axe(), clope.Clusters, attributeStore);
 			preview.MakePreview(column);
 
-			LoggingEnd("Results");
+			LoggingEnd("Results", mainWatch);
 			logger.Write($"Steps done: {clope.LatestStep}.");
 
 			return preview.GetOutput();
@@ -167,15 +163,7 @@ namespace ClopeWin
 			stepWatch.Restart();
 		}
 
-		void LoggingStart(string name) => LoggingStart(name, watch);
-
-		void LoggingStart(string name, Stopwatch watch)
-		{
-			//logger.Write($"{name}> start...");
-			watch.Restart();
-		}
-
-		void LoggingEnd(string name) => LoggingEnd(name, watch);
+		void LoggingStart(Stopwatch watch) => watch.Restart();
 
 		void LoggingEnd(string name, Stopwatch watch, bool bonusEndLine = true)
 		{
