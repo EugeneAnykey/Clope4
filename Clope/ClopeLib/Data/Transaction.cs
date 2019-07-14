@@ -3,7 +3,7 @@ using ClopeLib.Helpers;
 
 namespace ClopeLib.Data
 {
-	public class Transaction4 : ITransaction
+	public class Transaction : ITransaction
 	{
 		static uint uniqueId = 0;
 
@@ -18,7 +18,7 @@ namespace ClopeLib.Data
 
 
 		// init
-		public Transaction4(int[] links)
+		public Transaction(int[] links)
 		{
 			Links = links ?? throw new ArgumentNullException();
 			hashCode = MakeHashCode();

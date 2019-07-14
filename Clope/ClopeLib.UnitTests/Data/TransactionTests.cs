@@ -13,7 +13,7 @@ namespace ClopeLib.UnitTests.Data
 		{
 			int[] links = null;
 
-			Assert.Catch<ArgumentNullException>(() => new Transaction4(links));
+			Assert.Catch<ArgumentNullException>(() => new Transaction(links));
 		}
 
 
@@ -22,8 +22,8 @@ namespace ClopeLib.UnitTests.Data
 		public void Equals_OneArray_IsFalse()
 		{
 			var links = new[] { 1, 3, 7 };
-			var trans1 = new Transaction4(links);
-			var trans2 = new Transaction4(links);
+			var trans1 = new Transaction(links);
+			var trans2 = new Transaction(links);
 
 			Assert.IsFalse(trans1.Equals(trans2));
 		}
@@ -34,9 +34,9 @@ namespace ClopeLib.UnitTests.Data
 		public void Equals_SameArrayChanged_IsFalse()
 		{
 			var links = new[] { 1, 3, 7 };
-			var trans1 = new Transaction4(links);
+			var trans1 = new Transaction(links);
 			links[0] = 2;
-			var trans2 = new Transaction4(links);
+			var trans2 = new Transaction(links);
 
 			var equals = trans1.Equals(trans2);
 
@@ -50,8 +50,8 @@ namespace ClopeLib.UnitTests.Data
 		{
 			var links1 = new[] { 1, 3, 7 };
 			var links2 = new[] { 1, 3, 7 };
-			var trans1 = new Transaction4(links1);
-			var trans2 = new Transaction4(links2);
+			var trans1 = new Transaction(links1);
+			var trans2 = new Transaction(links2);
 
 			Assert.IsFalse(trans1.Equals(trans2));
 		}
@@ -65,8 +65,8 @@ namespace ClopeLib.UnitTests.Data
 		{
 			var lines1 = new[] { 3, 7, 19 };
 			var lines2 = new[] { 1, 5, 23 };
-			var trans1 = new Transaction4(links1);
-			var trans2 = new Transaction4(links2);
+			var trans1 = new Transaction(links1);
+			var trans2 = new Transaction(links2);
 
 			var equals = trans1.Equals(trans2);
 
@@ -89,7 +89,7 @@ namespace ClopeLib.UnitTests.Data
 		[TestCase('j', 2, 6, 9, 15, 23, 41)]
 		public void GetHashCode_MiscInput_IsGood(char dummy, params int[] links)
 		{
-			var t = new Transaction4(links);
+			var t = new Transaction(links);
 			var result = t.GetHashCode();
 
 			Assert.IsFalse(

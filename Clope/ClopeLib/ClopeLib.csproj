@@ -51,22 +51,22 @@
     <Reference Include="System.Data.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data4\IndexCounterAtArray.cs" />
-    <Compile Include="Data4\AttributeStoreAtDic.cs" />
+    <Compile Include="Data\IndexCounterAtArray.cs" />
+    <Compile Include="Data\AttributeStoreAtDic.cs" />
     <Compile Include="Helpers\CollectionsHelper.cs" />
-    <Compile Include="Data4\Cluster4.cs" />
-    <Compile Include="Data4\Transaction4.cs" />
+    <Compile Include="Data\Cluster.cs" />
+    <Compile Include="Data\Transaction.cs" />
     <Compile Include="Helpers\MathPower.cs" />
     <Compile Include="Helpers\Utils.cs" />
-    <Compile Include="Previews\Previewer4.cs" />
+    <Compile Include="Previews\Previewer.cs" />
     <Compile Include="_root\EmptyArrayException.cs" />
     <Compile Include="_root\IIndexCounter.cs" />
     <Compile Include="_root\IAttributeStore.cs" />
     <Compile Include="_root\IAttribute.cs" />
-    <Compile Include="Algo4\Clope4.cs" />
+    <Compile Include="Algo\Clope.cs" />
     <Compile Include="_root\ICluster.cs" />
     <Compile Include="_root\ITransaction.cs" />
-    <Compile Include="Data4\Attribute4.cs" />
+    <Compile Include="Data\StringAttribute.cs" />
     <Compile Include="Helpers\ArrayHelper.cs" />
     <Compile Include="Helpers\ConvertHelper.cs" />
     <Compile Include="Parsers\ElementAlwaysValidRule.cs" />

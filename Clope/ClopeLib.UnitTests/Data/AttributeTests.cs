@@ -13,7 +13,7 @@ namespace ClopeLib.UnitTests.Data
 		[TestCase(17754, "asfas sfa safs dfs fs ")]
 		public void Init_Normal_IsGood(int pos, string name)
 		{
-			IAttribute at = new Attribute4(pos, name);
+			IAttribute at = new StringAttribute(pos, name);
 
 			Assert.AreEqual(
 				pos,
@@ -31,7 +31,7 @@ namespace ClopeLib.UnitTests.Data
 		[Test]
 		public void Equals_Self_IsTrue()
 		{
-			IAttribute at = new Attribute4(2, "f");
+			IAttribute at = new StringAttribute(2, "f");
 
 			Assert.IsTrue(at.Equals(at));
 		}
@@ -41,8 +41,8 @@ namespace ClopeLib.UnitTests.Data
 		[TestCase(1, "z", 1, "z")]
 		public void Equals_Similar_IsTrue(int pos1, string name1, int pos2, string name2)
 		{
-			IAttribute at1 = new Attribute4(pos1, name1);
-			IAttribute at2 = new Attribute4(pos2, name2);
+			IAttribute at1 = new StringAttribute(pos1, name1);
+			IAttribute at2 = new StringAttribute(pos2, name2);
 
 			Assert.IsTrue(at1.Equals(at2));
 		}
@@ -54,8 +54,8 @@ namespace ClopeLib.UnitTests.Data
 		[TestCase(0, "a", 6, "z")]
 		public void Equals_Different_IsFalse(int pos1, string name1, int pos2, string name2)
 		{
-			IAttribute at1 = new Attribute4(pos1, name1);
-			IAttribute at2 = new Attribute4(pos2, name2);
+			IAttribute at1 = new StringAttribute(pos1, name1);
+			IAttribute at2 = new StringAttribute(pos2, name2);
 
 			Assert.IsFalse(at1.Equals(at2));
 		}

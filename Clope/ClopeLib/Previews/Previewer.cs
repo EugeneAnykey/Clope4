@@ -5,7 +5,7 @@ using ClopeLib.Helpers;
 
 namespace ClopeLib.Previews
 {
-	public class Previewer4
+	public class Previewer
 	{
 		// field
 		readonly IEnumerable<ITransaction> transactions;
@@ -19,7 +19,7 @@ namespace ClopeLib.Previews
 
 
 		// init
-		public Previewer4(IEnumerable<ITransaction> transactions, IEnumerable<ICluster> clusters, IAttributeStore store)
+		public Previewer(IEnumerable<ITransaction> transactions, IEnumerable<ICluster> clusters, IAttributeStore store)
 		{
 			this.transactions = transactions;
 			this.clusters = clusters;

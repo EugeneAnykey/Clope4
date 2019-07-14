@@ -53,7 +53,7 @@ namespace ClopeLib.Data
 
 			for (int col = 0; col < items.Length; col++)
 			{
-				IAttribute att = new Attribute4(col, items[col]);
+				IAttribute att = new StringAttribute(col, items[col]);
 				res[col] = PlaceAttributeAtDic(att);
 			}
 

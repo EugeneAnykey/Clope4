@@ -2,8 +2,8 @@
 
 namespace ClopeLib.Data
 {
-	[DebuggerDisplay("Atr: {Position} - {Name}.")]
-	public struct Attribute4 : IAttribute
+	[DebuggerDisplay("StringAttribute: {Position} - {Name}.")]
+	public struct StringAttribute : IAttribute
 	{
 		// field
 		public int Position { get; }
@@ -13,7 +13,7 @@ namespace ClopeLib.Data
 
 
 		// init
-		public Attribute4(int position, string name)
+		public StringAttribute(int position, string name)
 		{
 			Position = position;
 			Name = name;

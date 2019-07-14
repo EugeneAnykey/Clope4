@@ -12,7 +12,7 @@ namespace ClopeLib.Algo
 {
 	public delegate void EventStepDoneHandler(int step, int changesDone);
 
-	public class Clope4
+	public class Clope
 	{
 		public event EventStepDoneHandler StepDone;
 		void OnStepDone(int step, int changes) => StepDone?.Invoke(step, changes);
@@ -56,7 +56,7 @@ namespace ClopeLib.Algo
 
 
 		// init
-		public Clope4()
+		public Clope()
 		{
 			Transactions = new List<ITransaction>();
 			Clusters = new List<ICluster>();
@@ -167,7 +167,7 @@ namespace ClopeLib.Algo
 			}
 
 			if (bestCluster == null)
-				Clusters.Add(bestCluster = new Cluster4(ref MathPower));
+				Clusters.Add(bestCluster = new Cluster(ref MathPower));
 
 			bestCluster.Add(t);
 			Transactions.Add(t);
@@ -180,7 +180,7 @@ namespace ClopeLib.Algo
 		{
 			var exists = Clusters.Where(c => c.IsEmpty).Count() > 0;
 			if (!exists)
-				Clusters.Add(new Cluster4(ref MathPower));
+				Clusters.Add(new Cluster(ref MathPower));
 		}
 
 

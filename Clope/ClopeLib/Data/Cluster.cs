@@ -3,7 +3,7 @@ using ClopeLib.Helpers;
 
 namespace ClopeLib.Data
 {
-	public class Cluster4 : ICluster
+	public class Cluster : ICluster
 	{
 		// field
 		public int Area { get; private set; }
@@ -25,7 +25,7 @@ namespace ClopeLib.Data
 
 
 		// init
-		public Cluster4(ref MathPower mathPower)
+		public Cluster(ref MathPower mathPower)
 		{
 			this.mathPower = mathPower ?? throw new ArgumentNullException();
 			Area = 0;

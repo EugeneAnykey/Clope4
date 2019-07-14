@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using ClopeLib;
 using ClopeLib.Algo;
 using ClopeLib.Data;
@@ -14,7 +13,7 @@ using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeWin
 {
-	public class Tester4
+	public class Tester
 	{
 		// predefs
 		readonly string[] determineAsNulls = new[] { "?", string.Empty };
@@ -25,7 +24,7 @@ namespace ClopeWin
 		List<string> input;
 		List<ITransaction> transactions;
 
-		Clope4 clope;
+		Clope clope;
 
 		DataSetupSettings settings;
 		ILogger logger;
@@ -38,7 +37,7 @@ namespace ClopeWin
 
 
 		// init
-		public Tester4(Clope4 clope, DataSetupSettings settings, ILogger logger)
+		public Tester(Clope clope, DataSetupSettings settings, ILogger logger)
 		{
 			this.clope = clope ?? throw new ArgumentNullException();
 			this.logger = logger ?? new ConsoleLogger();
@@ -120,7 +119,7 @@ namespace ClopeWin
 				{
 					input.Add(possibleTransaction);
 					var attributes = parser.Parse(possibleTransaction);
-					var t = new Transaction4(attributeStore.PlaceAndGetLinks(attributes));
+					var t = new Transaction(attributeStore.PlaceAndGetLinks(attributes));
 					tempTrans.Add(t);
 				}
 
@@ -147,7 +146,7 @@ namespace ClopeWin
 		public string MakeResults(int column = 0)
 		{
 			LoggingStart("Results");
-			var preview = new Previewer4(clope.GetTransactions_Axe(), clope.Clusters, attributeStore);
+			var preview = new Previewer(clope.GetTransactions_Axe(), clope.Clusters, attributeStore);
 			preview.MakePreview(column);
 
 			LoggingEnd("Results");

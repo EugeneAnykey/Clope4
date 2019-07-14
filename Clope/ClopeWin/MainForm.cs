@@ -10,7 +10,7 @@ namespace ClopeWin
 	{
 		// field
 		ILogger logger;
-		Clope4 clope4;
+		Clope clope4;
 
 
 
@@ -65,10 +65,10 @@ namespace ClopeWin
 		{
 			const string end = "\r\n\r\n";
 
-			clope4 = new Clope4();
+			clope4 = new Clope();
 
 			richTextBoxClusters.Clear();
-			var tester4 = new Tester4(clope4, dataSetupControl1.Settings, logger);
+			var tester4 = new Tester(clope4, dataSetupControl1.Settings, logger);
 			tester4.Run();
 			richTextBoxClusters.Text = tester4.MakeResults();
 

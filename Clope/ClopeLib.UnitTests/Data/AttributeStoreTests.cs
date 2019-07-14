@@ -23,10 +23,10 @@ namespace ClopeLib.UnitTests.Data
 				store.PlaceAndGetLinks(line);
 		}
 
-		Attribute4[] GetAttributesForColumn(int col = 0)
+		StringAttribute[] GetAttributesForColumn(int col = 0)
 		{
 			var ss = attributes.Select(a => a[col]).Distinct().ToArray();
-			return ss.Select(s => new Attribute4(col, s)).ToArray();
+			return ss.Select(s => new StringAttribute(col, s)).ToArray();
 		}
 
 
@@ -78,7 +78,7 @@ namespace ClopeLib.UnitTests.Data
 		public void GetAttributes_Existed_IsGood()
 		{
 			const int col = 0;
-			Attribute4[] expected = GetAttributesForColumn(col);
+			StringAttribute[] expected = GetAttributesForColumn(col);
 
 			IAttributeStore store = _GetAttributeStore();
 			FillStoreDefault(store);
