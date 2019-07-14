@@ -151,24 +151,21 @@ namespace ClopeLib.Algo
 
 
 
+		void CheckingForAtLeastOneEmptyCluster()
+		{
+			var exists = Clusters.Where(c => c.IsEmpty).Count() > 0;
+			if (!exists)
+				Clusters.Add(new Cluster4(ref MathPower));
+		}
+
+
+
 		void PlaceIntoCluster(ITransaction t)
 		{
-			ICluster bestCluster = null;
-
-			double maxCost = 0;
-
-			foreach (ICluster c in Clusters)
-			{
-				double addCost = c.GetAddCost(t);
-				if (maxCost < addCost)
-				{
-					maxCost = addCost;
-					bestCluster = c;
-				}
-			}
+			ICluster bestCluster = BestClusterSearch(t, null);
 
 			if (bestCluster == null)
-				Clusters.Add(bestCluster = new Cluster(ref MathPower));
+				Clusters.Add(bestCluster = new Cluster4(ref MathPower));
 
 			bestCluster.Add(t);
 			Transactions.Add(t);
@@ -177,26 +174,14 @@ namespace ClopeLib.Algo
 
 
 
-		void CheckingForAtLeastOneEmptyCluster()
+		ICluster BestClusterSearch(ITransaction t, ICluster initialCluster, double initialMaxCost = 0)
 		{
-			var exists = Clusters.Where(c => c.IsEmpty).Count() > 0;
-			if (!exists)
-				Clusters.Add(new Cluster(ref MathPower));
-		}
-
-
-
-		bool SpecifyCluster(ITransaction t)
-		{
-			CheckingForAtLeastOneEmptyCluster();
-
-			var currentCluster = keys[t];
-			ICluster bestCluster = currentCluster;
-			double maxCost = currentCluster.GetRemCost(t);
+			var bestCluster = initialCluster;
+			var maxCost = initialMaxCost;
 
 			foreach (ICluster c in Clusters)
 			{
-				if (c == currentCluster)
+				if (c == bestCluster)
 					continue;
 
 				double addCost = c.GetAddCost(t);
@@ -207,6 +192,18 @@ namespace ClopeLib.Algo
 					bestCluster = c;
 				}
 			}
+
+			return bestCluster;
+		}
+
+
+
+		bool SpecifyCluster(ITransaction t)
+		{
+			CheckingForAtLeastOneEmptyCluster();
+
+			var currentCluster = keys[t];
+			ICluster bestCluster = BestClusterSearch(t, currentCluster, currentCluster.GetRemCost(t));
 
 			if (bestCluster != currentCluster)
 			{
