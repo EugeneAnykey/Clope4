@@ -4,6 +4,8 @@
  *  а после получения обрабатываем (для теста скорости обработки).
  */
 
+#define keys1
+
 using System.Collections.Generic;
 using System.Linq;
 using ClopeLib.Data;
@@ -52,7 +54,11 @@ namespace ClopeLib.Algo
 #endif
 		public List<ITransaction> Transactions { get; }
 		public List<ICluster> Clusters { get; private set; }
-		Dictionary<ITransaction, ICluster> keys;
+#if keys
+		Dictionary<ITransaction, ICluster> keys = new Dictionary<ITransaction, ICluster>();
+#else
+		List<ICluster> clusterKeys = new List<ICluster>();
+#endif
 
 
 
@@ -61,7 +67,6 @@ namespace ClopeLib.Algo
 		{
 			Transactions = new List<ITransaction>();
 			Clusters = new List<ICluster>();
-			keys = new Dictionary<ITransaction, ICluster>();
 			Repulsion = 2;
 #if simultaneous
 			stepChanges = 0;
@@ -72,7 +77,16 @@ namespace ClopeLib.Algo
 
 
 
-		bool NeedSpec(int changesCount) => ((double)stepChanges / keys.Count) > specThreshold && LatestStep < maxSteps;
+		/// <summary>
+		/// calculates whether to further refine the result
+		/// </summary>
+		/// <param name="changesCount"></param>
+		/// <returns></returns>
+#if keys
+		bool NeedSpecify(int changesCount) => ((double)stepChanges / keys.Count) > specThreshold && LatestStep < maxSteps;
+#else
+		bool NeedSpecify(int changesCount) => ((double)stepChanges / clusterKeys.Count) > specThreshold && LatestStep < maxSteps;
+#endif
 
 
 
@@ -103,7 +117,9 @@ namespace ClopeLib.Algo
 
 
 
-		// Clear
+		/// <summary>
+		/// Prepares Clope for a new clean start.
+		/// </summary>
 		public void Clear()
 		{
 #if !simultaneous
@@ -111,12 +127,18 @@ namespace ClopeLib.Algo
 #endif
 			Transactions.Clear();
 			Clusters.Clear();
+#if keys
 			keys.Clear();
+#else
+			clusterKeys.Clear();
+#endif
 		}
 
 
 
-		// Run
+		/// <summary>
+		/// Runs clustering algo.
+		/// </summary>
 		public void Run()
 		{
 			LatestStep = 0;
@@ -137,12 +159,18 @@ namespace ClopeLib.Algo
 			{
 				stepChanges = 0;
 
+#if keys
 				foreach (var t in Transactions)
 					if (SpecifyCluster(t))
 						stepChanges++;
+#else
+				for (int i = 0; i < Transactions.Count; i++)
+					if (SpecifyClusterForTransactions(i))
+						stepChanges++;
+#endif
 
 				OnStepDone(LatestStep++, stepChanges);
-			} while (NeedSpec(stepChanges));
+			} while (NeedSpecify(stepChanges));
 		}
 
 
@@ -169,7 +197,11 @@ namespace ClopeLib.Algo
 
 			bestCluster.Add(t);
 			Transactions.Add(t);
+#if keys
 			keys.Add(t, bestCluster);
+#else
+			clusterKeys.Add(bestCluster);
+#endif
 		}
 
 
@@ -198,6 +230,7 @@ namespace ClopeLib.Algo
 
 
 
+#if keys
 		bool SpecifyCluster(ITransaction t)
 		{
 			CheckingForAtLeastOneEmptyCluster();
@@ -215,9 +248,24 @@ namespace ClopeLib.Algo
 
 			return false;
 		}
+#else
+		bool SpecifyClusterForTransactions(int index)
+		{
+			CheckingForAtLeastOneEmptyCluster();
+			var t = Transactions[index];
+			var currentCluster = clusterKeys[index];
+			ICluster bestCluster = BestClusterSearch(t, currentCluster, currentCluster.GetRemCost(t));
 
+			if (bestCluster != currentCluster)
+			{
+				currentCluster.Remove(t);
+				bestCluster.Add(t);
+				clusterKeys[index] = bestCluster;
+				return true;
+			}
 
-
-		public IEnumerable<ITransaction> GetTransactions_Axe() => keys.Select(t => t.Key).ToArray();
+			return false;
+		}
+#endif
 	}
 }
