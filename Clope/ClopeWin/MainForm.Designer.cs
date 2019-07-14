@@ -42,10 +42,12 @@ namespace ClopeWin
 			this.buttonScreenShot = new System.Windows.Forms.Button();
 			this.buttonClopeRun = new System.Windows.Forms.Button();
 			this.groupBoxSettings = new System.Windows.Forms.GroupBox();
-			this.dataSetupControl1 = new ClopeWin.DataSetupControl();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.richTextBoxClusters = new System.Windows.Forms.RichTextBox();
 			this.richTextBoxLogger = new System.Windows.Forms.RichTextBox();
+			this.groupBoxPreviewColumn = new System.Windows.Forms.GroupBox();
+			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+			this.dataSetupControl1 = new ClopeWin.DataSetupControl();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -57,6 +59,8 @@ namespace ClopeWin
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
+			this.groupBoxPreviewColumn.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -81,6 +85,7 @@ namespace ClopeWin
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.groupBoxPreviewColumn);
 			this.panel1.Controls.Add(this.groupBoxControl);
 			this.panel1.Controls.Add(this.groupBoxSettings);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -134,15 +139,6 @@ namespace ClopeWin
 			this.groupBoxSettings.TabStop = false;
 			this.groupBoxSettings.Text = "Settings";
 			// 
-			// dataSetupControl1
-			// 
-			this.dataSetupControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dataSetupControl1.Location = new System.Drawing.Point(10, 23);
-			this.dataSetupControl1.Name = "dataSetupControl1";
-			this.dataSetupControl1.Padding = new System.Windows.Forms.Padding(5);
-			this.dataSetupControl1.Size = new System.Drawing.Size(304, 177);
-			this.dataSetupControl1.TabIndex = 0;
-			// 
 			// splitContainer2
 			// 
 			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -160,11 +156,11 @@ namespace ClopeWin
 			this.splitContainer2.SplitterDistance = 291;
 			this.splitContainer2.TabIndex = 3;
 			// 
-			// richTextBox1
+			// richTextBoxClusters
 			// 
 			this.richTextBoxClusters.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.richTextBoxClusters.Location = new System.Drawing.Point(0, 0);
-			this.richTextBoxClusters.Name = "richTextBox1";
+			this.richTextBoxClusters.Name = "richTextBoxClusters";
 			this.richTextBoxClusters.Size = new System.Drawing.Size(291, 812);
 			this.richTextBoxClusters.TabIndex = 2;
 			this.richTextBoxClusters.Text = "";
@@ -177,6 +173,34 @@ namespace ClopeWin
 			this.richTextBoxLogger.Size = new System.Drawing.Size(551, 812);
 			this.richTextBoxLogger.TabIndex = 1;
 			this.richTextBoxLogger.Text = "";
+			// 
+			// groupBoxPreviewColumn
+			// 
+			this.groupBoxPreviewColumn.Controls.Add(this.numericUpDown1);
+			this.groupBoxPreviewColumn.Dock = System.Windows.Forms.DockStyle.Top;
+			this.groupBoxPreviewColumn.Location = new System.Drawing.Point(5, 289);
+			this.groupBoxPreviewColumn.Name = "groupBoxPreviewColumn";
+			this.groupBoxPreviewColumn.Size = new System.Drawing.Size(324, 44);
+			this.groupBoxPreviewColumn.TabIndex = 6;
+			this.groupBoxPreviewColumn.TabStop = false;
+			this.groupBoxPreviewColumn.Text = "Preview Column";
+			// 
+			// numericUpDown1
+			// 
+			this.numericUpDown1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.numericUpDown1.Location = new System.Drawing.Point(3, 16);
+			this.numericUpDown1.Name = "numericUpDown1";
+			this.numericUpDown1.Size = new System.Drawing.Size(318, 20);
+			this.numericUpDown1.TabIndex = 0;
+			// 
+			// dataSetupControl1
+			// 
+			this.dataSetupControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dataSetupControl1.Location = new System.Drawing.Point(10, 23);
+			this.dataSetupControl1.Name = "dataSetupControl1";
+			this.dataSetupControl1.Padding = new System.Windows.Forms.Padding(5);
+			this.dataSetupControl1.Size = new System.Drawing.Size(304, 177);
+			this.dataSetupControl1.TabIndex = 0;
 			// 
 			// MainForm
 			// 
@@ -200,6 +224,8 @@ namespace ClopeWin
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
 			this.splitContainer2.ResumeLayout(false);
+			this.groupBoxPreviewColumn.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -210,5 +236,7 @@ namespace ClopeWin
 		private System.Windows.Forms.RichTextBox richTextBoxClusters;
 		private System.Windows.Forms.RichTextBox richTextBoxLogger;
 		private System.Windows.Forms.Button buttonScreenShot;
+		private System.Windows.Forms.GroupBox groupBoxPreviewColumn;
+		private System.Windows.Forms.NumericUpDown numericUpDown1;
 	}
 }

@@ -15,6 +15,7 @@ namespace ClopeLib.Previews
 		List<int[]> resultForClusters;
 		IAttribute[] attributes;
 		int[] links;
+		bool gotData = false;
 
 
 
@@ -40,6 +41,9 @@ namespace ClopeLib.Previews
 		public void MakePreview(int attributeColumn)
 		{
 			attributes = store.GetAttributes(attributeColumn);
+
+			gotData = attributes.Length > 0;
+
 			links = store.GetAttributesLinks(attributeColumn);
 
 			// now checking clusters:
@@ -64,6 +68,10 @@ namespace ClopeLib.Previews
 
 		public string GetOutput()
 		{
+			const string NoData = "No data";
+			if (!gotData)
+				return NoData;
+
 			const string tab = "\t";
 			var sb = new StringBuilder();
 

@@ -10,7 +10,8 @@ namespace ClopeWin
 	{
 		// field
 		ILogger logger;
-		Clope clope4;
+		Clope clope;
+		Tester tester = null;
 
 
 
@@ -26,6 +27,7 @@ namespace ClopeWin
 			// events:
 			buttonClopeRun.Click += (_, __) => RunClope();
 			buttonScreenShot.Click += (_, __) => MakeScreenshot(richTextBoxLogger);
+			numericUpDown1.ValueChanged += (_, __) => Results((int)numericUpDown1.Value);
 		}
 
 
@@ -65,14 +67,18 @@ namespace ClopeWin
 		{
 			const string end = "\r\n\r\n";
 
-			clope4 = new Clope();
+			clope = new Clope();
 
-			richTextBoxClusters.Clear();
-			var tester4 = new Tester(clope4, dataSetupControl1.Settings, logger);
-			tester4.Run();
-			richTextBoxClusters.Text = tester4.MakeResults();
+			//richTextBoxClusters.Clear();
+			tester = new Tester(clope, dataSetupControl1.Settings, logger);
+			tester.Run();
+			Results();
+			//richTextBoxClusters.Text = tester.MakeResults();
 
 			logger.Write(end);
 		}
+
+
+		void Results(int columnIndex = 0) => richTextBoxClusters.Text = tester.MakeResults(columnIndex);
 	}
 }
