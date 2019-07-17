@@ -40,13 +40,13 @@ namespace ClopeWin
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.groupBoxControl = new System.Windows.Forms.GroupBox();
 			this.buttonScreenShot = new System.Windows.Forms.Button();
-			this.buttonClopeRun = new System.Windows.Forms.Button();
+			this.buttonRunTest = new System.Windows.Forms.Button();
 			this.groupBoxSettings = new System.Windows.Forms.GroupBox();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.richTextBoxClusters = new System.Windows.Forms.RichTextBox();
 			this.richTextBoxLogger = new System.Windows.Forms.RichTextBox();
 			this.groupBoxPreviewColumn = new System.Windows.Forms.GroupBox();
-			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+			this.numericUpDownResultColumn = new System.Windows.Forms.NumericUpDown();
 			this.dataSetupControl1 = new ClopeWin.DataSetupControl();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -60,7 +60,7 @@ namespace ClopeWin
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
 			this.groupBoxPreviewColumn.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownResultColumn)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -98,7 +98,7 @@ namespace ClopeWin
 			// groupBoxControl
 			// 
 			this.groupBoxControl.Controls.Add(this.buttonScreenShot);
-			this.groupBoxControl.Controls.Add(this.buttonClopeRun);
+			this.groupBoxControl.Controls.Add(this.buttonRunTest);
 			this.groupBoxControl.Dock = System.Windows.Forms.DockStyle.Top;
 			this.groupBoxControl.Location = new System.Drawing.Point(5, 215);
 			this.groupBoxControl.Name = "groupBoxControl";
@@ -119,13 +119,13 @@ namespace ClopeWin
 			// 
 			// buttonClopeRun
 			// 
-			this.buttonClopeRun.Dock = System.Windows.Forms.DockStyle.Top;
-			this.buttonClopeRun.Location = new System.Drawing.Point(3, 16);
-			this.buttonClopeRun.Name = "buttonClopeRun";
-			this.buttonClopeRun.Size = new System.Drawing.Size(318, 23);
-			this.buttonClopeRun.TabIndex = 5;
-			this.buttonClopeRun.Text = "Run";
-			this.buttonClopeRun.UseVisualStyleBackColor = true;
+			this.buttonRunTest.Dock = System.Windows.Forms.DockStyle.Top;
+			this.buttonRunTest.Location = new System.Drawing.Point(3, 16);
+			this.buttonRunTest.Name = "buttonClopeRun";
+			this.buttonRunTest.Size = new System.Drawing.Size(318, 23);
+			this.buttonRunTest.TabIndex = 5;
+			this.buttonRunTest.Text = "Run";
+			this.buttonRunTest.UseVisualStyleBackColor = true;
 			// 
 			// groupBoxSettings
 			// 
@@ -176,7 +176,7 @@ namespace ClopeWin
 			// 
 			// groupBoxPreviewColumn
 			// 
-			this.groupBoxPreviewColumn.Controls.Add(this.numericUpDown1);
+			this.groupBoxPreviewColumn.Controls.Add(this.numericUpDownResultColumn);
 			this.groupBoxPreviewColumn.Dock = System.Windows.Forms.DockStyle.Top;
 			this.groupBoxPreviewColumn.Location = new System.Drawing.Point(5, 289);
 			this.groupBoxPreviewColumn.Name = "groupBoxPreviewColumn";
@@ -187,11 +187,11 @@ namespace ClopeWin
 			// 
 			// numericUpDown1
 			// 
-			this.numericUpDown1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.numericUpDown1.Location = new System.Drawing.Point(3, 16);
-			this.numericUpDown1.Name = "numericUpDown1";
-			this.numericUpDown1.Size = new System.Drawing.Size(318, 20);
-			this.numericUpDown1.TabIndex = 0;
+			this.numericUpDownResultColumn.Dock = System.Windows.Forms.DockStyle.Top;
+			this.numericUpDownResultColumn.Location = new System.Drawing.Point(3, 16);
+			this.numericUpDownResultColumn.Name = "numericUpDown1";
+			this.numericUpDownResultColumn.Size = new System.Drawing.Size(318, 20);
+			this.numericUpDownResultColumn.TabIndex = 0;
 			// 
 			// dataSetupControl1
 			// 
@@ -225,18 +225,18 @@ namespace ClopeWin
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
 			this.splitContainer2.ResumeLayout(false);
 			this.groupBoxPreviewColumn.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownResultColumn)).EndInit();
 			this.ResumeLayout(false);
 
 		}
 		private System.Windows.Forms.GroupBox groupBoxControl;
-		private System.Windows.Forms.Button buttonClopeRun;
+		private System.Windows.Forms.Button buttonRunTest;
 		private DataSetupControl dataSetupControl1;
 		private System.Windows.Forms.SplitContainer splitContainer2;
 		private System.Windows.Forms.RichTextBox richTextBoxClusters;
 		private System.Windows.Forms.RichTextBox richTextBoxLogger;
 		private System.Windows.Forms.Button buttonScreenShot;
 		private System.Windows.Forms.GroupBox groupBoxPreviewColumn;
-		private System.Windows.Forms.NumericUpDown numericUpDown1;
+		private System.Windows.Forms.NumericUpDown numericUpDownResultColumn;
 	}
 }

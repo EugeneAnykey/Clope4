@@ -25,18 +25,22 @@ namespace ClopeWin
 			ShowOptimizations();
 
 			// events:
-			buttonClopeRun.Click += (_, __) => RunClope();
+			buttonRunTest.Click += (_, __) => RunTest();
 			buttonScreenShot.Click += (_, __) => MakeScreenshot(richTextBoxLogger);
-			numericUpDown1.ValueChanged += (_, __) => Results((int)numericUpDown1.Value);
+			numericUpDownResultColumn.ValueChanged += (_, __) => Results((int)numericUpDownResultColumn.Value);
 		}
 
 
 
+		readonly string[] replacements = new[] { ".", "/", "\\", ":" };
+		const string goodDelimeter = "-";
+
 		void MakeScreenshot(Control control)
 		{
-			var name = string.Concat(DateTime.Now.ToShortDateString(), " - ", DateTime.Now.ToLongTimeString()).Replace(".", "-").Replace("/", "-").Replace(@"\", "-").Replace(":", "-") + ".png";
-
-			WinHelper.TakeComponentScreenShot(control, name);
+			WinHelper.TakeComponentScreenShot(
+				control,
+				string.Concat(DateTime.Now.ToShortDateString(), " - ", DateTime.Now.ToLongTimeString()).Replace(replacements, goodDelimeter)
+			);
 		}
 
 
@@ -63,19 +67,16 @@ namespace ClopeWin
 
 
 
-		void RunClope()
+		void RunTest()
 		{
-			const string end = "\r\n\r\n";
-
 			clope = new Clope();
 
-			//richTextBoxClusters.Clear();
 			tester = new Tester(clope, dataSetupControl1.Settings, logger);
 			tester.Run();
 			Results();
-			//richTextBoxClusters.Text = tester.MakeResults();
 
-			logger.Write(end);
+			logger.Write();
+			logger.Write();
 		}
 
 
