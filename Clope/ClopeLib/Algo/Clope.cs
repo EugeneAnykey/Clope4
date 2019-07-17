@@ -13,8 +13,6 @@ using ClopeLib.Helpers;
 
 namespace ClopeLib.Algo
 {
-	public delegate void EventStepDoneHandler(int step, int changesDone);
-
 	public class Clope
 	{
 		public event EventStepDoneHandler StepDone;
