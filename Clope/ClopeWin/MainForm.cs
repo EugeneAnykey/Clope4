@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using ClopeLib.Algo;
 using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeWin
@@ -10,7 +9,6 @@ namespace ClopeWin
 	{
 		// field
 		ILogger logger;
-		Clope clope;
 		Tester tester = null;
 
 
@@ -56,6 +54,7 @@ namespace ClopeWin
 				"remove cost (function)",
 				"duplicates allowed",
 				//"simultaneous load (0 step in load)",
+				"only external transactions",
 				""
 			};
 
@@ -69,9 +68,7 @@ namespace ClopeWin
 
 		void RunTest()
 		{
-			clope = new Clope();
-
-			tester = new Tester(clope, dataSetupControl1.Settings, logger);
+			tester = new Tester(dataSetupControl1.Settings, logger);
 			tester.Run();
 			Results();
 

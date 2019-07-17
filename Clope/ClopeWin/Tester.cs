@@ -1,8 +1,7 @@
 ﻿#define mult1
-#define smallMult
+#define smallMult1
 #define moreAttributes1
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using ClopeLib;
@@ -36,15 +35,35 @@ namespace ClopeWin
 
 
 
+#if mult
+		int multipleTimesRead =
+#if smallMult
+			10;
+#else
+			100;
+#endif
+#endif
+
+
+
 		// init
-		public Tester(Clope clope, DataSetupSettings settings, ILogger logger)
+		public Tester(DataSetupSettings settings, ILogger logger)
 		{
-			this.clope = clope ?? throw new ArgumentNullException();
 			this.logger = logger ?? new ConsoleLogger();
 			this.settings = settings;
 			mainWatch = new Stopwatch();
 			stepWatch = new Stopwatch();
 			transactions = new List<ITransaction>();
+			this.clope = new Clope(transactions);
+
+#if mult
+			logger.Write($"\t+ test: multiple times loading ({multipleTimesRead} times)");
+#endif
+
+#if moreAttributes
+			logger.Write("\t+ test: more attributes");
+#endif
+			logger.Write();
 		}
 
 
@@ -58,12 +77,6 @@ namespace ClopeWin
 
 			PrepareTest();
 #if mult
-			var multipleTimesRead =
-#if smallMult
-			10;
-#else
-			100;
-#endif
 			while (multipleTimesRead-- > 0)
 			{
 				logger.Write($"times left: {multipleTimesRead}");
@@ -83,7 +96,7 @@ namespace ClopeWin
 
 
 		// factory
-		const int LinesToReadAtOnceForExample = 423;
+		const int LinesToReadAtOnceForExample = 1024;
 		IPortionReader _GetReader() => new Reader(settings.SelectedDelimitedFile.GetPath()) { LinesToReadAtOnce = LinesToReadAtOnceForExample };
 #if moreAttributes
 		IParser _GetParser() => new TestSimpleParser(settings.SelectedDelimitedFile.FieldSeparators, 10);
@@ -105,7 +118,7 @@ namespace ClopeWin
 
 			clope.Repulsion = settings.ClopeRepulsion;
 			clope.StepDone += (step, changes) => StepInfo(step, changes);
-			logger.Write("------\n");
+			logger.Write("------");
 		}
 
 
@@ -120,10 +133,11 @@ namespace ClopeWin
 
 			while (!reader.ReachedEndOfFile)
 			{
-				var tempTrans = new List<ITransaction>();
+				var data = reader.GetData();
+				var tempTrans = new List<ITransaction>(data.Count);
 
 				// get transactions from data portion:
-				foreach (var possibleTransaction in reader.GetData())
+				foreach (var possibleTransaction in data)
 				{
 					var attributes = parser.Parse(possibleTransaction);
 					var t = new Transaction(attributeStore.PlaceAndGetLinks(attributes));
@@ -132,7 +146,7 @@ namespace ClopeWin
 
 				transactions.AddRange(tempTrans);
 
-				clope.AddNewTransactions(tempTrans.ToArray());
+				clope.AddNewTransactions();
 			}
 
 			LoggingEnd("Read", mainWatch);

@@ -4,8 +4,7 @@
  *  а после получения обрабатываем (для теста скорости обработки).
  */
 
-#define keys1
-
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ClopeLib.Data;
@@ -19,6 +18,7 @@ namespace ClopeLib.Algo
 		void OnStepDone(int step, int changes) => StepDone?.Invoke(step, changes);
 
 
+		const float defaultRepulsion = 2;
 		const float minRepulsion = 1;
 		const float maxRepulsion = 10;
 
@@ -27,12 +27,7 @@ namespace ClopeLib.Algo
 
 
 
-		int stepChanges;
-		public int LatestStep { get; private set; }
-
-
-
-		// field
+		// fields
 		float repulsion;
 		public float Repulsion
 		{
@@ -46,31 +41,24 @@ namespace ClopeLib.Algo
 
 
 
+		int stepChanges;
+		public int LatestStep { get; private set; }
+
 		MathPower MathPower;
-#if !simultaneous
-		readonly Queue<ITransaction> newTrans;
-#endif
-		public List<ITransaction> Transactions { get; }
-		public List<ICluster> Clusters { get; private set; }
-#if keys
-		Dictionary<ITransaction, ICluster> keys = new Dictionary<ITransaction, ICluster>();
-#else
+		int transactionsDone = 0;
+		List<ITransaction> transactions;
 		List<ICluster> clusterKeys = new List<ICluster>();
-#endif
+		public List<ICluster> Clusters { get; private set; }
 
 
 
 		// init
-		public Clope()
+		public Clope(List<ITransaction> transactions)
 		{
-			Transactions = new List<ITransaction>();
+			this.transactions = transactions ?? throw new ArgumentNullException();
 			Clusters = new List<ICluster>();
-			Repulsion = 2;
-#if simultaneous
+			Repulsion = defaultRepulsion;
 			stepChanges = 0;
-#else
-			newTrans = new Queue<ITransaction>();
-#endif
 		}
 
 
@@ -79,32 +67,31 @@ namespace ClopeLib.Algo
 		/// calculates whether to further refine the result
 		/// </summary>
 		/// <param name="changesCount"></param>
-		/// <returns></returns>
-#if keys
-		bool NeedSpecify(int changesCount) => ((double)stepChanges / keys.Count) > specThreshold && LatestStep < maxSteps;
-#else
+		/// <returns>true if further specifing is needed</returns>
 		bool NeedSpecify(int changesCount) => ((double)stepChanges / clusterKeys.Count) > specThreshold && LatestStep < maxSteps;
-#endif
 
 
 
 #if simultaneous
-		public void AddNewTransactions(IEnumerable<ITransaction> newTransactions)
+		public void AddNewTransactions()
 		{
-			foreach (var item in newTransactions)
+			while (Transactions.Count > transactionsDone)
 			{
-				PlaceIntoCluster(item);
+				var t = Transactions[transactionsDone++];
+				PlaceIntoCluster(t);
 				stepChanges++;
 			}
 		}
 #else
-		public void AddNewTransactions(IEnumerable<ITransaction> newTransactions) => newTrans.Enqueue(newTransactions);
+		public void AddNewTransactions()
+		{
+		}
 
 		void Start()
 		{
-			while (newTrans.Count > 0)
+			while (transactions.Count > transactionsDone)
 			{
-				var t = newTrans.Dequeue();
+				var t = transactions[transactionsDone++];
 				PlaceIntoCluster(t);
 				stepChanges++;
 			}
@@ -120,16 +107,8 @@ namespace ClopeLib.Algo
 		/// </summary>
 		public void Clear()
 		{
-#if !simultaneous
-			newTrans.Clear();
-#endif
-			Transactions.Clear();
 			Clusters.Clear();
-#if keys
-			keys.Clear();
-#else
 			clusterKeys.Clear();
-#endif
 		}
 
 
@@ -157,15 +136,9 @@ namespace ClopeLib.Algo
 			{
 				stepChanges = 0;
 
-#if keys
-				foreach (var t in Transactions)
-					if (SpecifyCluster(t))
-						stepChanges++;
-#else
-				for (int i = 0; i < Transactions.Count; i++)
+				for (int i = 0; i < transactions.Count; i++)
 					if (SpecifyClusterForTransactions(i))
 						stepChanges++;
-#endif
 
 				OnStepDone(LatestStep++, stepChanges);
 			} while (NeedSpecify(stepChanges));
@@ -194,27 +167,21 @@ namespace ClopeLib.Algo
 				Clusters.Add(bestCluster = new Cluster(ref MathPower));
 
 			bestCluster.Add(t);
-			Transactions.Add(t);
-#if keys
-			keys.Add(t, bestCluster);
-#else
 			clusterKeys.Add(bestCluster);
-#endif
 		}
 
 
 
-		ICluster BestClusterSearch(ITransaction t, ICluster initialCluster, double initialMaxCost = 0)
+		ICluster BestClusterSearch(ITransaction transaction, ICluster initialCluster, double initialMaxCost = 0)
 		{
 			var bestCluster = initialCluster;
 			var maxCost = initialMaxCost;
 
 			foreach (ICluster c in Clusters)
 			{
-				if (c == bestCluster)
-					continue;
+				if (c == bestCluster) continue;
 
-				double addCost = c.GetAddCost(t);
+				double addCost = c.GetAddCost(transaction);
 
 				if (maxCost < addCost)
 				{
@@ -228,29 +195,10 @@ namespace ClopeLib.Algo
 
 
 
-#if keys
-		bool SpecifyCluster(ITransaction t)
-		{
-			CheckingForAtLeastOneEmptyCluster();
-
-			var currentCluster = keys[t];
-			ICluster bestCluster = BestClusterSearch(t, currentCluster, currentCluster.GetRemCost(t));
-
-			if (bestCluster != currentCluster)
-			{
-				currentCluster.Remove(t);
-				bestCluster.Add(t);
-				keys[t] = bestCluster;
-				return true;
-			}
-
-			return false;
-		}
-#else
 		bool SpecifyClusterForTransactions(int index)
 		{
 			CheckingForAtLeastOneEmptyCluster();
-			var t = Transactions[index];
+			var t = transactions[index];
 			var currentCluster = clusterKeys[index];
 			ICluster bestCluster = BestClusterSearch(t, currentCluster, currentCluster.GetRemCost(t));
 
@@ -264,6 +212,5 @@ namespace ClopeLib.Algo
 
 			return false;
 		}
-#endif
 	}
 }
