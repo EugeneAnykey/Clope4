@@ -19,7 +19,7 @@ namespace EugeneAnykey.DebugLib.Loggers
 
 
 		// ILogger
-		public void Write(string message = "")
+		public void Write(string message)
 		{
 			textBox.AppendText($"{message}\n");
 			textBox.ScrollToCaret();

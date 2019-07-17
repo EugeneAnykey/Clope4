@@ -4,8 +4,8 @@
 	{
 		ILogger LinkedLogger { get; }
 
-		void Write(string message);
+		void Write(string message = "");
 
-		void WriteDated(string message);
+		void WriteDated(string message = "");
 	}
 }
