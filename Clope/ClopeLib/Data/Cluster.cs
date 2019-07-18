@@ -12,15 +12,12 @@ namespace ClopeLib.Data
 
 		public int TransactionsCount { get; private set; }
 
-		double currentCost;
-
 		public int Width { get => counter.Positives; }
 
 		readonly IIndexCounter counter = new IndexCounterAtArray();
 
+		double currentCost;
 		readonly MathPower mathPower;
-
-		public int Occurrence(int link) => counter[link];
 
 
 
@@ -33,7 +30,10 @@ namespace ClopeLib.Data
 
 
 
-		void RecalcCurrentCost() => currentCost = Area / mathPower[Width] * TransactionsCount;
+		public int Occurrence(int link) => counter[link];
+
+
+		void RecalcCurrentCost() => currentCost = Width != 0 ? Area / mathPower[Width] * TransactionsCount : 0;
 
 
 
@@ -61,15 +61,16 @@ namespace ClopeLib.Data
 
 		public double GetAddCost(ITransaction t)
 		{
+			if (t == null || t.Length == 0)
+				return currentCost;
+
 			// res = Snew+ * (TransCount + 1) / Power(newWidth, repulsion) - currentCost.
 			var NewWidth = Width;
 			foreach (var link in t.Links)
 				if (counter[link] == 0)
 					NewWidth++;
 
-			return NewWidth == 0 ?
-				0 :
-				(Area + t.Length) / mathPower[NewWidth] * (TransactionsCount + 1)  - currentCost;
+			return (Area + t.Length) / mathPower[NewWidth] * (TransactionsCount + 1) - currentCost;
 		}
 
 		public double GetRemCost(ITransaction t)
@@ -81,7 +82,7 @@ namespace ClopeLib.Data
 					NewWidth--;
 
 			return NewWidth == 0 ?
-				0 :
+				currentCost :
 				currentCost - (Area - t.Length) / mathPower[NewWidth] * (TransactionsCount - 1);
 		}
 	}
