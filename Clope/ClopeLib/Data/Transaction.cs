@@ -7,6 +7,8 @@ namespace ClopeLib.Data
 	{
 		static uint uniqueId = 0;
 
+
+
 		public uint Id { get; } = uniqueId++;
 
 		public int[] Links { get; }
@@ -21,6 +23,10 @@ namespace ClopeLib.Data
 		public Transaction(int[] links)
 		{
 			Links = links ?? throw new ArgumentNullException();
+
+			//if (links.Length == 0)
+			//	throw new EmptyArrayException();
+
 			hashCode = MakeHashCode();
 		}
 
