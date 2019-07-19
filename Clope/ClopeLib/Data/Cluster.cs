@@ -22,7 +22,7 @@ namespace ClopeLib.Data
 
 
 		// init
-		public Cluster(ref MathPower mathPower)
+		public Cluster(MathPower mathPower)
 		{
 			this.mathPower = mathPower ?? throw new ArgumentNullException();
 			Area = 0;
@@ -32,13 +32,15 @@ namespace ClopeLib.Data
 
 		public int Occurrence(int link) => counter[link];
 
-
 		void RecalcCurrentCost() => currentCost = Width != 0 ? Area / mathPower[Width] * TransactionsCount : 0;
 
 
 
 		public void Add(ITransaction t)
 		{
+			if (t == null)
+				throw new ArgumentNullException();
+
 			TransactionsCount++;
 
 			Area += t.Links.Length;

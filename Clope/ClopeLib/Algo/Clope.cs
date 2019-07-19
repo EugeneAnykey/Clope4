@@ -154,7 +154,7 @@ namespace ClopeLib.Algo
 		{
 			var exists = Clusters.Where(c => c.IsEmpty).Count() > 0;
 			if (!exists)
-				Clusters.Add(new Cluster(ref MathPower));
+				Clusters.Add(new Cluster(MathPower));
 		}
 
 
@@ -164,7 +164,7 @@ namespace ClopeLib.Algo
 			ICluster bestCluster = BestClusterSearch(t, null);
 
 			if (bestCluster == null)
-				Clusters.Add(bestCluster = new Cluster(ref MathPower));
+				Clusters.Add(bestCluster = new Cluster(MathPower));
 
 			bestCluster.Add(t);
 			clusterKeys.Add(bestCluster);
