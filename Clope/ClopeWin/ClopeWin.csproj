@@ -45,6 +45,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EugeneAnykey.DebugLib.Loggers">
+      <HintPath>..\..\res\EugeneAnykey.DebugLib.Loggers.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -78,10 +81,6 @@
     <ProjectReference Include="..\ClopeLib\ClopeLib.csproj">
       <Project>{a113137f-6cb6-44a2-9f07-e4319da705b3}</Project>
       <Name>ClopeLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LoggerLib\EugeneAnykey.DebugLib.Loggers.csproj">
-      <Project>{B19399D5-03C5-4D88-A2FD-FDD32F8A7FB5}</Project>
-      <Name>EugeneAnykey.DebugLib.Loggers</Name>
     </ProjectReference>
     <ProjectReference Include="..\TestingHelper\TestingHelper.csproj">
       <Project>{efe116d6-8f5f-4b41-8487-1101fa76841c}</Project>

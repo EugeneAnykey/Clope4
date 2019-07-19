@@ -80,11 +80,5 @@
     <Compile Include="Readers\IReader.cs" />
     <Compile Include="Readers\Reader.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LoggerLib\EugeneAnykey.DebugLib.Loggers.csproj">
-      <Project>{B19399D5-03C5-4D88-A2FD-FDD32F8A7FB5}</Project>
-      <Name>EugeneAnykey.DebugLib.Loggers</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
