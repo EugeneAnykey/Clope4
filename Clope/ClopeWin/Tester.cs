@@ -1,8 +1,4 @@
-﻿#define mult1
-#define smallMult1
-#define moreAttributes1
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using ClopeLib;
 using ClopeLib.Algo;
@@ -35,34 +31,17 @@ namespace ClopeWin
 
 
 
-#if mult
-		int multipleTimesRead =
-#if smallMult
-			10;
-#else
-			100;
-#endif
-#endif
-
-
-
 		// init
 		public Tester(DataSetupSettings settings, ILogger logger)
 		{
 			this.logger = logger ?? new ConsoleLogger();
 			this.settings = settings;
+
 			mainWatch = new Stopwatch();
 			stepWatch = new Stopwatch();
 			transactions = new List<ITransaction>();
 			this.clope = new Clope(transactions);
 
-#if mult
-			logger.Write($"\t+ test: multiple times loading ({multipleTimesRead} times)");
-#endif
-
-#if moreAttributes
-			logger.Write("\t+ test: more attributes");
-#endif
 			logger.Write();
 		}
 
@@ -76,15 +55,7 @@ namespace ClopeWin
 			logger.WriteDated("Tester start.");
 
 			PrepareTest();
-#if mult
-			while (multipleTimesRead-- > 0)
-			{
-				logger.Write($"times left: {multipleTimesRead}");
-				ReadData();
-			}
-#else
 			ReadData();
-#endif
 			RunClope();
 
 			logger.WriteDated("Tester finished.\r\n");
@@ -97,12 +68,11 @@ namespace ClopeWin
 
 		// factory
 		const int LinesToReadAtOnceForExample = 1024;
+
 		IPortionReader _GetReader() => new Reader(settings.SelectedDelimitedFile.GetPath()) { LinesToReadAtOnce = LinesToReadAtOnceForExample };
-#if moreAttributes
-		IParser _GetParser() => new TestSimpleParser(settings.SelectedDelimitedFile.FieldSeparators, 10);
-#else
+
 		IParser _GetParser() => new Parser(settings.SelectedDelimitedFile.FieldSeparators, new ElementRule(determineAsNulls, null));
-#endif
+
 		IAttributeStore _GetAttributeStore() => new AttributeStoreAtDic();
 
 
