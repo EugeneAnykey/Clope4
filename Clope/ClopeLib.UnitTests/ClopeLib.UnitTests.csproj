@@ -59,10 +59,10 @@
     <Compile Include="Data\AttributeStoreTests.cs" />
     <Compile Include="Data\AttributeTests.cs" />
     <Compile Include="Data\TransactionHashTests.cs" />
+    <Compile Include="Data\ClusterTests.cs" />
     <Compile Include="Data\TransactionTests.cs" />
     <Compile Include="Helpers\UtilsTests.cs" />
     <Compile Include="Helpers\ArrayHelperTests.cs" />
-    <Compile Include="Helpers\ConvertHelperTests.cs" />
     <Compile Include="Parsers\ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FileDeployer.cs" />

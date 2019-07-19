@@ -1,10 +1,8 @@
-﻿#define retest
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ClopeLib.Data;
 using NUnit.Framework;
+using ClopeLib.Data;
 
 namespace ClopeLib.UnitTests.Data
 {
@@ -15,6 +13,7 @@ namespace ClopeLib.UnitTests.Data
 		// lines count to test = GenerateRepeatTimes * MaxIntegersInLine * (Duplicate ? 2 : 1);
 		const int GenerateRepeatTimes = 150;
 		const int MaxIntegersInLine = 20;
+		const int MinIntegersInLine = 1;
 		const bool Duplicate = true;
 
 
@@ -29,7 +28,7 @@ namespace ClopeLib.UnitTests.Data
 			var result = new List<int[]>();
 
 			for (int times = 0; times < GenerateRepeatTimes; times++)
-				for (int i = 0; i < MaxIntegersInLine; i++)
+				for (int i = MinIntegersInLine; i < MaxIntegersInLine; i++)
 					result.Add(Generate(i, r));
 
 			// +100% duplicates:

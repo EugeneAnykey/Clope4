@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ClopeLib.Helpers;
 
 namespace ClopeLib.Previews
 {
@@ -15,6 +14,7 @@ namespace ClopeLib.Previews
 		List<int[]> resultForClusters;
 		IAttribute[] attributes;
 		int[] links;
+		bool gotData = false;
 
 
 
@@ -40,6 +40,9 @@ namespace ClopeLib.Previews
 		public void MakePreview(int attributeColumn)
 		{
 			attributes = store.GetAttributes(attributeColumn);
+
+			gotData = attributes.Length > 0;
+
 			links = store.GetAttributesLinks(attributeColumn);
 
 			// now checking clusters:
@@ -64,6 +67,10 @@ namespace ClopeLib.Previews
 
 		public string GetOutput()
 		{
+			const string NoData = "No data";
+			if (!gotData)
+				return NoData;
+
 			const string tab = "\t";
 			var sb = new StringBuilder();
 
@@ -76,7 +83,7 @@ namespace ClopeLib.Previews
 			// items
 			for (int i = 0; i < resultForClusters.Count; i++)
 			{
-				var line = string.Join(tab, resultForClusters[i].ToStrings());
+				var line = string.Join(tab, resultForClusters[i]);
 				var lineName = i < resultForClusters.Count - 1 ? $"{i + 1}" : "summary";
 				sb.AppendLine($"{lineName}{tab}{line}");
 			}

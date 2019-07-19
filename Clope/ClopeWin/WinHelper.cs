@@ -54,5 +54,14 @@ namespace ClopeWin
 				bitmap.Save(filename, ImageFormat.Png);
 			}
 		}
+
+
+
+		public static string Replace(this string str, string[] oldValues, string newValue)
+		{
+			foreach (var item in oldValues)
+				str = str.Replace(item, newValue);
+			return str;
+		}
 	}
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
-using ClopeLib.Algo;
 using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeWin
@@ -10,7 +8,7 @@ namespace ClopeWin
 	{
 		// field
 		ILogger logger;
-		Clope clope4;
+		Tester tester = null;
 
 
 
@@ -21,58 +19,38 @@ namespace ClopeWin
 
 			logger = new FormsLogger(richTextBoxLogger, new FileLogger("clope.log.txt"));
 
-			ShowOptimizations();
-
 			// events:
-			buttonClopeRun.Click += (_, __) => RunClope();
+			buttonRunTest.Click += (_, __) => RunTest();
 			buttonScreenShot.Click += (_, __) => MakeScreenshot(richTextBoxLogger);
+			numericUpDownResultColumn.ValueChanged += (_, __) => Results((int)numericUpDownResultColumn.Value);
 		}
 
 
+
+		readonly string[] replacements = new[] { ".", "/", "\\", ":" };
+		const string goodDelimeter = "-";
 
 		void MakeScreenshot(Control control)
 		{
-			var name = string.Concat(DateTime.Now.ToShortDateString(), " - ", DateTime.Now.ToLongTimeString()).Replace(".", "-").Replace("/", "-").Replace(@"\", "-").Replace(":", "-") + ".png";
-
-			WinHelper.TakeComponentScreenShot(control, name);
+			WinHelper.TakeComponentScreenShot(
+				control,
+				string.Concat(DateTime.Now.ToShortDateString(), " - ", DateTime.Now.ToLongTimeString()).Replace(replacements, goodDelimeter)
+			);
 		}
 
 
 
-		void ShowOptimizations()
+		void RunTest()
 		{
-			const string sep = "\r\n";
-			// optimizations:
-			var optimizations = new[] {
-				"attribute store (at dictionary, class)",
-				"occurence (at array, counter class)",
-				"math power (at array, class)",
-				"remove cost (function)",
-				"duplicates allowed",
-				//"simultaneous load (0 step in load)",
-				""
-			};
+			tester = new Tester(dataSetupControl1.Settings, logger);
+			tester.Run();
+			Results();
 
-			var list = optimizations.Select(s => "\t" + s);
-
-			logger.Write("Optimizations done:");
-			logger.Write(string.Join(sep, list));
+			logger.Write();
+			logger.Write();
 		}
 
 
-
-		void RunClope()
-		{
-			const string end = "\r\n\r\n";
-
-			clope4 = new Clope();
-
-			richTextBoxClusters.Clear();
-			var tester4 = new Tester(clope4, dataSetupControl1.Settings, logger);
-			tester4.Run();
-			richTextBoxClusters.Text = tester4.MakeResults();
-
-			logger.Write(end);
-		}
+		void Results(int columnIndex = 0) => richTextBoxClusters.Text = tester.MakeResults(columnIndex);
 	}
 }

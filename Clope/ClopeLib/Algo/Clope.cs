@@ -1,8 +1,10 @@
-﻿#define simul1	// сделал для тестов
-				// simul(taneous load) - порция данных передается на обработку сразу, по мере поступления
-				// в противном случае, сначала сохраняем все данные,
-				//  а после получения обрабатываем (для теста скорости обработки).
+﻿#define simultaneous1
+/* simultaneous (load) - (сделал для тестов) порция данных передается на обработку сразу, по мере поступления
+ * в противном случае, сначала сохраняем все данные,
+ *  а после получения обрабатываем (для теста скорости обработки).
+ */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ClopeLib.Data;
@@ -10,14 +12,13 @@ using ClopeLib.Helpers;
 
 namespace ClopeLib.Algo
 {
-	public delegate void EventStepDoneHandler(int step, int changesDone);
-
 	public class Clope
 	{
 		public event EventStepDoneHandler StepDone;
 		void OnStepDone(int step, int changes) => StepDone?.Invoke(step, changes);
 
 
+		const float defaultRepulsion = 2;
 		const float minRepulsion = 1;
 		const float maxRepulsion = 10;
 
@@ -26,12 +27,7 @@ namespace ClopeLib.Algo
 
 
 
-		int stepChanges;
-		public int LatestStep { get; private set; }
-
-
-
-		// field
+		// fields
 		float repulsion;
 		public float Repulsion
 		{
@@ -45,53 +41,57 @@ namespace ClopeLib.Algo
 
 
 
+		int stepChanges;
+		public int LatestStep { get; private set; }
+
 		MathPower MathPower;
-#if !simul
-		readonly Queue<ITransaction> newTrans;
-#endif
-		public List<ITransaction> Transactions { get; }
+		int transactionsDone = 0;
+		List<ITransaction> transactions;
+		List<ICluster> clusterKeys = new List<ICluster>();
 		public List<ICluster> Clusters { get; private set; }
-		Dictionary<ITransaction, ICluster> keys;
 
 
 
 		// init
-		public Clope()
+		public Clope(List<ITransaction> transactions)
 		{
-			Transactions = new List<ITransaction>();
+			this.transactions = transactions ?? throw new ArgumentNullException();
 			Clusters = new List<ICluster>();
-			keys = new Dictionary<ITransaction, ICluster>();
-			Repulsion = 2;
-#if simul
+			Repulsion = defaultRepulsion;
 			stepChanges = 0;
-#else
-			newTrans = new Queue<ITransaction>();
-#endif
 		}
 
 
 
-		bool NeedSpec(int changesCount) => ((double)stepChanges / keys.Count) > specThreshold && LatestStep < maxSteps;
+		/// <summary>
+		/// calculates whether to further refine the result
+		/// </summary>
+		/// <param name="changesCount"></param>
+		/// <returns>true if further specifing is needed</returns>
+		bool NeedSpecify(int changesCount) => ((double)stepChanges / clusterKeys.Count) > specThreshold && LatestStep < maxSteps;
 
 
 
-#if simul
-		public void AddNewTransactions(IEnumerable<ITransaction> newTransactions)
+#if simultaneous
+		public void AddNewTransactions()
 		{
-			foreach (var item in newTransactions)
+			while (Transactions.Count > transactionsDone)
 			{
-				PlaceIntoCluster(item);
+				var t = Transactions[transactionsDone++];
+				PlaceIntoCluster(t);
 				stepChanges++;
 			}
 		}
 #else
-		public void AddNewTransactions(IEnumerable<ITransaction> newTransactions) => newTrans.Enqueue(newTransactions);
+		public void AddNewTransactions()
+		{
+		}
 
 		void Start()
 		{
-			while (newTrans.Count > 0)
+			while (transactions.Count > transactionsDone)
 			{
-				var t = newTrans.Dequeue();
+				var t = transactions[transactionsDone++];
 				PlaceIntoCluster(t);
 				stepChanges++;
 			}
@@ -102,24 +102,24 @@ namespace ClopeLib.Algo
 
 
 
-		// Clear
+		/// <summary>
+		/// Prepares Clope for a new clean start.
+		/// </summary>
 		public void Clear()
 		{
-#if !simul
-			newTrans.Clear();
-#endif
-			Transactions.Clear();
 			Clusters.Clear();
-			keys.Clear();
+			clusterKeys.Clear();
 		}
 
 
 
-		// Run
+		/// <summary>
+		/// Runs clustering algo.
+		/// </summary>
 		public void Run()
 		{
 			LatestStep = 0;
-#if simul
+#if simultaneous
 			OnStepDone(LatestStep++, stepChanges);
 #else
 			Start();
@@ -136,12 +136,12 @@ namespace ClopeLib.Algo
 			{
 				stepChanges = 0;
 
-				foreach (var t in Transactions)
-					if (SpecifyCluster(t))
+				for (int i = 0; i < transactions.Count; i++)
+					if (SpecifyClusterForTransactions(i))
 						stepChanges++;
 
 				OnStepDone(LatestStep++, stepChanges);
-			} while (NeedSpec(stepChanges));
+			} while (NeedSpecify(stepChanges));
 		}
 
 
@@ -150,55 +150,38 @@ namespace ClopeLib.Algo
 
 
 
-		void PlaceIntoCluster(ITransaction t)
-		{
-			ICluster bestCluster = null;
-
-			double maxCost = 0;
-
-			foreach (ICluster c in Clusters)
-			{
-				double addCost = c.GetAddCost(t);
-				if (maxCost < addCost)
-				{
-					maxCost = addCost;
-					bestCluster = c;
-				}
-			}
-
-			if (bestCluster == null)
-				Clusters.Add(bestCluster = new Cluster(ref MathPower));
-
-			bestCluster.Add(t);
-			Transactions.Add(t);
-			keys.Add(t, bestCluster);
-		}
-
-
-
 		void CheckingForAtLeastOneEmptyCluster()
 		{
 			var exists = Clusters.Where(c => c.IsEmpty).Count() > 0;
 			if (!exists)
-				Clusters.Add(new Cluster(ref MathPower));
+				Clusters.Add(new Cluster(MathPower));
 		}
 
 
 
-		bool SpecifyCluster(ITransaction t)
+		void PlaceIntoCluster(ITransaction t)
 		{
-			CheckingForAtLeastOneEmptyCluster();
+			ICluster bestCluster = BestClusterSearch(t, null);
 
-			var currentCluster = keys[t];
-			ICluster bestCluster = currentCluster;
-			double maxCost = currentCluster.GetRemCost(t);
+			if (bestCluster == null)
+				Clusters.Add(bestCluster = new Cluster(MathPower));
+
+			bestCluster.Add(t);
+			clusterKeys.Add(bestCluster);
+		}
+
+
+
+		ICluster BestClusterSearch(ITransaction transaction, ICluster initialCluster, double initialMaxCost = 0)
+		{
+			var bestCluster = initialCluster;
+			var maxCost = initialMaxCost;
 
 			foreach (ICluster c in Clusters)
 			{
-				if (c == currentCluster)
-					continue;
+				if (c == bestCluster) continue;
 
-				double addCost = c.GetAddCost(t);
+				double addCost = c.GetAddCost(transaction);
 
 				if (maxCost < addCost)
 				{
@@ -206,20 +189,28 @@ namespace ClopeLib.Algo
 					bestCluster = c;
 				}
 			}
+
+			return bestCluster;
+		}
+
+
+
+		bool SpecifyClusterForTransactions(int index)
+		{
+			CheckingForAtLeastOneEmptyCluster();
+			var t = transactions[index];
+			var currentCluster = clusterKeys[index];
+			ICluster bestCluster = BestClusterSearch(t, currentCluster, currentCluster.GetRemCost(t));
 
 			if (bestCluster != currentCluster)
 			{
 				currentCluster.Remove(t);
 				bestCluster.Add(t);
-				keys[t] = bestCluster;
+				clusterKeys[index] = bestCluster;
 				return true;
 			}
 
 			return false;
 		}
-
-
-
-		public IEnumerable<ITransaction> GetTransactions_Axe() => keys.Select(t => t.Key).ToArray();
 	}
 }
