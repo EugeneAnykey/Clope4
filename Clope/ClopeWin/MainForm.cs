@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
 using EugeneAnykey.DebugLib.Loggers;
 
@@ -20,8 +19,6 @@ namespace ClopeWin
 
 			logger = new FormsLogger(richTextBoxLogger, new FileLogger("clope.log.txt"));
 
-			ShowOptimizations();
-
 			// events:
 			buttonRunTest.Click += (_, __) => RunTest();
 			buttonScreenShot.Click += (_, __) => MakeScreenshot(richTextBoxLogger);
@@ -39,29 +36,6 @@ namespace ClopeWin
 				control,
 				string.Concat(DateTime.Now.ToShortDateString(), " - ", DateTime.Now.ToLongTimeString()).Replace(replacements, goodDelimeter)
 			);
-		}
-
-
-
-		void ShowOptimizations()
-		{
-			const string sep = "\r\n";
-			// optimizations:
-			var optimizations = new[] {
-				"attribute store (at dictionary, class)",
-				"occurence (at array, counter class)",
-				"math power (at array, class)",
-				"remove cost (function)",
-				"duplicates allowed",
-				//"simultaneous load (0 step in load)",
-				"only external transactions",
-				""
-			};
-
-			var list = optimizations.Select(s => "\t" + s);
-
-			logger.Write("Optimizations done:");
-			logger.Write(string.Join(sep, list));
 		}
 
 
