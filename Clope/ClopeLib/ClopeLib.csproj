@@ -58,7 +58,6 @@
     <Compile Include="Data\Transaction.cs" />
     <Compile Include="Helpers\MathPower.cs" />
     <Compile Include="Helpers\Utils.cs" />
-    <Compile Include="Parsers\TestSimpleParser.cs" />
     <Compile Include="Previews\Previewer.cs" />
     <Compile Include="_root\delegates.cs" />
     <Compile Include="_root\EmptyArrayException.cs" />
