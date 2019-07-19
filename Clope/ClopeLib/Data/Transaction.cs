@@ -20,12 +20,12 @@ namespace ClopeLib.Data
 
 
 		// init
-		public Transaction(int[] links)
+		public Transaction(params int[] links)
 		{
 			Links = links ?? throw new ArgumentNullException();
 
-			//if (links.Length == 0)
-			//	throw new EmptyArrayException();
+			if (links.Length == 0)
+				throw new EmptyArrayException();
 
 			hashCode = MakeHashCode();
 		}

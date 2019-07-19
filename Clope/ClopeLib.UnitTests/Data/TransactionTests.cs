@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using ClopeLib.Data;
 using NUnit.Framework;
+using ClopeLib.Data;
 
 namespace ClopeLib.UnitTests.Data
 {
@@ -9,12 +8,10 @@ namespace ClopeLib.UnitTests.Data
 	public class TransactionTests
 	{
 		[Test]
-		public void Init_NullLinks_ThrowsArgumentNull()
-		{
-			int[] links = null;
+		public void Init_NullLinks_ThrowsArgumentNull() =>Assert.Catch<ArgumentNullException>(() => new Transaction(null as int[]));
 
-			Assert.Catch<ArgumentNullException>(() => new Transaction(links));
-		}
+		[Test]
+		public void Init_EmptyArray_ThrowsEmptyArray() =>Assert.Catch<EmptyArrayException>(() => new Transaction());
 
 
 
