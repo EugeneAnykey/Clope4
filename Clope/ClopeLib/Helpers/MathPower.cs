@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace ClopeLib.Helpers
 {
+	/// <summary>
+	/// Math power cacher for single exponent and positive or zero values.
+	/// </summary>
 	public class MathPower
 	{
 		readonly double power;
@@ -14,6 +17,9 @@ namespace ClopeLib.Helpers
 		public double this[int x]
 		{
 			get {
+				if (x < 0)
+					throw new NegativeValueException();
+
 				while (list.Count <= x)
 				{
 					list.Add(Math.Pow(list.Count, power));

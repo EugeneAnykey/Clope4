@@ -61,6 +61,7 @@
     <Compile Include="Data\TransactionHashTests.cs" />
     <Compile Include="Data\ClusterTests.cs" />
     <Compile Include="Data\TransactionTests.cs" />
+    <Compile Include="Helpers\MathPowerTests.cs" />
     <Compile Include="Helpers\UtilsTests.cs" />
     <Compile Include="Helpers\ArrayHelperTests.cs" />
     <Compile Include="Parsers\ParserTests.cs" />

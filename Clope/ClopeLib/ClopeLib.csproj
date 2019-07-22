@@ -60,6 +60,7 @@
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Previews\Previewer.cs" />
     <Compile Include="_root\delegates.cs" />
+    <Compile Include="_root\NegativeValueException.cs" />
     <Compile Include="_root\EmptyArrayException.cs" />
     <Compile Include="_root\IIndexCounter.cs" />
     <Compile Include="_root\IAttributeStore.cs" />
