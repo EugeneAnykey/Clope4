@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
-
 using ClopeLib.Helpers;
-using System;
 
 namespace ClopeLib.UnitTests.Helpers
 {
 	[TestFixture]
 	public class UtilsTests
 	{
-		// Equals
 		[Test]
 		public void TrySetValue_DifferentValue_IsTrue()
 		{

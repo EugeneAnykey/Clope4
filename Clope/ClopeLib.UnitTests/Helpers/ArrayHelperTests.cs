@@ -6,7 +6,6 @@ namespace ClopeLib.UnitTests.Helpers
 	[TestFixture]
 	public class ArrayHelperTests
 	{
-		#region Equals
 		[Test]
 		public void Equals_Simple_IsTrue()
 		{
@@ -69,6 +68,5 @@ namespace ClopeLib.UnitTests.Helpers
 
 			Assert.IsFalse(res);
 		}
-		#endregion
 	}
 }
