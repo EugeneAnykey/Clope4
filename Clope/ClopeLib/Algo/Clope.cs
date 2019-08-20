@@ -75,9 +75,9 @@ namespace ClopeLib.Algo
 #if simultaneous
 		public void AddNewTransactions()
 		{
-			while (Transactions.Count > transactionsDone)
+			while (transactions.Count > transactionsDone)
 			{
-				var t = Transactions[transactionsDone++];
+				var t = transactions[transactionsDone++];
 				PlaceIntoCluster(t);
 				stepChanges++;
 			}
