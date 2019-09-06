@@ -161,16 +161,9 @@ namespace ClopeLib.Algo
 
 		void PlaceIntoCluster(ITransaction t)
 		{
-			//ICluster bestCluster = BestClusterSearch(t, null);
-
-			if ((Clusters.Count == 0) || !Clusters.Last().IsEmpty)
-			{
-				Clusters.Add(new Cluster(MathPower));
-			}
+			CheckingForAtLeastOneEmptyCluster();
+			
 			ICluster bestCluster = BestClusterSearch(t, null);
-
-			//if (bestCluster == null)
-			//	Clusters.Add(bestCluster = new Cluster(MathPower));
 
 			bestCluster.Add(t);
 			clusterKeys.Add(bestCluster);
@@ -203,7 +196,6 @@ namespace ClopeLib.Algo
 
 		bool SpecifyClusterForTransactions(int index)
 		{
-			CheckingForAtLeastOneEmptyCluster();
 			var t = transactions[index];
 			var currentCluster = clusterKeys[index];
 			ICluster bestCluster = BestClusterSearch(t, currentCluster, currentCluster.GetRemCost(t));
