@@ -14,6 +14,7 @@
 		public ElementRule()
 		{
 			Invalids = null;
+			Replacement = null;
 		}
 
 		public ElementRule(string[] possibleInvalids, string replacement)

@@ -30,7 +30,7 @@ namespace ClopeLib.Parsers
 		public Parser(char[] splitter, IElementRule rule)
 		{
 			Splitter = splitter;
-			Rule = rule ?? new ElementAlwaysValidRule();
+			Rule = rule ?? new ElementRule();
 		}
 
 		public Parser() : this(CommaSplitter, null) { }

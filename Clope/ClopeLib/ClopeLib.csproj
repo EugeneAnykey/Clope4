@@ -68,7 +68,6 @@
     <Compile Include="_root\ITransaction.cs" />
     <Compile Include="Data\StringAttribute.cs" />
     <Compile Include="Helpers\ArrayHelper.cs" />
-    <Compile Include="Parsers\ElementAlwaysValidRule.cs" />
     <Compile Include="Parsers\ElementRule.cs" />
     <Compile Include="Parsers\IElementRule.cs" />
     <Compile Include="Parsers\IParser.cs" />
