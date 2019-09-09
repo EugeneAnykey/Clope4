@@ -57,7 +57,6 @@
     <Compile Include="Data\Cluster.cs" />
     <Compile Include="Data\Transaction.cs" />
     <Compile Include="Helpers\MathPower.cs" />
-    <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Previews\Previewer.cs" />
     <Compile Include="_root\delegates.cs" />
     <Compile Include="_root\NegativeValueException.cs" />

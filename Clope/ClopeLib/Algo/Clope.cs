@@ -34,7 +34,7 @@ namespace ClopeLib.Algo
 			get { return repulsion; }
 			set
 			{
-				Utils.TrySetValue(ref repulsion, value, minRepulsion, maxRepulsion);
+				repulsion = value < minRepulsion ? minRepulsion : maxRepulsion < value ? maxRepulsion : value;
 				MathPower = new MathPower(repulsion);
 			}
 		}
