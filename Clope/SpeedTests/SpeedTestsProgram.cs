@@ -9,6 +9,11 @@ namespace SpeedTests
 			//RunPowerCachingSpeedTest();
 
 			RunHoldersSpeedTest();
+
+			System.Console.WriteLine();
+			System.Console.WriteLine("Speed testing finished.");
+			System.Console.WriteLine("Press any key to exit. . .");
+			System.Console.ReadKey();
 		}
 
 

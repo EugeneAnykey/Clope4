@@ -17,23 +17,23 @@ namespace SpeedTests
 			myriad
 		}
 
+		// const
+		const int mega = 1_000_000;
+
+
+
 		// field
+		readonly ILogger logger;
+
 		IHolder holderDic = new HolderDic();
 		IHolder holderList = new HolderList();
-
-
 
 		int itemsMaxCount = 100;
 		int iterations;
 
-		readonly ILogger logger;
-
 		List<string[]> lines = new List<string[]>();
 
-		// const
-		const double pow = 3.7;// Math.PI;
-		const int defaultItemsMaxCount = 100;
-		const int mega = 1000 * 1000;
+		Random r = new Random(DateTime.UtcNow.Millisecond);
 
 
 
@@ -52,17 +52,17 @@ namespace SpeedTests
 			holderList = new HolderList();
 		}
 
-		Random r = new Random(DateTime.UtcNow.Millisecond);
-		const string latin = "abcdefghijklmnopqrstuvwxyz";
-		readonly int latinLen = latin.Length;
+
 
 		string GenerateString()
 		{
-			int count = r.Next(0, 3) + 1;
-			var cc = new char[count];
+			const string latin = "abcdefghijklmnopqrstuvwxyz";
 
-			for (int j = 0; j < count; j++)
-				cc[j] = latin[r.Next(0, latinLen)];
+			int len = r.Next(0, 3) + 1;
+			var cc = new char[len];
+
+			for (int j = 0; j < len; j++)
+				cc[j] = latin[r.Next(0, latin.Length)];
 
 			return new string(cc);
 		}
@@ -87,11 +87,11 @@ namespace SpeedTests
 
 		public void Run()
 		{
-			var a = Enum.GetValues(typeof(ItemsCount)).Cast<ItemsCount>();
+			var countNames = Enum.GetValues(typeof(ItemsCount)).Cast<ItemsCount>();
 
-			foreach (var count in a)
+			foreach (var countName in countNames)
 			{
-				itemsMaxCount = (int)Math.Pow(10, (int)count);
+				itemsMaxCount = (int)Math.Pow(10, (int)countName);
 				logger.Write($"Items: {itemsMaxCount}.");
 				Generate(itemsMaxCount);
 
@@ -109,16 +109,15 @@ namespace SpeedTests
 			for (int i = 0; i < mils.Length; i++)
 			{
 				Clear();
-				float million = mils[i];
-				iterations = (int)(million * mega);
-				logger.Write($"Times: {million} M.");
-				RunTest("Dict Place", TestDicPlace);
-				RunTest("List Place", TestListPlace);
+				iterations = (int)(mils[i] * mega);
+				logger.Write($"Times: {mils[i]} M.");
+				RunTestWithStopwatch("Dict Place", TestDicPlace);
+				RunTestWithStopwatch("List Place", TestListPlace);
 				logger.Write("");
 			}
 		}
 
-		void RunTest(string name, Action action)
+		void RunTestWithStopwatch(string name, Action action)
 		{
 			Stopwatch w = new Stopwatch();
 			w.Start();
