@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EugeneAnykey.DebugLib.Loggers">
-      <HintPath>..\res\EugeneAnykey.DebugLib.Loggers.dll</HintPath>
+      <HintPath>..\..\res\EugeneAnykey.DebugLib.Loggers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,7 +48,7 @@
     <Compile Include="Tester.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Clope\ClopeLib\ClopeLib.csproj">
+    <ProjectReference Include="..\ClopeLib\ClopeLib.csproj">
       <Project>{a113137f-6cb6-44a2-9f07-e4319da705b3}</Project>
       <Name>ClopeLib</Name>
     </ProjectReference>
