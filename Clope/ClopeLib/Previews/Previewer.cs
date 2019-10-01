@@ -4,22 +4,22 @@ using System.Text;
 
 namespace ClopeLib.Previews
 {
-	public class Previewer
+	public class Previewer<T>
 	{
 		// field
 		readonly IEnumerable<ITransaction> transactions;
 		readonly IEnumerable<ICluster> clusters;
-		readonly IAttributeStore store;
+		readonly IAttributeStore<T> store;
 
 		List<int[]> resultForClusters;
-		IAttribute[] attributes;
+		T[] attributes;
 		int[] links;
 		bool gotData = false;
 
-
+		
 
 		// init
-		public Previewer(IEnumerable<ITransaction> transactions, IEnumerable<ICluster> clusters, IAttributeStore store)
+		public Previewer(IEnumerable<ITransaction> transactions, IEnumerable<ICluster> clusters, IAttributeStore<T> store)
 		{
 			this.transactions = transactions;
 			this.clusters = clusters;
@@ -27,7 +27,7 @@ namespace ClopeLib.Previews
 
 			resultForClusters = new List<int[]>();
 
-			attributes = new IAttribute[0];
+			attributes = new T[0];
 			links = new int[0];
 		}
 
@@ -76,7 +76,7 @@ namespace ClopeLib.Previews
 
 			// header
 			sb.Append("cluster\t");
-			sb.Append(string.Join(tab, (from a in attributes select a.Name).ToArray()));
+			sb.Append(string.Join(tab, (from a in attributes select a).ToArray()));
 			sb.AppendLine("\tsummary\ttimes");
 			sb.AppendLine("");
 

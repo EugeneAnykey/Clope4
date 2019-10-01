@@ -24,7 +24,7 @@ namespace ClopeCon
 		Clope clope;
 
 		List<ITransaction> transactions;
-		IAttributeStore attributeStore;
+		IAttributeStore<string> attributeStore;
 
 		ILogger logger;
 
@@ -72,10 +72,12 @@ namespace ClopeCon
 		const int LinesToReadAtOnceForExample = 1024;
 
 		IPortionReader _GetReader() => new Reader(vars.Filename) { LinesToReadAtOnce = LinesToReadAtOnceForExample };
-
+		
 		IParser _GetParser() => new Parser(new [] { vars.Separator }, new ElementRule(determineAsNulls, null));
-
-		IAttributeStore _GetAttributeStore() => new AttributeStoreAtDic();
+		
+		IAttributeStore<string> _GetAttributeStore() => new AttributeStoreAlt<string>();
+		
+		Previewer<string> _GetPreviewer() => new Previewer<string>(transactions, clope.Clusters, attributeStore);
 
 
 
@@ -139,7 +141,8 @@ namespace ClopeCon
 		public string MakeResults(int column = 0)
 		{
 			LoggingStart(mainWatch);
-			var preview = new Previewer(transactions, clope.Clusters, attributeStore);
+			//var preview = new Previewer<string>(transactions, clope.Clusters, attributeStore);
+			var preview = _GetPreviewer();
 			preview.MakePreview(column);
 
 			LoggingEnd("Results", mainWatch);

@@ -1,13 +1,14 @@
 ﻿namespace ClopeLib
 {
-	public interface IAttributeStore
+	public interface IAttributeStore<T>
 	{
 		/// <summary>
 		/// Exchanging attributes for links. Storing items for reverse exchange.
 		/// </summary>
 		/// <param name="items">attributes (position in array and item)</param>
 		/// <returns>links of stored attributes</returns>
-		int[] PlaceAndGetLinks(params string[] items);
+		int[] PlaceAndGetLinks(params T[] items);
+
 
 
 		/// <summary>
@@ -15,7 +16,8 @@
 		/// </summary>
 		/// <param name="position">attribute position</param>
 		/// <returns>attributes that are from specified position</returns>
-		IAttribute[] GetAttributes(int position);
+		T[] GetAttributes(int position);
+
 
 
 		/// <summary>
@@ -26,11 +28,12 @@
 		int[] GetAttributesLinks(int position);
 
 
+
 		/// <summary>
 		/// Returns attribute from specified link in store
 		/// </summary>
 		/// <param name="link">store's link</param>
 		/// <returns>linked attribute</returns>
-		IAttribute GetAttributeByLink(int link);
+		T GetAttributeByLink(int link);
 	}
 }

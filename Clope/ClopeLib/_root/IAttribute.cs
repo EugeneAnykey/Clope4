@@ -2,16 +2,11 @@
 
 namespace ClopeLib
 {
-	public interface IAttribute : IEquatable<IAttribute>
+	public interface IAttribute<T> : IEquatable<IAttribute<T>>
 	{
-		/// <summary>
-		/// Attribute column index
-		/// </summary>
-		int Position { get; }
-
 		/// <summary>
 		/// Attribute column value
 		/// </summary>
-		string Name { get; }
+		T Value { get; }
 	}
 }
