@@ -24,7 +24,7 @@ namespace ClopeCon
 		Clope clope;
 
 		List<ITransaction> transactions;
-		IAttributeStore<string> attributeStore;
+		IAttributeStore<object> attributeStore;
 
 		ILogger logger;
 
@@ -75,9 +75,9 @@ namespace ClopeCon
 		
 		IParser _GetParser() => new Parser(new [] { vars.Separator }, new ElementRule(determineAsNulls, null));
 		
-		IAttributeStore<string> _GetAttributeStore() => new AttributeStore<string>();
+		IAttributeStore<object> _GetAttributeStore() => new AttributeStore<object>();
 		
-		Previewer<string> _GetPreviewer() => new Previewer<string>(transactions, clope.Clusters, attributeStore);
+		Previewer<object> _GetPreviewer() => new Previewer<object>(transactions, clope.Clusters, attributeStore);
 
 
 
