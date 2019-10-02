@@ -75,7 +75,7 @@ namespace ClopeCon
 		
 		IParser _GetParser() => new Parser(new [] { vars.Separator }, new ElementRule(determineAsNulls, null));
 		
-		IAttributeStore<string> _GetAttributeStore() => new AttributeStoreAlt<string>();
+		IAttributeStore<string> _GetAttributeStore() => new AttributeStore<string>();
 		
 		Previewer<string> _GetPreviewer() => new Previewer<string>(transactions, clope.Clusters, attributeStore);
 
@@ -141,7 +141,6 @@ namespace ClopeCon
 		public string MakeResults(int column = 0)
 		{
 			LoggingStart(mainWatch);
-			//var preview = new Previewer<string>(transactions, clope.Clusters, attributeStore);
 			var preview = _GetPreviewer();
 			preview.MakePreview(column);
 

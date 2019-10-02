@@ -9,7 +9,7 @@ namespace ClopeLib.UnitTests.Data
 	public class AttributeStoreTests
 	{
 		// factory
-		IAttributeStore<string> _GetAttributeStore() => new AttributeStoreAlt<string>();
+		IAttributeStore<string> _GetAttributeStore() => new AttributeStore<string>();
 
 		readonly string[][] attributes = new[] {
 			new[] { "a", "b", "c" },

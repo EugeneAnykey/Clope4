@@ -52,14 +52,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algo\Clope.cs" />
-    <Compile Include="Data\AttributeStoreAlt.cs" />
+    <Compile Include="Data\AttributeStore.cs" />
     <Compile Include="Data\IndexCounterAtArray.cs" />
     <Compile Include="Data\Cluster.cs" />
     <Compile Include="Data\Transaction.cs" />
     <Compile Include="Helpers\MathPower.cs" />
     <Compile Include="Previews\Previewer.cs" />
     <Compile Include="_root\delegates.cs" />
-    <Compile Include="Data\AttributeAlt.cs" />
+    <Compile Include="Data\AttributeStoreItem.cs" />
     <Compile Include="_root\IAttribute.cs" />
     <Compile Include="_root\IAttributeStore.cs" />
     <Compile Include="_root\NegativeValueException.cs" />

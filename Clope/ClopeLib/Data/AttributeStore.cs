@@ -4,23 +4,23 @@ using System.Linq;
 
 namespace ClopeLib.Data
 {
-	public class AttributeStoreAlt<T> : IAttributeStore<T>
+	public class AttributeStore<T> : IAttributeStore<T>
 	{
 		// fields
 		int latestNewLink = 1;
 
-		readonly List<Dictionary<AttributeAlt<T>, int>> store = new List<Dictionary<AttributeAlt<T>, int>>();
+		readonly List<Dictionary<AttributeStoreItem<T>, int>> store = new List<Dictionary<AttributeStoreItem<T>, int>>();     // int for link
 
 
 
 		// init
-		public AttributeStoreAlt() { }
+		public AttributeStore() { }
 
 
 
 		int PlaceAttribute(int pos, T at)
 		{
-			var att = new AttributeAlt<T>(at);
+			var att = new AttributeStoreItem<T>(at);
 
 			if (!store[pos].ContainsKey(att))
 				store[pos].Add(att, latestNewLink++);
@@ -33,7 +33,7 @@ namespace ClopeLib.Data
 		void CheckListLength(int pos)
 		{
 			while (store.Count <= pos)
-				store.Add(new Dictionary<AttributeAlt<T>, int>());
+				store.Add(new Dictionary<AttributeStoreItem<T>, int>());
 		}
 
 

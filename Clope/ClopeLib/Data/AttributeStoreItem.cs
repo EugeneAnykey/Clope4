@@ -1,12 +1,12 @@
 ﻿namespace ClopeLib.Data
 {
-	internal struct AttributeAlt<T>
+	internal struct AttributeStoreItem<T>
 	{
 		public T Value { get; }
 
-		public AttributeAlt(T val) => Value = val;
+		public AttributeStoreItem(T val) => Value = val;
 
-		public bool Equals(AttributeAlt<T> other)
+		public bool Equals(AttributeStoreItem<T> other)
 		{
 			if (Value == null && other.Value == null)
 				return true;
