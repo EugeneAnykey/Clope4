@@ -7,12 +7,18 @@ namespace ClopeLib.UnitTests.Parsers
 	[TestFixture]
 	public class ParserTests
 	{
+		IParser _GetParser() => new Parser();
+		IParser _GetParser(char[] splitter) => new Parser() { Splitter = splitter };
+		IParser _GetParser(char[] splitter, IElementRule rule) => new Parser(splitter, rule);
+
+
+
 		[Test]
-		public void Parce_NullInput_ThrowsNullReference()
+		public void Parse_NullInput_ThrowsNullReference()
 		{
 			const string input = null;
-			var parcer = new Parser();
-			Assert.Catch<NullReferenceException> (() => parcer.Parse(input));
+			var parser = _GetParser();
+			Assert.Catch<NullReferenceException> (() => parser.Parse(input));
 		}
 		
 
@@ -24,12 +30,11 @@ namespace ClopeLib.UnitTests.Parsers
 		[TestCase(",, c,,", new [] {"c"})]
 		[TestCase(",d, c,,", new [] {"d", "c"})]
 		[TestCase("a, b, g, t, , h", new [] {"a", "b", "g", "t", "h"})]
-		public void Parce_NormalInputsWithCommaSpace_ReturnsGood(string input, string[] expected)
+		public void Parse_NormalInputsWithCommaSpace_ReturnsGood(string input, string[] expected)
 		{
-			var parcer = new Parser();
-			parcer.Splitter = Parser.CommaSpaceSplitter;
+			var parser = _GetParser(Parser.CommaSpaceSplitter);
 			
-			var result = parcer.Parse(input);
+			var result = parser.Parse(input);
 			
 			Assert.AreEqual(
 				expected,
@@ -42,14 +47,14 @@ namespace ClopeLib.UnitTests.Parsers
 		[TestCase("b,,?", new [] {"b", null})]
 		[TestCase("c, ??", new [] {"c", "??"})]
 		[TestCase("b,,?*?", new [] {"b", "?*?"})]
-		public void Parce_RuledInputsWithCommaSpace_ReturnsGood(string input, string[] expected)
+		public void Parse_RuledInputsWithCommaSpace_ReturnsGood(string input, string[] expected)
 		{
-			var parcer = new Parser(
+			var parser = _GetParser(
 				Parser.CommaSpaceSplitter,
 				new ElementRule(new[] { "?" }, null)
 			);
 			
-			var result = parcer.Parse(input);
+			var result = parser.Parse(input);
 			
 			Assert.AreEqual(
 				expected,

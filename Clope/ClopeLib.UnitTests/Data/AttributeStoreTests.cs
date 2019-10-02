@@ -9,7 +9,7 @@ namespace ClopeLib.UnitTests.Data
 	public class AttributeStoreTests
 	{
 		// factory
-		IAttributeStore _GetAttributeStore() => new AttributeStoreAtDic();
+		IAttributeStore<string> _GetAttributeStore() => new AttributeStore<string>();
 
 		readonly string[][] attributes = new[] {
 			new[] { "a", "b", "c" },
@@ -17,16 +17,17 @@ namespace ClopeLib.UnitTests.Data
 			new[] { "b", "e", "c" },
 		};
 
-		void FillStoreDefault(IAttributeStore store)
+		void FillStoreDefault(IAttributeStore<string> store)
 		{
 			foreach (var line in attributes)
 				store.PlaceAndGetLinks(line);
 		}
 
-		StringAttribute[] GetAttributesForColumn(int col = 0)
+		string[] GetAttributesForColumn(int col = 0)
 		{
-			var ss = attributes.Select(a => a[col]).Distinct().ToArray();
-			return ss.Select(s => new StringAttribute(col, s)).ToArray();
+			//return attributes.Select(a => )
+			return attributes.Select(a => a[col]).Distinct().ToArray();
+			//return ss.Select(s => new StringAttribute(col, s)).ToArray();
 		}
 
 
@@ -37,14 +38,24 @@ namespace ClopeLib.UnitTests.Data
 		[Test]
 		public void PlaceAndGetLinks_EmptyArray_ThrowEmptyArray() => Assert.Catch<EmptyArrayException>(() => _GetAttributeStore().PlaceAndGetLinks(new string[0]));
 
+		[Test]
+		public void GetAttributes_NotExisted_ThrowArgumentOutOfRange()
+		{
+			var store = _GetAttributeStore();
+			FillStoreDefault(store);
+			const int col = 7;
+
+			Assert.Catch<ArgumentOutOfRangeException>(() => store.GetAttributes(col));
+		}
+
 
 
 		[TestCase("a", "b", "c")]
 		[TestCase("a", "b", "a")]
 		public void PlaceAndGetLinks_InputOnce_IsGood(params string[] input)
 		{
-			IAttributeStore store = _GetAttributeStore();
-			int[] expectedLinks = new[] { 0, 1, 2 };
+			var store = _GetAttributeStore();
+			int[] expectedLinks = new[] { 1, 2, 3 };
 
 			var res = store.PlaceAndGetLinks(input);
 
@@ -60,8 +71,8 @@ namespace ClopeLib.UnitTests.Data
 		[TestCase("a", "b", "a", "a")]
 		public void PlaceAndGetLinks_InputTwice_LinksAreEqual(params string[] items)
 		{
-			IAttributeStore store = _GetAttributeStore();
-			int[] expectedLinks = new[] { 0, 1, 2, 3 };
+			var store = _GetAttributeStore();
+			int[] expectedLinks = new[] { 1, 2, 3, 4 };
 
 			store.PlaceAndGetLinks(items);
 			var currentLinks = store.PlaceAndGetLinks(items);
@@ -78,9 +89,9 @@ namespace ClopeLib.UnitTests.Data
 		public void GetAttributes_Existed_IsGood()
 		{
 			const int col = 0;
-			StringAttribute[] expected = GetAttributesForColumn(col);
+			var expected = GetAttributesForColumn(col);
 
-			IAttributeStore store = _GetAttributeStore();
+			var store = _GetAttributeStore();
 			FillStoreDefault(store);
 			var res = store.GetAttributes(col);
 
@@ -92,24 +103,12 @@ namespace ClopeLib.UnitTests.Data
 
 
 		[Test]
-		public void GetAttributes_NotExisted_EmptyArray()
-		{
-			IAttributeStore store = _GetAttributeStore();
-			FillStoreDefault(store);
-			const int col = 7;
-
-			Assert.IsTrue(0 == store.GetAttributes(col).Length);
-		}
-
-
-
-		[Test]
 		public void GetAttributeByLink_Existed_IsGood()
 		{
-			const int link = 3;
-			IAttribute expected = GetAttributesForColumn(1)[1];
+			const int link = 4;
+			var expected = GetAttributesForColumn(1)[1];
 			
-			IAttributeStore store = _GetAttributeStore();
+			var store = _GetAttributeStore();
 			FillStoreDefault(store);
 
 			var res = store.GetAttributeByLink(link);

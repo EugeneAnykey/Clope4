@@ -34,7 +34,7 @@ namespace ClopeLib.Algo
 			get { return repulsion; }
 			set
 			{
-				Utils.TrySetValue(ref repulsion, value, minRepulsion, maxRepulsion);
+				repulsion = value < minRepulsion ? minRepulsion : maxRepulsion < value ? maxRepulsion : value;
 				MathPower = new MathPower(repulsion);
 			}
 		}
@@ -75,9 +75,9 @@ namespace ClopeLib.Algo
 #if simultaneous
 		public void AddNewTransactions()
 		{
-			while (Transactions.Count > transactionsDone)
+			while (transactions.Count > transactionsDone)
 			{
-				var t = Transactions[transactionsDone++];
+				var t = transactions[transactionsDone++];
 				PlaceIntoCluster(t);
 				stepChanges++;
 			}
@@ -161,10 +161,9 @@ namespace ClopeLib.Algo
 
 		void PlaceIntoCluster(ITransaction t)
 		{
+			CheckingForAtLeastOneEmptyCluster();
+			
 			ICluster bestCluster = BestClusterSearch(t, null);
-
-			if (bestCluster == null)
-				Clusters.Add(bestCluster = new Cluster(MathPower));
 
 			bestCluster.Add(t);
 			clusterKeys.Add(bestCluster);
@@ -197,7 +196,6 @@ namespace ClopeLib.Algo
 
 		bool SpecifyClusterForTransactions(int index)
 		{
-			CheckingForAtLeastOneEmptyCluster();
 			var t = transactions[index];
 			var currentCluster = clusterKeys[index];
 			ICluster bestCluster = BestClusterSearch(t, currentCluster, currentCluster.GetRemCost(t));

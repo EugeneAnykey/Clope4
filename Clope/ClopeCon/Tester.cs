@@ -8,10 +8,13 @@ using ClopeLib.Previews;
 using ClopeLib.Readers;
 using EugeneAnykey.DebugLib.Loggers;
 
-namespace ClopeWin
+namespace ClopeCon
 {
 	public class Tester
 	{
+		// fields
+		FileParams vars;
+
 		// predefs
 		readonly string[] determineAsNulls = new[] { "?", string.Empty };
 
@@ -21,9 +24,8 @@ namespace ClopeWin
 		Clope clope;
 
 		List<ITransaction> transactions;
-		IAttributeStore attributeStore;
+		IAttributeStore<object> attributeStore;
 
-		DataSetupSettings settings;
 		ILogger logger;
 
 		Stopwatch mainWatch;
@@ -32,10 +34,10 @@ namespace ClopeWin
 
 
 		// init
-		public Tester(DataSetupSettings settings, ILogger logger)
+		public Tester(FileParams vars, ILogger logger = null)
 		{
+			this.vars = vars;
 			this.logger = logger ?? new ConsoleLogger();
-			this.settings = settings;
 
 			mainWatch = new Stopwatch();
 			stepWatch = new Stopwatch();
@@ -69,11 +71,13 @@ namespace ClopeWin
 		// factory
 		const int LinesToReadAtOnceForExample = 1024;
 
-		IPortionReader _GetReader() => new Reader(settings.SelectedDelimitedFile.GetPath()) { LinesToReadAtOnce = LinesToReadAtOnceForExample };
-
-		IParser _GetParser() => new Parser(settings.SelectedDelimitedFile.FieldSeparators, new ElementRule(determineAsNulls, null));
-
-		IAttributeStore _GetAttributeStore() => new AttributeStoreAtDic();
+		IPortionReader _GetReader() => new Reader(vars.Filename) { LinesToReadAtOnce = LinesToReadAtOnceForExample };
+		
+		IParser _GetParser() => new Parser(new [] { vars.Separator }, new ElementRule(determineAsNulls, null));
+		
+		IAttributeStore<object> _GetAttributeStore() => new AttributeStore<object>();
+		
+		Previewer<object> _GetPreviewer() => new Previewer<object>(transactions, clope.Clusters, attributeStore);
 
 
 
@@ -83,10 +87,13 @@ namespace ClopeWin
 			attributeStore = _GetAttributeStore();
 
 			logger.Write($"Prepare test>");
-			logger.Write($"> file      > {settings.SelectedDelimitedFile.GetPath()}");
-			logger.Write($"> repulsion > {settings.ClopeRepulsion}");
+			logger.Write($"> file      > {vars.Filename}");
+			logger.Write($"> repulsion > {vars.Repulsion}");
+			logger.Write($"> delimeter > {vars.Separator}");
+			logger.Write($"> line to skip > {vars.FirstLinesToSkip}");
+			logger.Write($"> column to view > {vars.ColumnToView}");
 
-			clope.Repulsion = settings.ClopeRepulsion;
+			clope.Repulsion = vars.Repulsion;
 			clope.StepDone += (step, changes) => StepInfo(step, changes);
 			logger.Write("------");
 		}
@@ -99,7 +106,7 @@ namespace ClopeWin
 			IPortionReader reader = _GetReader();
 			IParser parser = _GetParser();
 
-			reader.SkipLines(settings.SelectedDelimitedFile.FirstLinesToSkip);
+			reader.SkipLines(vars.FirstLinesToSkip);
 
 			while (!reader.ReachedEndOfFile)
 			{
@@ -137,7 +144,7 @@ namespace ClopeWin
 		public string MakeResults(int column = 0)
 		{
 			LoggingStart(mainWatch);
-			var preview = new Previewer(transactions, clope.Clusters, attributeStore);
+			var preview = _GetPreviewer();
 			preview.MakePreview(column);
 
 			LoggingEnd("Results", mainWatch);
@@ -154,7 +161,7 @@ namespace ClopeWin
 
 		void StepInfo(int step, int changesDone)
 		{
-			LoggingEnd($"On step {step} - {changesDone} changes were done.", stepWatch, false);
+			LoggingEnd($"Step {step}: {changesDone} changes", stepWatch, false);
 			stepWatch.Restart();
 		}
 
