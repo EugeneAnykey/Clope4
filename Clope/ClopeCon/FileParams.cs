@@ -1,7 +1,15 @@
-﻿namespace ClopeCon
+﻿using System;
+
+namespace ClopeCon
 {
 	public struct FileParams
 	{
+		const string paramNameRepulsion = "rep";
+		const string paramNameFile = "file";
+		const string paramNameColumn = "col";
+		const string paramNameDelimeter = "delim";
+		const string paramNameSkipLines = "skip";
+
 		// fields
 		public string Filename;
 		public float Repulsion;
@@ -13,11 +21,11 @@
 
 		public void DefaultTest()
 		{
-			Filename = @"..\..\data\agaricus-lepiota.csv";
-			Repulsion = 2.1f;
+			Filename = @"";
+			Repulsion = 2.0f;
 			Separator = ';';
-			FirstLinesToSkip = 5;
-			ColumnToView = 2;
+			FirstLinesToSkip = 0;
+			ColumnToView = 0;
 		}
 
 
@@ -50,6 +58,27 @@
 				defaultValue;
 		}
 
+		internal static string GetHelp()
+		{
+			return string.Join("\n",
+				new string[] {
+					"Proper use:",
+					$"\t<app.exe> {paramNameFile}=<filename> {paramNameRepulsion}=<repulsion> {paramNameDelimeter}=<items separator> {paramNameColumn}=<view> {paramNameSkipLines}=<lines>",
+					"",
+					"where:",
+					"\t<app.exe> - application name,",
+					"\t<filename> - filename with structured data,",
+					"\t<repulsion> - clope repulsion (should be between 1.0 to 5.0),",
+					"\t<separator> - item separator, e.g. comma, semicolon or '\\t' for tab,",
+					"\t<col> - column to be showed,",
+					"\t<skip> - first lines to be skipped.",
+					"",
+					"E.g:",
+					"\tClopeCon.exe rep=2.6 file=data.csv col=0 delim=, skip=1"
+				}
+			);
+		}
+
 		static char ParseSeparator(string val)
 		{
 			return
@@ -60,12 +89,6 @@
 
 		void Parse(string[] args)
 		{
-			const string paramNameRepulsion = "repulsion";
-			const string paramNameFile = "file";
-			const string paramNameColumn = "col";
-			const string paramNameSeparator = "separator";
-			const string paramNameSkipLines = "skip";
-
 			foreach (var s in args)
 			{
 				if (s.Contains(paramNameRepulsion))
@@ -84,7 +107,7 @@
 					Filename = SeparateParam(s);
 				}
 
-				else if (s.Contains(paramNameSeparator))
+				else if (s.Contains(paramNameDelimeter))
 				{
 					Separator = ParseSeparator(SeparateParam(s));
 				}

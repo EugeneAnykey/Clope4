@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeCon
@@ -10,15 +11,32 @@ namespace ClopeCon
 		// main
 		static void Main(string[] args)
 		{
-			fileParams.DefaultTest();
 			fileParams.ParseArgs(args);
 
-			Tester tester = new Tester(fileParams, new FileLogger("log.txt", new ConsoleLogger()));
-			tester.Run();
+			if (IsParamsGood())
+			{
+				Tester tester = new Tester(fileParams, new FileLogger("log.txt", new ConsoleLogger()));
+				tester.Run();
 
-			Console.WriteLine(tester.MakeResults(fileParams.ColumnToView));
+				Console.WriteLine(tester.MakeResults(fileParams.ColumnToView));
+			}
 
 			Console.ReadKey();
+		}
+
+
+
+		static bool IsParamsGood()
+		{
+			if (File.Exists(fileParams.Filename))
+				return true;
+			else
+			{
+				Console.WriteLine("Bad params.\n");
+				Console.WriteLine(FileParams.GetHelp());
+			}
+
+			return false;
 		}
 	}
 }

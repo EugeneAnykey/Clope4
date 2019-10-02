@@ -89,6 +89,9 @@ namespace ClopeCon
 			logger.Write($"Prepare test>");
 			logger.Write($"> file      > {vars.Filename}");
 			logger.Write($"> repulsion > {vars.Repulsion}");
+			logger.Write($"> delimeter > {vars.Separator}");
+			logger.Write($"> line to skip > {vars.FirstLinesToSkip}");
+			logger.Write($"> column to view > {vars.ColumnToView}");
 
 			clope.Repulsion = vars.Repulsion;
 			clope.StepDone += (step, changes) => StepInfo(step, changes);
