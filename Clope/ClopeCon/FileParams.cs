@@ -13,11 +13,11 @@
 
 		public void DefaultTest()
 		{
-			Filename = @"..\..\..\..\data\agaricus-lepiota.csv";
-			Repulsion = 2.5f;
-			Separator = ',';
-			FirstLinesToSkip = 1;
-			ColumnToView = 1;
+			Filename = @"..\..\data\agaricus-lepiota.csv";
+			Repulsion = 2.1f;
+			Separator = ';';
+			FirstLinesToSkip = 5;
+			ColumnToView = 2;
 		}
 
 
@@ -32,6 +32,32 @@
 		// Parse
 		static string SeparateParam(string input) => input.Substring(input.IndexOf("=") + 1);
 
+		static float TryParseFloat(string number, float defaultValue = 0)
+		{
+			var nfi = new System.Globalization.NumberFormatInfo
+			{
+				NumberDecimalSeparator = "."
+			};
+
+			return
+				float.TryParse(
+					number.Replace(",", "."),
+					System.Globalization.NumberStyles.Float,
+					nfi,
+					out float val
+				) ?
+				val :
+				defaultValue;
+		}
+
+		static char ParseSeparator(string val)
+		{
+			return
+				val == "\t" ? '\t' :
+				string.IsNullOrEmpty(val) ? ';' :
+				val[0];
+		}
+
 		void Parse(string[] args)
 		{
 			const string paramNameRepulsion = "repulsion";
@@ -40,16 +66,11 @@
 			const string paramNameSeparator = "separator";
 			const string paramNameSkipLines = "skip";
 
-			//Console.WriteLine("Command line parameters:");
-
 			foreach (var s in args)
 			{
-				//Console.WriteLine(s);
-
 				if (s.Contains(paramNameRepulsion))
 				{
-					if (float.TryParse(SeparateParam(s), out float val))
-						Repulsion = val;
+					Repulsion = TryParseFloat(SeparateParam(s), 2);
 				}
 
 				else if (s.Contains(paramNameColumn))
@@ -65,15 +86,7 @@
 
 				else if (s.Contains(paramNameSeparator))
 				{
-					char sep = ';';
-					var val = SeparateParam(s);
-					if (val == "\t")
-						sep = '\t';
-					else if (string.IsNullOrEmpty(val))
-						sep = ';';
-					else sep = val[0];
-
-					Separator = sep;
+					Separator = ParseSeparator(SeparateParam(s));
 				}
 
 				else if (s.Contains(paramNameSkipLines))
