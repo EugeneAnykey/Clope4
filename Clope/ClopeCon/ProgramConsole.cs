@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using EugeneAnykey.DebugLib.Loggers;
 
 namespace ClopeCon
@@ -21,19 +20,21 @@ namespace ClopeCon
 				Console.WriteLine(tester.MakeResults(fileParams.ColumnToView));
 			}
 
-			Console.ReadKey();
+			if (fileParams.Pause)
+				Console.ReadKey();
 		}
 
 
 
 		static bool IsParamsGood()
 		{
-			if (File.Exists(fileParams.Filename))
+			if (System.IO.File.Exists(fileParams.Filename))
 				return true;
 			else
 			{
 				Console.WriteLine("Bad params.\n");
 				Console.WriteLine(FileParams.GetHelp());
+				Console.ReadKey();
 			}
 
 			return false;

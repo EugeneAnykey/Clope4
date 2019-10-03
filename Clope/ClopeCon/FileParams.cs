@@ -9,6 +9,7 @@ namespace ClopeCon
 		const string paramNameColumn = "col";
 		const string paramNameDelimeter = "delim";
 		const string paramNameSkipLines = "skip";
+		const string paramNamePause = "pause";
 
 		// fields
 		public string Filename;
@@ -16,6 +17,7 @@ namespace ClopeCon
 		public char Separator;
 		public int ColumnToView;
 		public int FirstLinesToSkip;
+		public bool Pause;
 
 
 
@@ -26,6 +28,7 @@ namespace ClopeCon
 			Separator = ';';
 			FirstLinesToSkip = 0;
 			ColumnToView = 0;
+			Pause = false;
 		}
 
 
@@ -110,6 +113,11 @@ namespace ClopeCon
 				else if (s.Contains(paramNameDelimeter))
 				{
 					Separator = ParseSeparator(SeparateParam(s));
+				}
+
+				else if (s.Contains(paramNamePause))
+				{
+					Pause = true;
 				}
 
 				else if (s.Contains(paramNameSkipLines))
