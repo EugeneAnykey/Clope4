@@ -8,6 +8,8 @@
 
 		public int Positives { get; private set; } = 0;
 
+		public int this[int index] => 0 <= index && index < counter.Length ? counter[index] : 0;
+
 		public void Inc(int[] indicies)
 		{
 			var max = Max(indicies);
@@ -16,11 +18,10 @@
 
 			foreach (var index in indicies)
 			{
-				var temp = counter[index];
 				counter[index]++;
 
 				if (counter[index] == 1)
-					Positives++;
+					Positives++;    // i.e. changed from 0 to 1 only.
 			}
 		}
 
@@ -32,15 +33,13 @@
 
 			foreach (var index in indicies)
 			{
-				var temp = counter[index];
+				// counter[index] should be always >= 0
 				counter[index]--;
 
 				if (counter[index] == 0)
-					Positives--;
+					Positives--;    // i.e. changed from 1 to 0 only.
 			}
 		}
-
-		public int this[int index] => 0 <= index && index < counter.Length ? counter[index] : 0;
 
 
 
