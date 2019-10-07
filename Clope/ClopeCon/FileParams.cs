@@ -85,7 +85,7 @@ namespace ClopeCon
 		static char ParseSeparator(string val)
 		{
 			return
-				val == "\t" ? '\t' :
+				val == @"\t" ? '\t' :
 				string.IsNullOrEmpty(val) ? ';' :
 				val[0];
 		}
