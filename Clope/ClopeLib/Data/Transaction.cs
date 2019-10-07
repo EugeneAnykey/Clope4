@@ -1,5 +1,4 @@
 ﻿using System;
-using ClopeLib.Helpers;
 
 namespace ClopeLib.Data
 {
@@ -15,8 +14,6 @@ namespace ClopeLib.Data
 
 		public int Length => Links.Length;
 
-		readonly int hashCode = 0;
-
 
 
 		// init
@@ -26,36 +23,11 @@ namespace ClopeLib.Data
 
 			if (links.Length == 0)
 				throw new EmptyArrayException();
-
-			hashCode = MakeHashCode();
 		}
 
 
 
 		// Equals
-		public bool Equals(ITransaction t) => t != null && Id == t.Id && hashCode == t.GetHashCode() && EqualsArrays(t);
-
-		bool EqualsArrays(ITransaction t) => ArrayHelper.Equals(Links, t.Links);
-
-
-
-		// HashCode
-		public override int GetHashCode() => hashCode;
-
-		int MakeHashCode()
-		{
-			const int seed = 0xad7f;
-
-			int hash = 0;
-
-			unchecked { hash = seed * ((int)Id); }
-
-			for (int i = 0; i < Links.Length; i++)
-			{
-				unchecked { hash += seed * ((i + 1 + (int)Id) * Links[i].GetHashCode()); }
-			}
-
-			return hash;
-		}
+		public bool Equals(ITransaction t) => t != null && Id == t.Id;
 	}
 }

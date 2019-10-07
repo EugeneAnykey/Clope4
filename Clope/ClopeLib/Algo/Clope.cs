@@ -1,10 +1,4 @@
-﻿#define simultaneous1
-/* simultaneous (load) - (сделал для тестов) порция данных передается на обработку сразу, по мере поступления
- * в противном случае, сначала сохраняем все данные,
- *  а после получения обрабатываем (для теста скорости обработки).
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using ClopeLib.Data;
@@ -72,21 +66,6 @@ namespace ClopeLib.Algo
 
 
 
-#if simultaneous
-		public void AddNewTransactions()
-		{
-			while (transactions.Count > transactionsDone)
-			{
-				var t = transactions[transactionsDone++];
-				PlaceIntoCluster(t);
-				stepChanges++;
-			}
-		}
-#else
-		public void AddNewTransactions()
-		{
-		}
-
 		void Start()
 		{
 			while (transactions.Count > transactionsDone)
@@ -98,7 +77,6 @@ namespace ClopeLib.Algo
 
 			OnStepDone(LatestStep++, stepChanges);
 		}
-#endif
 
 
 
@@ -119,11 +97,7 @@ namespace ClopeLib.Algo
 		public void Run()
 		{
 			LatestStep = 0;
-#if simultaneous
-			OnStepDone(LatestStep++, stepChanges);
-#else
 			Start();
-#endif
 			Specify();
 			RemoveEmptyClusters();
 		}
