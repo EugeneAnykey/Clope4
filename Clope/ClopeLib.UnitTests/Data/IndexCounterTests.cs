@@ -9,8 +9,7 @@ namespace ClopeLib.UnitTests.Data
 	{
 		// factory
 		IIndexCounter _GetCounter() =>
-			new IndexCounterAtArray();
-			//new IndexCounter();
+			new IndexCounter();
 
 
 		// Init

@@ -54,7 +54,6 @@
     <Compile Include="Algo\Clope.cs" />
     <Compile Include="Data\AttributeStore.cs" />
     <Compile Include="Data\IndexCounter.cs" />
-    <Compile Include="Data\IndexCounterAtArray.cs" />
     <Compile Include="Data\Cluster.cs" />
     <Compile Include="Data\Transaction.cs" />
     <Compile Include="Helpers\MathPower.cs" />

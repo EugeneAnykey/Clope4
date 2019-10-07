@@ -15,7 +15,6 @@ namespace ClopeLib.Data
 		public int Width { get => counter.Positives; }
 
 		readonly IIndexCounter counter =
-			//new IndexCounterAtArray();
 			new IndexCounter();
 
 		double currentCost;
