@@ -122,8 +122,6 @@ namespace ClopeCon
 				}
 
 				transactions.AddRange(tempTrans);
-
-				clope.AddNewTransactions();
 			}
 
 			LoggingEnd("Read", mainWatch);
