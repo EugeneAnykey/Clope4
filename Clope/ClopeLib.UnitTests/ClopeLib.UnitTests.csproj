@@ -62,7 +62,6 @@
     <Compile Include="Data\ClusterTests.cs" />
     <Compile Include="Data\TransactionTests.cs" />
     <Compile Include="Helpers\MathPowerTests.cs" />
-    <Compile Include="Helpers\ArrayHelperTests.cs" />
     <Compile Include="Parsers\ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FileDeployer.cs" />
