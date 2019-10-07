@@ -5,11 +5,11 @@ namespace ClopeLib.Data
 {
 	public class Transaction : ITransaction
 	{
-		static uint uniqueId = 0;
+		static long uniqueId = 0;
 
 
 
-		public uint Id { get; } = uniqueId++;
+		public long Id { get; } = uniqueId++;
 
 		public int[] Links { get; }
 

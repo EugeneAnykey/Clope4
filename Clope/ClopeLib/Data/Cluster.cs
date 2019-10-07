@@ -6,15 +6,16 @@ namespace ClopeLib.Data
 	public class Cluster : ICluster
 	{
 		// field
-		public int Area { get; private set; }
+		public long Area { get; private set; }
 
 		public bool IsEmpty => TransactionsCount == 0;
 
-		public int TransactionsCount { get; private set; }
+		public long TransactionsCount { get; private set; }
 
 		public int Width { get => counter.Positives; }
 
-		readonly IIndexCounter counter = new IndexCounterAtArray();
+		readonly IIndexCounter counter =
+			new IndexCounter();
 
 		double currentCost;
 		readonly MathPower mathPower;

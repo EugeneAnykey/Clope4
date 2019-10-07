@@ -10,12 +10,12 @@
 		/// <summary>
 		/// All attributes count.
 		/// </summary>
-		int Area { get; }
+		long Area { get; }
 
 		/// <summary>
 		/// Added transactions count.
 		/// </summary>
-		int TransactionsCount { get; }
+		long TransactionsCount { get; }
 
 		/// <summary>
 		/// True when there is no transactions (and attributes).
