@@ -7,7 +7,7 @@ namespace ClopeLib
 		/// <summary>
 		/// Unique transaction id
 		/// </summary>
-		uint Id { get; }
+		long Id { get; }
 
 		/// <summary>
 		/// Count of linked attributes
